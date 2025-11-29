@@ -8,8 +8,8 @@ class AuthAppleCreateRequestSchema(Schema):
 
     @validates_schema
     def validate_email(self, data, **kwargs):
-        if len(data["password"]) < 8:
-            raise ValidationError("Password must be more than 8 characters", "password")
+        if len(data["full_name"]) < 8:
+            raise ValidationError("Name must be more than 8 characters", "full_name")
 
 class AuthLoginDataResponseSchema(Schema):
     access_token = fields.Str(dump_only=True)
