@@ -14,7 +14,7 @@ from app.shared import bcrypt
 
 blp = Blueprint("AuthCreate", __name__, description="Auth Create")
 
-@blp.route("/create")
+@blp.route("/auth/apple/create")
 class AuthCreate(MethodView):
     @blp.arguments(AuthAppleCreateRequestSchema)
     @blp.response(200, AuthLoginResponseSchema)

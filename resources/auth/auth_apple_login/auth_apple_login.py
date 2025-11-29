@@ -15,7 +15,7 @@ from schemas.meta import MetaSchema
 
 blp = Blueprint("AuthLogin", __name__, description="Auth Login")
 
-@blp.route("/login")
+@blp.route("/auth/apple/login")
 class AuthLogin(MethodView):
     @blp.arguments(AuthAppleLoginRequestSchema)
     @blp.response(200, AuthLoginResponseSchema)
