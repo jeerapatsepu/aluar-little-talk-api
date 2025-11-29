@@ -1,6 +1,6 @@
 from flask_smorest import Api
-from resources.auth.auth_create.auth_create import blp as AuthCreateBlueprint
-from resources.auth.auth_login import blp as AuthLoginBlueprint
+from resources.auth.auth_apple_create.auth_create import blp as AuthCreateBlueprint
+from resources.auth.auth_apple_login.auth_apple_login import blp as AuthLoginBlueprint
 from resources.home.home import blp as HomeBlueprint
 
 def register_blueprint(app):

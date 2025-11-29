@@ -1,9 +1,10 @@
 from marshmallow import Schema, ValidationError, fields, validates_schema
 from schemas.meta import MetaSchema
 
-class AuthCreateRequestSchema(Schema):
+class AuthAppleCreateRequestSchema(Schema):
     email = fields.Email(required=True)
-    password = fields.Str(required=True)
+    full_name = fields.Str(required=True)
+    user_identifier = fields.Str(required=True)
 
     @validates_schema
     def validate_email(self, data, **kwargs):

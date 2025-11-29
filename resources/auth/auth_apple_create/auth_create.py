@@ -6,7 +6,7 @@ from flask_jwt_extended import (
 )
 from datetime import datetime, timezone
 from models import USLI
-from resources.auth.auth_create.auth_create_request_schema import AuthCreateRequestSchema, AuthLoginDataResponseSchema, AuthLoginResponseSchema
+from resources.auth.auth_apple_create.auth_apple_create_request_schema import AuthAppleCreateRequestSchema, AuthLoginDataResponseSchema, AuthLoginResponseSchema
 from app.shared import db, uid
 from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
@@ -16,11 +16,13 @@ blp = Blueprint("AuthCreate", __name__, description="Auth Create")
 
 @blp.route("/create")
 class AuthCreate(MethodView):
-    @blp.arguments(AuthCreateRequestSchema)
+    @blp.arguments(AuthAppleCreateRequestSchema)
     @blp.response(200, AuthLoginResponseSchema)
     def post(self, request):
         email = request["email"]
-        password = request["password"]
+        full_name = request["full_name"]
+        user_identifier = request["user_identifier"]
+
         usli = USLI.query.filter_by(email=email).first()
         if usli:
             return self.getAuthCreateFailResponse(5000)
@@ -28,7 +30,8 @@ class AuthCreate(MethodView):
             id = uid.hex
             new_user = USLI(uid=id,
                             email=email,
-                            password=bcrypt.generate_password_hash(password).decode('utf-8'))
+                            full_name=full_name,
+                            user_identifier=user_identifier)
             db.session.add(new_user)
             db.session.commit()
             return self.getAuthCreateSuccessResponse(1000, id)

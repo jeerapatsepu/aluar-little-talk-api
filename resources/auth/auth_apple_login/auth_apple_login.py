@@ -7,8 +7,9 @@ from flask_jwt_extended import (
 )
 from datetime import datetime, timezone
 from models.usli import USLI
-from resources.auth.auth_create.auth_create_request_schema import AuthCreateRequestSchema, AuthLoginDataResponseSchema, AuthLoginResponseSchema
+from resources.auth.auth_apple_create.auth_apple_create_request_schema import AuthLoginDataResponseSchema, AuthLoginResponseSchema
 from app.shared import uid, bcrypt
+from resources.auth.auth_apple_login.auth_apple_login_request_schema import AuthAppleLoginRequestSchema
 from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
 
@@ -16,13 +17,12 @@ blp = Blueprint("AuthLogin", __name__, description="Auth Login")
 
 @blp.route("/login")
 class AuthLogin(MethodView):
-    @blp.arguments(AuthCreateRequestSchema)
+    @blp.arguments(AuthAppleLoginRequestSchema)
     @blp.response(200, AuthLoginResponseSchema)
     def post(self, request):
-        email = request["email"]
-        password = request["password"]
-        usli = USLI.query.filter_by(email=email).first()
-        if usli and bcrypt.check_password_hash(pw_hash=usli.password, password=password):
+        user_identifier = request["user_identifier"]
+        usli = USLI.query.filter_by(user_identifier=user_identifier).first()
+        if usli:
             return self.getAuthLoginSuccessRespone(1000, usli)
         else:
             # logging.exception("AuthLogin")

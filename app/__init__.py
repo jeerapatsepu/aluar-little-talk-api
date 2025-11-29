@@ -9,7 +9,7 @@ from app.shared import db, bcrypt
 def create_app(db_url=None) -> Flask:
     load_dotenv()
 
-    app = Flask(__name__, template_folder='../templates')
+    app = Flask(__name__)
     config(app, db_url)
     handle_jwt(app)
     register_blueprint(app)
