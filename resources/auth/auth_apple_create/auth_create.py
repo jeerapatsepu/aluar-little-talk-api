@@ -1,3 +1,4 @@
+from flask import redirect
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
@@ -25,7 +26,8 @@ class AuthCreate(MethodView):
 
         usli = USLI.query.filter_by(email=email).first()
         if usli:
-            return self.getAuthCreateFailResponse(5000)
+            redirect("/auth/apple/login")
+            # return self.getAuthCreateFailResponse(5000)
         else:
             id = uid.hex
             new_user = USLI(uid=id,
