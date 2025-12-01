@@ -39,7 +39,9 @@ class Profile(MethodView):
         profile = UserProfile(uid=usli.uid,
                           email=usli.email,
                           full_name=usli.full_name,
-                          photo="")
+                          photo="",
+                          caption="",
+                          link="")
         db.session.add(profile)
         db.session.commit()
         return self.getAuthCreateSuccessResponse(profile)
@@ -53,6 +55,7 @@ class Profile(MethodView):
         data.uid = profile.uid
         data.photo = profile.photo
         data.caption = profile.caption
+        data.link = profile.link
 
         meta = MetaSchema()
         meta.response_id = uid.hex

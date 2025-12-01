@@ -9,3 +9,4 @@ class UserProfile(db.Model):
     full_name = db.Column(db.String)
     photo = db.Column(db.String)
     caption = db.Column(db.String(1000))
+    link = db.Column(db.String(1000))
