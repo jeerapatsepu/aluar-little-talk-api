@@ -45,8 +45,6 @@ class Profile(MethodView):
         return self.getAuthCreateSuccessResponse(profile)
 
     def getAuthCreateSuccessResponse(self, profile: Profile):
-        access_token = create_access_token(identity=str(id), fresh=True)
-        refresh_token = create_refresh_token(identity=str(id))
         time = datetime.now(timezone.utc)
 
         data = ProfileDataResponseSchema()

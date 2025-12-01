@@ -6,7 +6,7 @@ class ProfileRequestSchema(Schema):
 
     @validates_schema
     def validate_email(self, data, **kwargs):
-        if len(data["uid"]) > 0:
+        if len(data["uid"]) <= 0:
             raise ValidationError("UID must be not empty", "uid")
 
 class ProfileDataResponseSchema(Schema):
