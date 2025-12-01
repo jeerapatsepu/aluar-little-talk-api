@@ -7,54 +7,60 @@ from flask_jwt_extended import (
 )
 from datetime import datetime, timezone
 from models import USLI
-from resources.auth.auth_apple_create.auth_apple_create_request_schema import AuthAppleCreateRequestSchema, AuthLoginDataResponseSchema, AuthLoginResponseSchema
 from app.shared import db, uid
+from models.profile import Profile
+from resources.profile.profile.profile_request_schema import ProfileDataResponseSchema, ProfileRequestSchema, ProfileResponseSchema
 from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
 from app.shared import bcrypt
 
-blp = Blueprint("AuthCreate", __name__, description="Auth Create")
+blp = Blueprint("Profile", __name__, description="Profile")
 
-@blp.route("/auth/apple/create")
-class AuthCreate(MethodView):
-    @blp.arguments(AuthAppleCreateRequestSchema)
-    @blp.response(200, AuthLoginResponseSchema)
+@blp.route("/profile")
+class Profile(MethodView):
+    @blp.arguments(ProfileRequestSchema)
+    @blp.response(200, ProfileResponseSchema)
     def post(self, request):
-        email = request["email"]
-        full_name = request["full_name"]
-        user_identifier = request["user_identifier"]
+        uid = request["uid"]
 
-        usli = USLI.query.filter_by(email=email).first()
+        usli = USLI.query.filter_by(uid=uid).first()
         if usli:
-            redirect("/auth/apple/login")
+            profile = Profile.query.filter_by(uid=uid).first()
+            if profile:
+                return self.getAuthCreateSuccessResponse(profile)
+            else:
+                self.createProfile(usli)
         else:
-            id = uid.hex
-            new_user = USLI(uid=id,
-                            email=email,
-                            full_name=full_name,
-                            user_identifier=user_identifier)
-            db.session.add(new_user)
-            db.session.commit()
-            return self.getAuthCreateSuccessResponse(1000, id)
+            return self.getAuthCreateFailResponse(5000)
 
-    def getAuthCreateSuccessResponse(self, response_code, id):
+    def createProfile(self, usli: USLI):
+        profile = Profile(uid=usli.uid,
+                          email=usli.email,
+                          full_name=usli.full_name,
+                          photo="")
+        db.session.add(profile)
+        db.session.commit()
+        return self.getAuthCreateSuccessResponse(profile)
+
+    def getAuthCreateSuccessResponse(self, profile: Profile):
         access_token = create_access_token(identity=str(id), fresh=True)
         refresh_token = create_refresh_token(identity=str(id))
         time = datetime.now(timezone.utc)
 
-        data = AuthLoginDataResponseSchema()
-        data.access_token = access_token
-        data.refresh_token = refresh_token
-        data.uid = id
+        data = ProfileDataResponseSchema()
+        data.name = profile.full_name
+        data.email = profile.email
+        data.uid = profile.uid
+        data.photo = profile.photo
 
         meta = MetaSchema()
         meta.response_id = uid.hex
-        meta.response_code = response_code
+        meta.response_code = 1000
         meta.response_date = str(time)
         meta.response_timestamp = str(time.timestamp())
         meta.error = None
 
-        response = AuthLoginResponseSchema()
+        response = ProfileResponseSchema()
         response.meta = meta
         response.data = data
         return response
@@ -73,7 +79,7 @@ class AuthCreate(MethodView):
         meta.response_timestamp = str(time.timestamp())
         meta.error = error
 
-        response = AuthLoginResponseSchema()
+        response = ProfileResponseSchema()
         response.meta = meta
         response.data = None
         return response
