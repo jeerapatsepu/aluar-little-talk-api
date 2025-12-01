@@ -31,14 +31,14 @@ class Profile(MethodView):
             if profile:
                 return self.getAuthCreateSuccessResponse(profile)
             else:
-                return self.createProfile(usli)
+                return self.createProfile(usli, profile)
         else:
             return self.getAuthCreateFailResponse(5000)
 
-    def createProfile(self, usli: USLI):
+    def createProfile(self, usli: USLI, profile: UserProfile):
         profile = UserProfile(uid=usli.uid,
                           email=usli.email,
-                          full_name=usli.full_name,
+                          full_name=profile.full_name,
                           photo="")
         db.session.add(profile)
         db.session.commit()
