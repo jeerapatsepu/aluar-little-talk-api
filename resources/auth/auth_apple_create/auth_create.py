@@ -64,7 +64,7 @@ class AuthCreate(MethodView):
 
         error = ErrorSchema()
         error.title = "Service can not answer"
-        error.message = "Email is not unique"
+        error.message = "No user"
 
         meta = MetaSchema()
         meta.response_id = uid.hex

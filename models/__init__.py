@@ -1,2 +1,2 @@
 from models.usli import USLI
-from models.profile import Profile
+from models.user_profile import UserProfile

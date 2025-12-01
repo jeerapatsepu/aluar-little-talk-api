@@ -1,7 +1,7 @@
 from app.shared import db
 
-class Profile(db.Model):
-    __tablename__ = "profiles"
+class UserProfile(db.Model):
+    __tablename__ = "user_profiles"
 
     id = db.Column(db.Integer, primary_key=True)
     uid = db.Column(db.String)

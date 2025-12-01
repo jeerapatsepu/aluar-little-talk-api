@@ -9,7 +9,7 @@ from flask_jwt_extended import (
 from datetime import datetime, timezone
 from models import USLI
 from app.shared import db, uid
-from models.profile import Profile
+from models.user_profile import UserProfile
 from resources.profile.profile.profile_request_schema import ProfileDataResponseSchema, ProfileRequestSchema, ProfileResponseSchema
 from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
@@ -27,16 +27,16 @@ class Profile(MethodView):
 
         usli = USLI.query.filter_by(uid=uid).first()
         if usli:
-            profile = Profile.query.filter_by(uid=uid).first()
+            profile = UserProfile.query.filter_by(uid=uid).first()
             if profile:
                 return self.getAuthCreateSuccessResponse(profile)
             else:
-                self.createProfile(usli)
+                return self.createProfile(usli)
         else:
             return self.getAuthCreateFailResponse(5000)
 
     def createProfile(self, usli: USLI):
-        profile = Profile(uid=usli.uid,
+        profile = UserProfile(uid=usli.uid,
                           email=usli.email,
                           full_name=usli.full_name,
                           photo="")
@@ -44,7 +44,7 @@ class Profile(MethodView):
         db.session.commit()
         return self.getAuthCreateSuccessResponse(profile)
 
-    def getAuthCreateSuccessResponse(self, profile: Profile):
+    def getAuthCreateSuccessResponse(self, profile: UserProfile):
         time = datetime.now(timezone.utc)
 
         data = ProfileDataResponseSchema()
