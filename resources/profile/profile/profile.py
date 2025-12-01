@@ -52,6 +52,7 @@ class Profile(MethodView):
         data.email = profile.email
         data.uid = profile.uid
         data.photo = profile.photo
+        data.caption = profile.caption
 
         meta = MetaSchema()
         meta.response_id = uid.hex

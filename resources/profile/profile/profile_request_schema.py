@@ -14,6 +14,7 @@ class ProfileDataResponseSchema(Schema):
     email = fields.Str(dump_only=True)
     uid = fields.Str(dump_only=True)
     photo = fields.Str(dump_only=True)
+    caption = fields.Str(dump_only=True)
 
 class ProfileResponseSchema(Schema):
     meta = fields.Nested(MetaSchema, dump_only=True)
