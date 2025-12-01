@@ -3,7 +3,8 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
     create_access_token,
-    create_refresh_token
+    create_refresh_token,
+    jwt_required
 )
 from datetime import datetime, timezone
 from models import USLI
@@ -18,6 +19,7 @@ blp = Blueprint("Profile", __name__, description="Profile")
 
 @blp.route("/profile")
 class Profile(MethodView):
+    @jwt_required()
     @blp.arguments(ProfileRequestSchema)
     @blp.response(200, ProfileResponseSchema)
     def post(self, request):
