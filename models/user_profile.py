@@ -10,3 +10,4 @@ class UserProfile(db.Model):
     photo = db.Column(db.String)
     caption = db.Column(db.String(1000))
     link = db.Column(db.String(1000))
+    created_date_timestamp = db.Column(db.Integer)

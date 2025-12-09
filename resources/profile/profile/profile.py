@@ -41,7 +41,8 @@ class Profile(MethodView):
                           full_name=usli.full_name,
                           photo="",
                           caption="",
-                          link="")
+                          link="",
+                          created_date_timestamp=int(datetime.now(timezone.utc).timestamp()))
         db.session.add(profile)
         db.session.commit()
         return self.getAuthCreateSuccessResponse(profile)
