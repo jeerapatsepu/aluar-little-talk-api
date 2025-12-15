@@ -8,7 +8,7 @@ class PostCreateDataImageRequestSchema(Schema):
 class PostCreateDataRequestSchema(Schema):
     index = fields.Integer(required=True)
     text = fields.Str(required=True, validate=validate.Length(min=1))
-    text_type = fields.Str(validate=validate.OneOf(["TITLE", "SUB_TITLE", "TEXT", "QUOTE"]), required=True) # TITLE, SUB_TITLE, TEXT, QUOTE
+    text_type = fields.Str(validate=validate.OneOf(["TITLE", "SUB_TITLE", "TEXT", "QUOTE", ""]), required=True) # TITLE, SUB_TITLE, TEXT, QUOTE
     type = fields.Str(validate=validate.OneOf(["TEXT", "IMAGE", "SECTION", "LINK"]), required=True) # TEXT, IMAGE, SECTION, LINK
     images = fields.Nested(PostCreateDataImageRequestSchema, required=True, many=True)
     # images = fields.List(fields.Str(), required=True)

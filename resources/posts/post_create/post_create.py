@@ -40,8 +40,6 @@ class PostCreate(MethodView):
         db.session.add(post)
         db.session.commit()
         self.handleContentList(request, post_id)
-        client.create_bucket(Bucket='my-new-space')
-        print([b['Name'] for b in client.list_buckets()['Buckets']])
         return self.getPostsCreateResponseSchema(request)
     
     def handleContentList(self, request, post_id):
