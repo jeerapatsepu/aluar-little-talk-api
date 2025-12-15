@@ -9,7 +9,7 @@ from models import USLI
 from app.shared import db, uid
 from models.post import Post
 from models.user_profile import UserProfile
-from resources.profile.posts.posts_request_schema import ProfilePostsDataResponseSchema, ProfilePostsRequestSchema, ProfilePostsResponseSchema
+from resources.profile.posts.profile_posts.posts_request_schema import ProfilePostsDataResponseSchema, ProfilePostsRequestSchema, ProfilePostsResponseSchema
 from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
 from app.shared import bcrypt

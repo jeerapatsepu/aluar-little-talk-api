@@ -4,7 +4,7 @@ from flask_smorest import Blueprint
 from datetime import date, datetime, timezone, timedelta
 from app.shared import db, uid
 from models.user_profile import UserProfile
-from resources.profile.posts.posts_request_schema import ProfilePostsResponseSchema
+from resources.profile.posts.profile_posts.posts_request_schema import ProfilePostsResponseSchema
 from resources.search.new_user_list_request_schema import NewUserListRequestSchema, NewUserListResponseSchema
 from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema

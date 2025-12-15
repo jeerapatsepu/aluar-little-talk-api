@@ -3,8 +3,9 @@ from resources.auth.auth_apple_create.auth_create import blp as AuthCreateBluepr
 from resources.auth.auth_apple_login.auth_apple_login import blp as AuthLoginBlueprint
 from resources.home.home import blp as HomeBlueprint
 from resources.profile.profile.profile import blp as ProfileBlueprint
-from resources.profile.posts.posts import blp as ProfilePostsBlueprint
+from resources.profile.posts.profile_posts.posts import blp as ProfilePostsBlueprint
 from resources.search.new_user_list import blp as NewUserListBlueprint
+from resources.posts.post_create.post_create import blp as PostCreateBlueprint
 
 def register_blueprint(app):
     api = Api(app)
@@ -14,3 +15,4 @@ def register_blueprint(app):
     api.register_blueprint(ProfileBlueprint)
     api.register_blueprint(ProfilePostsBlueprint)
     api.register_blueprint(NewUserListBlueprint)
+    api.register_blueprint(PostCreateBlueprint)
