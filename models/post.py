@@ -18,6 +18,9 @@ class PostContent(db.Model):
     __tablename__ = "post_contents"
 
     id = db.Column(db.Integer, primary_key=True)
+    content_id = db.Column(db.String)
+    index = db.Column(db.Integer)
     post_id = db.Column(db.String)
+    type = db.Column(db.String)
     text = db.Column(db.String)
-    
+    text_type = db.Column(db.String)
