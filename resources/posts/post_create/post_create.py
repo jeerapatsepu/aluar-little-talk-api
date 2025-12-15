@@ -27,7 +27,7 @@ class PostCreate(MethodView):
         data = request["data"]
         visibility = request["visibility"]
         owner_uid = get_jwt_identity()
-        post_id = uuid.uuid8().hex
+        post_id = uuid.uuid4().hex
         post = Post(post_id=post_id,
                     owner_uid=owner_uid,
                     visibility=visibility,
@@ -54,7 +54,7 @@ class PostCreate(MethodView):
                         image_index = image["index"]
                         image_data = image["data"]
                         post_content = PostContent(index=image_index,
-                                                   content_id=uuid.uuid8().hex,
+                                                   content_id=uuid.uuid4().hex,
                                                    post_id=post_id,
                                                    type=type,
                                                    text=image_data,
@@ -63,7 +63,7 @@ class PostCreate(MethodView):
                         db.session.commit()
                 case _:
                     post_content = PostContent(index=index,
-                                               content_id=uuid.uuid8().hex,
+                                               content_id=uuid.uuid4().hex,
                                                post_id=post_id,
                                                type=type,
                                                text=text,
