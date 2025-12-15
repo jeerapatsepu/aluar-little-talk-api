@@ -6,8 +6,8 @@ from flask_jwt_extended import (
     jwt_required
 )
 from datetime import datetime, timezone
-from models import USLI
-from app.shared import db, uid
+import uuid
+from app.shared import db
 from models.post import Post, PostContent
 from models.user_profile import UserProfile
 from resources.posts.post_create.post_create_request_schema import PostCreateDataRequestSchema, PostCreateRequestSchema, PostsCreateResponseSchema
@@ -27,7 +27,7 @@ class PostCreate(MethodView):
         data = request["data"]
         visibility = request["visibility"]
         owner_uid = get_jwt_identity()
-        post_id = uid.hex
+        post_id = uuid.uuid8().hex
         post = Post(post_id=post_id,
                     owner_uid=owner_uid,
                     visibility=visibility,
@@ -54,7 +54,7 @@ class PostCreate(MethodView):
                         image_index = image["index"]
                         image_data = image["data"]
                         post_content = PostContent(index=image_index,
-                                                   content_id=uid.hex,
+                                                   content_id=uuid.uuid8().hex,
                                                    post_id=post_id,
                                                    type=type,
                                                    text=image_data,
@@ -63,7 +63,7 @@ class PostCreate(MethodView):
                         db.session.commit()
                 case _:
                     post_content = PostContent(index=index,
-                                               content_id=uid.hex,
+                                               content_id=uuid.uuid8().hex,
                                                post_id=post_id,
                                                type=type,
                                                text=text,
@@ -76,7 +76,7 @@ class PostCreate(MethodView):
         time = datetime.now(timezone.utc)
 
         meta = MetaSchema()
-        meta.response_id = uid.hex
+        meta.response_id = uuid.uuid4().hex
         meta.response_code = 1000
         meta.response_date = str(time)
         meta.response_timestamp = str(time.timestamp())
