@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from app.shared import db, uid
 from models.post import Post, PostContent, PostImageContent
 from models.user_profile import UserProfile
+from resources.posts.post_create.post_create_request_schema import PostCreateDataImageRequestSchema
 from resources.profile.posts.profile_posts.posts_request_schema import ProfilePostsDataResponseSchema, ProfilePostsRequestSchema, ProfilePostsResponseSchema
 from schemas.meta import MetaSchema
 
@@ -45,8 +46,13 @@ class ProfilePosts(MethodView):
             if content.type == "IMAGE":
                 image_list = PostImageContent.query.filter_by(content_id=content.content_id).all()
                 image_list.sort(key=self.sortList)
-                content.images = image_list
+                content.images = map(self.mapImageList, image_list)
         return content_list
+
+    def mapImageList(self, image_model):
+        return PostCreateDataImageRequestSchema(
+            index=image_model.index,
+            data=image_model.link)
 
     def sortList(self, e):
         return e.index
