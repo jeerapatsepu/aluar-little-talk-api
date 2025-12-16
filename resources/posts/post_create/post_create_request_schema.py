@@ -15,7 +15,10 @@ class PostCreateDataRequestSchema(Schema):
 
 class PostCreateRequestSchema(Schema):
     visibility = fields.Str(validate=validate.OneOf(["PUBLIC", "FRIENDS", "PRIVATE"]), required=True)
-    data = fields.Nested(PostCreateDataRequestSchema, required=True, many=True)
+    data = fields.Nested(PostCreateDataRequestSchema,
+                         required=True,
+                         many=True,
+                         validate=validate.Length(min=1))
 
 class PostsCreateResponseSchema(Schema):
     meta = fields.Nested(MetaSchema, dump_only=True)
