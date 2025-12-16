@@ -15,6 +15,8 @@ class ProfilePostsRequestSchema(Schema):
 class ProfilePostsDataResponseSchema(Schema):
     post_id = fields.Str(dump_only=True)
     owner_uid = fields.Str(dump_only=True)
+    owner_image = fields.Str(dump_only=True)
+    owner_name = fields.Str(dump_only=True)
     visibility = fields.Str(dump_only=True) # PUBLIC, PRIVATE, FRIENDS
     type = fields.Str(dump_only=True) # POST, REPOST, SHARED
     original_post_id = fields.Str(dump_only=True) # for repost, shared

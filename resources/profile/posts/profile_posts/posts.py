@@ -6,6 +6,7 @@ from flask_jwt_extended import (
 from datetime import datetime, timezone
 from app.shared import db, uid
 from models.post import Post, PostContent, PostImageContent
+from models.user_profile import UserProfile
 from resources.profile.posts.profile_posts.posts_request_schema import ProfilePostsDataResponseSchema, ProfilePostsRequestSchema, ProfilePostsResponseSchema
 from schemas.meta import MetaSchema
 
@@ -21,11 +22,15 @@ class ProfilePosts(MethodView):
         offset = request["offset"]
         limit = request["limit"]
         posts = Post.query.filter_by(owner_uid=uid).offset(offset).limit(limit).all()
-        new_posts = self.getContentListEachPost(posts)
+        profile = UserProfile.query.filter_by(uid=uid).first()
+        new_posts = self.getContentListEachPost(profile, posts)
         return self.getPofilePostsSuccessResponse(new_posts)
 
-    def getContentListEachPost(self, post_list: list):
+    def getContentListEachPost(self, profile: UserProfile, post_list: list):
         for post in post_list:
+            if profile:
+                post.owner_name = profile.full_name
+                post.owner_image = profile.photo
             post_contents = PostContent.query.filter_by(post_id=post.post_id).offset(0).limit(3).all()
             post_contents.sort(key=self.sortList)
             post.is_see_more = False
