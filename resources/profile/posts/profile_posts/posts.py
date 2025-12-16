@@ -1,18 +1,13 @@
-from flask import redirect
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
     jwt_required
 )
 from datetime import datetime, timezone
-from models import USLI
 from app.shared import db, uid
-from models.post import Post
-from models.user_profile import UserProfile
+from models.post import Post, PostContent, PostImageContent
 from resources.profile.posts.profile_posts.posts_request_schema import ProfilePostsDataResponseSchema, ProfilePostsRequestSchema, ProfilePostsResponseSchema
-from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
-from app.shared import bcrypt
 
 blp = Blueprint("ProfilePosts", __name__, description="Profile Posts")
 
@@ -25,10 +20,32 @@ class ProfilePosts(MethodView):
         uid = request["uid"]
         offset = request["offset"]
         limit = request["limit"]
-
         posts = Post.query.filter_by(owner_uid=uid).offset(offset).limit(limit).all()
-        return self.getPofilePostsSuccessResponse(posts)
+        new_posts = self.getContentListEachPost(posts)
+        return self.getPofilePostsSuccessResponse(new_posts)
 
+    def getContentListEachPost(self, post_list: list):
+        for post in post_list:
+            post_contents = PostContent.query.filter_by(post_id=post.post_id).offset(0).limit(3).all()
+            post_contents.sort(key=self.sortList)
+            post.is_see_more = False
+            if len(post_contents) > 2:
+                post_contents.pop()
+                post.is_see_more = True
+            post.contents = self.getImageContentEachContent(post_contents)
+        return post_list
+    
+    def getImageContentEachContent(self, content_list: list):
+        for content in content_list:
+            if content.type == "IMAGE":
+                image_list = PostImageContent.query.filter_by(content_id=content.content_id).all()
+                image_list.sort(key=self.sortList)
+                content.images = image_list
+        return content_list
+
+    def sortList(self, e):
+        return e.index
+    
     def getPofilePostsSuccessResponse(self, posts):
         time = datetime.now(timezone.utc)
 
