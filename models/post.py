@@ -24,3 +24,13 @@ class PostContent(db.Model):
     type = db.Column(db.String)
     text = db.Column(db.String)
     text_type = db.Column(db.String)
+
+class PostImageContent(db.Model):
+    __tablename__ = "post_image_contents"
+
+    id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer)
+    post_id = db.Column(db.String)
+    content_id = db.Column(db.String)
+    image_content_id = db.Column(db.String)
+    link = db.Column(db.String)

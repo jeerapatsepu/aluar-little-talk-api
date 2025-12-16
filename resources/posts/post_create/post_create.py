@@ -8,7 +8,7 @@ from flask_jwt_extended import (
 from datetime import datetime, timezone
 import uuid
 from app.shared import db
-from models.post import Post, PostContent
+from models.post import Post, PostContent, PostImageContent
 from models.user_profile import UserProfile
 from resources.posts.post_create.post_create_request_schema import PostCreateDataRequestSchema, PostCreateRequestSchema, PostsCreateResponseSchema
 from schemas.error import ErrorSchema
@@ -48,19 +48,18 @@ class PostCreate(MethodView):
             text = content["text"]
             text_type = content["text_type"]
             type = content["type"]
+            images = content["images"]
             match type:
                 case "IMAGE":
-                    for image in list(content["images"]):
-                        image_index = image["index"]
-                        image_data = image["data"]
-                        post_content = PostContent(index=image_index,
-                                                   content_id=uuid.uuid4().hex,
-                                                   post_id=post_id,
-                                                   type=type,
-                                                   text=image_data,
-                                                   text_type=text_type)
-                        db.session.add(post_content)
-                        db.session.commit()
+                    content = PostContent(index=index,
+                                               content_id=uuid.uuid4().hex,
+                                               post_id=post_id,
+                                               type=type,
+                                               text=text,
+                                               text_type=text_type)
+                    db.session.add(content)
+                    db.session.commit()
+                    self.handleContentImage(post_id, content, list(images))
                 case _:
                     post_content = PostContent(index=index,
                                                content_id=uuid.uuid4().hex,
@@ -71,6 +70,16 @@ class PostCreate(MethodView):
                     db.session.add(post_content)
                     db.session.commit()
         pass
+    
+    def handleContentImage(self, post_id, content: PostContent, content_image_list: list):
+        for image in content_image_list:
+            image_content = PostImageContent(index=image["index"],
+                                             post_id=post_id,
+                                             content_id=content.content_id,
+                                             image_content_id=uuid.uuid4().hex,
+                                             link=image["data"])
+            db.session.add(image_content)
+            db.session.commit()
 
     def getPostsCreateResponseSchema(self, data):
         time = datetime.now(timezone.utc)
