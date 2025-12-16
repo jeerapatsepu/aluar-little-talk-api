@@ -15,6 +15,8 @@ from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
 from app.shared import bcrypt
 from app.s3 import client
+import base64
+import os
 
 blp = Blueprint("PostCreate", __name__, description="Post Create")
 
@@ -73,11 +75,20 @@ class PostCreate(MethodView):
     
     def handleContentImage(self, post_id, content: PostContent, content_image_list: list):
         for image in content_image_list:
+            image_content_id = uuid.uuid4().hex
+            image_path = 'posts/' + post_id + '/' + content.content_id + '/' + image_content_id + '.jpg'
+            client.put_object(Body=base64.b64decode(str(image["data"])),
+                              Bucket='little-talk',
+                              Key=image_path,
+                              ACL='public-read',
+                              ContentType='image/jpeg')
+            image_url=os.getenv('LITTLE_TALK_S3_ENDPOINT') + '/' + image_path
             image_content = PostImageContent(index=image["index"],
                                              post_id=post_id,
                                              content_id=content.content_id,
-                                             image_content_id=uuid.uuid4().hex,
-                                             link=image["data"])
+                                             image_content_id=image_content_id,
+                                             link=image_url)
+            
             db.session.add(image_content)
             db.session.commit()
 
