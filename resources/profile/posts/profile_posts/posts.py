@@ -46,13 +46,14 @@ class ProfilePosts(MethodView):
             if content.type == "IMAGE":
                 image_list = PostImageContent.query.filter_by(content_id=content.content_id).all()
                 image_list.sort(key=self.sortList)
-                content.images = map(self.mapImageList, image_list)
+                image_respone_list = []
+                for image in image_list:
+                    image_response = PostCreateDataImageRequestSchema()
+                    image_response.index = image.index
+                    image_response.data = image.link
+                    image_respone_list.append(image_response)
+                content.images = image_respone_list
         return content_list
-
-    def mapImageList(self, image_model):
-        return PostCreateDataImageRequestSchema(
-            index=image_model.index,
-            data=image_model.link)
 
     def sortList(self, e):
         return e.index
