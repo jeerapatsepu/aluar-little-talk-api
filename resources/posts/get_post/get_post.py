@@ -1,4 +1,5 @@
 from flask.views import MethodView
+from flask_jwt_extended import get_jwt_identity
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 from app.shared import uid
@@ -17,8 +18,9 @@ class GetPost(MethodView):
     @blp.response(200, GetPostResponseSchema)
     def post(self, request):
         post_id = request["post_id"]
+        owner_uid = get_jwt_identity()
         post = Post.query.filter_by(post_id=post_id).one()
-        profile = UserProfile.query.filter_by(uid=uid).first()
+        profile = UserProfile.query.filter_by(uid=owner_uid).first()
         if post:
             new_post = self.getContentListEachPost(profile, post)
             return self.getPofilePostsSuccessResponse(new_post)
