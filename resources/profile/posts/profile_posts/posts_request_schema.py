@@ -21,6 +21,7 @@ class ProfilePostsDataResponseSchema(Schema):
     type = fields.Str(dump_only=True) # POST, REPOST, SHARED
     original_post_id = fields.Str(dump_only=True) # for repost, shared
     like_count = fields.Integer(dump_only=True)
+    is_like = fields.Boolean(dump_only=True)
     comment_count = fields.Integer(dump_only=True)
     created_date_timestamp = fields.Integer(dump_only=True)
     updated_date_timestamp = fields.Integer(dump_only=True)
