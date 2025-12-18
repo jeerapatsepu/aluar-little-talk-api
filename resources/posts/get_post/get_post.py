@@ -1,5 +1,4 @@
 from flask.views import MethodView
-from flask_jwt_extended import get_jwt_identity
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 from app.shared import uid
@@ -18,13 +17,10 @@ class GetPost(MethodView):
     @blp.response(200, GetPostResponseSchema)
     def post(self, request):
         post_id = request["post_id"]
-        owner_uid = get_jwt_identity()
         post = Post.query.filter_by(post_id=post_id).one()
-        profile = UserProfile.query.filter_by(uid=owner_uid).first()
-        if post:
-            new_post = self.getContentListEachPost(profile, post)
-            return self.getPofilePostsSuccessResponse(new_post)
-        return self.getPofilePostsSuccessResponse(None)
+        profile = UserProfile.query.filter_by(uid=post.owner_uid).first()
+        new_post = self.getContentListEachPost(profile, post)
+        return self.getPofilePostsSuccessResponse(new_post)
 
     def getContentListEachPost(self, profile: UserProfile, post: Post):
         if profile:
@@ -38,10 +34,10 @@ class GetPost(MethodView):
             post.is_see_more = True
         post.contents = self.getImageContentEachContent(post_contents)
         post.is_like = False
-        like = PostLikeModel.query.filter_by(post_id=post.post_id, user_uid=profile.uid).first()
+        # like = PostLikeModel.query.filter_by(post_id=post.post_id, user_uid=profile.uid).first()
         post.like_count = PostLikeModel.query.filter_by(post_id=post.post_id).count()
-        if like:
-            post.is_like = True
+        # if like:
+        #     post.is_like = True
         return post
     
     def getImageContentEachContent(self, content_list: list):
