@@ -1,20 +1,19 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
-from app.shared import db, uid
+from app.shared import uid
 from models.post import Post, PostContent, PostImageContent
 from models.post_like_model import PostLikeModel
 from models.user_profile import UserProfile
-from resources.posts.get_post.get_post_request_schema import GetPostResponseSchema
+from resources.posts.get_post.get_post_request_schema import GetPostRequestSchema, GetPostResponseSchema
 from resources.posts.post_create.post_create_request_schema import PostCreateDataImageRequestSchema
-from resources.profile.posts.profile_posts.posts_request_schema import ProfilePostsRequestSchema, ProfilePostsResponseSchema
 from schemas.meta import MetaSchema
 
 blp = Blueprint("GetPost", __name__, description="Get Post")
 
 @blp.route("/post")
 class GetPost(MethodView):
-    @blp.arguments(ProfilePostsRequestSchema)
+    @blp.arguments(GetPostRequestSchema)
     @blp.response(200, GetPostResponseSchema)
     def post(self, request):
         post_id = request["post_id"]
