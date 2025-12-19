@@ -32,8 +32,8 @@ class AuthLogin(MethodView):
             return self.getAuthLoginFailRespone(5000)
 
     def getAuthLoginSuccessRespone(self, response_code, profile):
-        access_token = create_access_token(identity=str(profile.uid), fresh=True)
-        refresh_token = create_refresh_token(identity=str(profile.uid))
+        access_token = create_access_token(identity=profile, fresh=True)
+        refresh_token = create_refresh_token(identity=profile)
         time = datetime.now(timezone.utc)
 
         data = AuthLoginDataResponseSchema()
