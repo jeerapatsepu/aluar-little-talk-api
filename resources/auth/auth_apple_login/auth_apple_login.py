@@ -13,7 +13,7 @@ from app.shared import uid, bcrypt
 from resources.auth.auth_apple_login.auth_apple_login_request_schema import AuthAppleLoginRequestSchema
 from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
-from shared import db
+from app.shared import db
 
 blp = Blueprint("AuthLogin", __name__, description="Auth Login")
 
