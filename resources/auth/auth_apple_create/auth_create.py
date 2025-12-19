@@ -35,17 +35,17 @@ class AuthCreate(MethodView):
                             user_identifier=user_identifier)
             db.session.add(new_user)
             db.session.commit()
-            return self.getAuthCreateSuccessResponse(1000, id)
+            return self.getAuthCreateSuccessResponse(1000, new_user)
 
-    def getAuthCreateSuccessResponse(self, response_code, id):
-        access_token = create_access_token(identity=str(id), fresh=True)
-        refresh_token = create_refresh_token(identity=str(id))
+    def getAuthCreateSuccessResponse(self, response_code, user):
+        access_token = create_access_token(identity=user, fresh=True)
+        refresh_token = create_refresh_token(identity=user)
         time = datetime.now(timezone.utc)
 
         data = AuthLoginDataResponseSchema()
         data.access_token = access_token
         data.refresh_token = refresh_token
-        data.uid = id
+        data.uid = user.uid
 
         meta = MetaSchema()
         meta.response_id = uid.hex

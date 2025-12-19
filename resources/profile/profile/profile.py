@@ -2,10 +2,10 @@ from flask import redirect
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token,
-    jwt_required
+    jwt_required,
+    current_user
 )
+
 from datetime import datetime, timezone
 from models import USLI
 from app.shared import db, uid
@@ -25,10 +25,10 @@ class Profile(MethodView):
     def post(self, request):
         uid = request["uid"]
         usli = db.session.query(USLI).filter(USLI.uid==uid).first()
-        if usli:
+        if usli and current_user.uid == uid:
             profile = db.session.query(UserProfile).filter(UserProfile.uid==uid).first()
             if profile:
-                return self.getAuthCreateSuccessResponse(profile)
+                return self.getProfileSuccessResponse(profile)
             else:
                 return self.createProfile(usli)
         else:
@@ -44,9 +44,9 @@ class Profile(MethodView):
                           created_date_timestamp=int(datetime.now(timezone.utc).timestamp()))
         db.session.add(profile)
         db.session.commit()
-        return self.getAuthCreateSuccessResponse(profile)
+        return self.getProfileSuccessResponse(profile)
 
-    def getAuthCreateSuccessResponse(self, profile: UserProfile):
+    def getProfileSuccessResponse(self, profile: UserProfile):
         time = datetime.now(timezone.utc)
 
         data = ProfileDataResponseSchema()
