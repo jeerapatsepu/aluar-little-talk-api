@@ -24,9 +24,9 @@ class Profile(MethodView):
     @blp.response(200, ProfileResponseSchema)
     def post(self, request):
         uid = request["uid"]
-        usli =  db.session.get(USLI, uid==uid)
+        usli = db.session.query(USLI).filter(USLI.uid==uid).first()
         if usli:
-            profile =  db.session.get(UserProfile, uid==uid)
+            profile = db.session.query(UserProfile).filter(UserProfile.uid==uid).first()
             if profile:
                 return self.getAuthCreateSuccessResponse(profile)
             else:
