@@ -78,7 +78,7 @@ class PostCreate(MethodView):
             image_content_id = uuid.uuid4().hex
             image_path = 'posts/' + post_id + '/' + content.content_id + '/' + image_content_id + '.jpg'
             client.put_object(Body=base64.b64decode(str(image["data"])),
-                              Bucket='little-talk',
+                              Bucket=os.getenv("S3_BUCKET_NAME"),
                               Key=image_path,
                               ACL='public-read',
                               ContentType='image/jpeg')
