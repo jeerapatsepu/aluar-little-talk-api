@@ -6,6 +6,7 @@ from app.shared import uid
 from models.post import Post, PostContent, PostImageContent
 from models.post_bookmark_model import PostBookmarkModel
 from models.post_like_model import PostLikeModel
+from models.post_repost_model import PostRepostModel
 from models.user_profile import UserProfile
 from resources.posts.get_post.get_post_request_schema import GetPostRequestSchema, GetPostResponseSchema
 from resources.posts.post_create.post_create_request_schema import PostCreateDataImageRequestSchema
@@ -35,13 +36,17 @@ class GetPost(MethodView):
         like_list = PostLikeModel.query.filter_by(post_id=post.post_id).all()
         try:
             post.is_like = len(list(filter(lambda x: x.user_uid == current_user.uid, like_list))) > 0
+            bookmark = PostBookmarkModel.query.filter_by(post_id=post.post_id, user_uid=current_user.uid).first()
+            if bookmark:
+                post.is_bookmark = True
+            repost = PostRepostModel.query.filter_by(post_id=post.post_id, user_uid=current_user.uid).first()
+            if repost:
+                post.is_repost = True
         except Exception:
             post.is_like = None
+            post.is_bookmark = None
+            post.is_repost = None
         post.like_count = len(like_list)
-        bookmark = PostBookmarkModel.query.filter_by(post_id=post.post_id, user_uid=profile.uid).first()
-        post.is_bookmark = False
-        if bookmark:
-            post.is_bookmark = True
         return post
     
     def getImageContentEachContent(self, content_list: list):

@@ -1,6 +1,7 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import (
+    current_user,
     jwt_required
 )
 from datetime import datetime, timezone
@@ -8,6 +9,7 @@ from app.shared import db, uid
 from models.post import Post, PostContent, PostImageContent
 from models.post_bookmark_model import PostBookmarkModel
 from models.post_like_model import PostLikeModel
+from models.post_repost_model import PostRepostModel
 from models.user_profile import UserProfile
 from resources.posts.post_create.post_create_request_schema import PostCreateDataImageRequestSchema
 from resources.profile.posts.profile_posts.posts_request_schema import ProfilePostsDataResponseSchema, ProfilePostsRequestSchema, ProfilePostsResponseSchema
@@ -17,7 +19,7 @@ blp = Blueprint("ProfilePosts", __name__, description="Profile Posts")
 
 @blp.route("/profile/posts")
 class ProfilePosts(MethodView):
-    @jwt_required()
+    @jwt_required(optional=True)
     @blp.arguments(ProfilePostsRequestSchema)
     @blp.response(200, ProfilePostsResponseSchema)
     def post(self, request):
@@ -45,15 +47,23 @@ class ProfilePosts(MethodView):
                 post_contents.pop()
                 post.is_see_more = True
             post.contents = self.getImageContentEachContent(post_contents)
-            post.is_like = False
-            like = PostLikeModel.query.filter_by(post_id=post.post_id, user_uid=profile.uid).first()
+            try:
+                like = PostLikeModel.query.filter_by(post_id=post.post_id, user_uid=current_user.uid).first()
+                if like:
+                    post.is_like = True
+                bookmark = PostBookmarkModel.query.filter_by(post_id=post.post_id, user_uid=current_user.uid).first()
+                if bookmark:
+                    post.is_bookmark = True
+                repost = PostRepostModel.query.filter_by(post_id=post.post_id, user_uid=current_user.uid).first()
+                if repost:
+                    post.is_repost = True
+            except Exception:
+                post.is_like = None
+                post.is_bookmark = None
+                post.is_repost = None
             post.like_count = PostLikeModel.query.filter_by(post_id=post.post_id).count()
             if like:
                 post.is_like = True
-            post.is_bookmark = False
-            bookmark = PostBookmarkModel.query.filter_by(post_id=post.post_id, user_uid=profile.uid).first()
-            if bookmark:
-                post.is_bookmark = True
         return post_list
     
     def getImageContentEachContent(self, content_list: list):
