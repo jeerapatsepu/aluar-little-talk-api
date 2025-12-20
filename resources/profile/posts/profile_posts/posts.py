@@ -6,6 +6,7 @@ from flask_jwt_extended import (
 from datetime import datetime, timezone
 from app.shared import db, uid
 from models.post import Post, PostContent, PostImageContent
+from models.post_bookmark_model import PostBookmarkModel
 from models.post_like_model import PostLikeModel
 from models.user_profile import UserProfile
 from resources.posts.post_create.post_create_request_schema import PostCreateDataImageRequestSchema
@@ -45,6 +46,10 @@ class ProfilePosts(MethodView):
             post.like_count = PostLikeModel.query.filter_by(post_id=post.post_id).count()
             if like:
                 post.is_like = True
+            post.is_bookmark = False
+            bookmark = PostBookmarkModel.query.filter_by(post_id=post.post_id, user_uid=profile.uid).first()
+            if bookmark:
+                post.is_bookmark = True
         return post_list
     
     def getImageContentEachContent(self, content_list: list):

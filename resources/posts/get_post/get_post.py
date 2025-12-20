@@ -4,6 +4,7 @@ from flask_smorest import Blueprint
 from datetime import datetime, timezone
 from app.shared import uid
 from models.post import Post, PostContent, PostImageContent
+from models.post_bookmark_model import PostBookmarkModel
 from models.post_like_model import PostLikeModel
 from models.user_profile import UserProfile
 from resources.posts.get_post.get_post_request_schema import GetPostRequestSchema, GetPostResponseSchema
@@ -37,6 +38,10 @@ class GetPost(MethodView):
         except Exception:
             post.is_like = None
         post.like_count = len(like_list)
+        bookmark = PostBookmarkModel.query.filter_by(post_id=post.post_id, user_uid=profile.uid).first()
+        post.is_bookmark = False
+        if bookmark:
+            post.is_bookmark = True
         return post
     
     def getImageContentEachContent(self, content_list: list):
