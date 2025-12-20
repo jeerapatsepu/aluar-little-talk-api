@@ -25,9 +25,9 @@ class ProfilePosts(MethodView):
         offset = request["offset"]
         limit = request["limit"]
         posts = Post.query.filter_by(owner_uid=uid).offset(offset).limit(limit).all()
-        sort_posts = posts.sort(key=self.sortPostsList, reverse=True)
+        posts.sort(key=self.sortPostsList, reverse=True)
         profile = UserProfile.query.filter_by(uid=uid).first()
-        new_posts = self.getContentListEachPost(profile, sort_posts)
+        new_posts = self.getContentListEachPost(profile, posts)
         return self.getPofilePostsSuccessResponse(new_posts)
 
     def sortPostsList(self, e):
