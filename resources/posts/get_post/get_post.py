@@ -31,7 +31,10 @@ class GetPost(MethodView):
         post_contents.sort(key=self.sortList)
         post.contents = self.getImageContentEachContent(post_contents)
         like_list = PostLikeModel.query.filter_by(post_id=post.post_id).all()
-        post.is_like = len(list(filter(lambda x: x.user_uid == current_user.uid, like_list))) > 0
+        try:
+            post.is_like = len(list(filter(lambda x: x.user_uid == current_user.uid, like_list))) > 0
+        except Exception:
+            post.is_like = None
         post.like_count = len(like_list)
         return post
     
