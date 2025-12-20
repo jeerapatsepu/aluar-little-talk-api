@@ -20,7 +20,7 @@ class PostBookmark(MethodView):
     @blp.response(200, PostActionResponseSchema)
     def post(self, request):
         post_id = request["post_id"]
-        owner_uid = current_user.uid()
+        owner_uid = current_user.uid
         bookmark = PostBookmarkModel.query.filter_by(post_id=post_id, user_uid=owner_uid).first()
         if not bookmark:
             post_bookmark = PostBookmarkModel(post_id=post_id,
