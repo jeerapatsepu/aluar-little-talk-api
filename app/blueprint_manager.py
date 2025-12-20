@@ -9,6 +9,8 @@ from resources.posts.post_create.post_create import blp as PostCreateBlueprint
 from resources.posts.post_like.post_like import blp as PostLikeBlueprint
 from resources.posts.post_dislike.post_dislike import blp as PostDisLikeBlueprint
 from resources.posts.get_post.get_post import blp as GetPostBlueprint
+from resources.posts.post_bookmark.post_bookmark import blp as PostBookmarkBlueprint
+from resources.posts.post_unbookmark.post_unbookmark import blp as PostUnbookmarkBlueprint
 
 def register_blueprint(app):
     api = Api(app)
@@ -22,3 +24,5 @@ def register_blueprint(app):
     api.register_blueprint(PostLikeBlueprint)
     api.register_blueprint(PostDisLikeBlueprint)
     api.register_blueprint(GetPostBlueprint)
+    api.register_blueprint(PostBookmarkBlueprint)
+    api.register_blueprint(PostUnbookmarkBlueprint)
