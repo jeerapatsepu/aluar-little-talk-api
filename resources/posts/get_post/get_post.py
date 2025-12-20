@@ -1,5 +1,5 @@
 from flask.views import MethodView
-from flask_jwt_extended import current_user
+from flask_jwt_extended import current_user, jwt_required
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 from app.shared import uid
@@ -14,6 +14,7 @@ blp = Blueprint("GetPost", __name__, description="Get Post")
 
 @blp.route("/post")
 class GetPost(MethodView):
+    @jwt_required(optional=True)
     @blp.arguments(GetPostRequestSchema)
     @blp.response(200, GetPostResponseSchema)
     def post(self, request):
