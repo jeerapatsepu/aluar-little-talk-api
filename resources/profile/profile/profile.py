@@ -13,7 +13,6 @@ from models.user_profile import UserProfile
 from resources.profile.profile.profile_request_schema import ProfileDataResponseSchema, ProfileRequestSchema, ProfileResponseSchema
 from schemas.error import ErrorSchema
 from schemas.meta import MetaSchema
-from app.shared import bcrypt
 
 blp = Blueprint("Profile", __name__, description="Profile")
 

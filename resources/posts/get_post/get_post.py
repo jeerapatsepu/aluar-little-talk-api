@@ -1,4 +1,5 @@
 from flask.views import MethodView
+from flask_jwt_extended import current_user
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 from app.shared import uid
@@ -28,16 +29,10 @@ class GetPost(MethodView):
             post.owner_image = profile.photo
         post_contents = PostContent.query.filter_by(post_id=post.post_id).all()
         post_contents.sort(key=self.sortList)
-        post.is_see_more = False
-        if len(post_contents) > 2:
-            post_contents.pop()
-            post.is_see_more = True
         post.contents = self.getImageContentEachContent(post_contents)
-        post.is_like = False
-        # like = PostLikeModel.query.filter_by(post_id=post.post_id, user_uid=profile.uid).first()
-        post.like_count = PostLikeModel.query.filter_by(post_id=post.post_id).count()
-        # if like:
-        #     post.is_like = True
+        like_list = PostLikeModel.query.filter_by(post_id=post.post_id).all()
+        post.is_like = len(list(filter(lambda x: x.user_uid == current_user.uid, like_list))) > 0
+        post.like_count = len(like_list)
         return post
     
     def getImageContentEachContent(self, content_list: list):
