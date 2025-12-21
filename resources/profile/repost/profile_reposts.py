@@ -23,7 +23,7 @@ class ProfileRePosts(MethodView):
         limit = request["limit"]
         reposts = PostRepostModel.query.filter_by(user_uid=uid).order_by(PostRepostModel.created_date_timestamp).offset(offset).limit(limit).all()
         reposts.sort(key=self.__sortRePostsList, reverse=True)
-        new_posts = self.__getShortPost(posts=reposts)
+        new_posts = self.__getShortPost(reposts=reposts)
         return self.__getPofilePostsSuccessResponse(new_posts)
 
     def __getShortPost(self, reposts: list):
