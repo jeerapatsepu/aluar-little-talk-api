@@ -31,10 +31,12 @@ class FullPost:
             repost = PostRepostModel.query.filter_by(post_id=post.post_id, user_uid=current_user.uid).first()
             if repost:
                 post.is_repost = True
+            post.is_owner = current_user.uid == owner.uid
         except Exception:
             post.is_like = None
             post.is_bookmark = None
             post.is_repost = None
+            post.is_owner = False
         post.like_count = len(like_list)
         return post
     

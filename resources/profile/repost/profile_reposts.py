@@ -4,37 +4,36 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required
 from datetime import datetime, timezone
 from models.post.post import Post
+from models.post.post_repost_model import PostRepostModel
 from resources.base.short_post import ShortPost
-from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
+from resources.profile.repost.profile_reposts_response import ProfileRePostsResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.post.post.post_data_schema import PostDataSchema
 from schemas.request_schema.profile.profile_posts_request_schema import ProfilePostsRequestSchema
 
-blp = Blueprint("ProfilePosts", __name__, description="Profile Posts")
+blp = Blueprint("ProfileRePosts", __name__, description="Profile RePosts")
 
-@blp.route("/profile/posts")
-class ProfilePosts(MethodView):
+@blp.route("/profile/reposts")
+class ProfileRePosts(MethodView):
     @jwt_required(optional=True)
     @blp.arguments(ProfilePostsRequestSchema)
-    @blp.response(200, ProfilePostsResponseSchema)
+    @blp.response(200, ProfileRePostsResponseSchema)
     def post(self, request):
         uid = request["uid"]
         offset = request["offset"]
         limit = request["limit"]
-        posts = Post.query.filter_by(owner_uid=uid).order_by(Post.created_date_timestamp).offset(offset).limit(limit).all()
-        posts.sort(key=self.__sortPostsList, reverse=True)
-        new_posts = self.__getShortPost(posts=posts)
+        reposts = PostRepostModel.query.filter_by(user_uid=uid).order_by(PostRepostModel.created_date_timestamp).offset(offset).limit(limit).all()
+        reposts.sort(key=self.__sortRePostsList, reverse=True)
+        new_posts = self.__getShortPost(posts=reposts)
         return self.__getPofilePostsSuccessResponse(new_posts)
 
-    def __getShortPost(self, posts: list):
+    def __getShortPost(self, reposts: list):
         short_post_list = []
-        for post in posts:
-            short_post = ShortPost(post_id=post.post_id).get_post()
+        for repost in reposts:
+            short_post = ShortPost(post_id=repost.post_id).get_post()
             short_post_list.append(short_post)
         return short_post_list
 
-    def __sortPostsList(self, e):
+    def __sortRePostsList(self, e):
         return e.created_date_timestamp
 
     def __getPofilePostsSuccessResponse(self, posts):
@@ -47,7 +46,7 @@ class ProfilePosts(MethodView):
         meta.response_timestamp = str(time.timestamp())
         meta.error = None
 
-        response = ProfilePostsResponseSchema()
+        response = ProfileRePostsResponseSchema()
         response.meta = meta
         response.data = posts
         return response

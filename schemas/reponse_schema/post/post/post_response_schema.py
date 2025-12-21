@@ -19,3 +19,4 @@ class PostResponseSchema(Schema):
     updated_date_timestamp = fields.Integer(dump_only=True)
     contents = fields.Nested(PostDataSchema, dump_only=True, many=True)
     is_see_more = fields.Boolean(dump_only=True)
+    is_owner = fields.Boolean(dump_only=True)
