@@ -8,6 +8,7 @@ from resources.base.short_post import ShortPost
 from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.meta import MetaSchema
+from schemas.reponse_schema.post.post.post_data_schema import PostDataSchema
 from schemas.request_schema.profile.profile_posts_request_schema import ProfilePostsRequestSchema
 
 blp = Blueprint("ProfilePosts", __name__, description="Profile Posts")
@@ -29,7 +30,7 @@ class ProfilePosts(MethodView):
     def __getShortPost(self, posts: list):
         short_post_list = []
         for post in posts:
-            short_post = ShortPost(post_id=post.post_id)
+            short_post = ShortPost(post_id=post.post_id).get_post()
             short_post_list.append(short_post)
         return short_post_list
 

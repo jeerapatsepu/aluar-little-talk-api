@@ -43,7 +43,7 @@ class ShortPost:
         post.like_count = len(like_list)
         return post
     
-    def __getImageContentList(contentList: list):
+    def __getImageContentList(self, contentList: list):
         for content in contentList:
             if content.type == "IMAGE":
                 image_list = PostImageContent.query.filter_by(content_id=content.content_id).all()
