@@ -1,15 +1,13 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from flask_jwt_extended import (
-    current_user,
-    jwt_required
-)
+from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.shared import db
-from models.post_repost_model import PostRepostModel
-from resources.posts.post_schema import PostActionRequestSchema, PostActionResponseSchema
-from schemas.meta import MetaSchema
+from models.post.post_repost_model import PostRepostModel
+from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
+from schemas.reponse_schema.meta import MetaSchema
+from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
 
 blp = Blueprint("PostUnrepost", __name__, description="Post Unrepost")
 
@@ -23,11 +21,14 @@ class PostUnrepost(MethodView):
         owner_uid = current_user.uid
         repost = PostRepostModel.query.filter_by(post_id=post_id, user_uid=owner_uid).first()
         if repost:
-            db.session.delete(repost)
-            db.session.commit()
-        return self.getPostsUnrepostResponseSchema()
+            self.__deletePostRepostModel(repost=repost)
+        return self.__getPostsUnrepostResponseSchema()
 
-    def getPostsUnrepostResponseSchema(self):
+    def __deletePostRepostModel(self, repost: PostRepostModel):
+        db.session.delete(repost)
+        db.session.commit()
+
+    def __getPostsUnrepostResponseSchema(self):
         time = datetime.now(timezone.utc)
 
         meta = MetaSchema()

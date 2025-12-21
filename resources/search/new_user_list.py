@@ -1,14 +1,10 @@
-from flask import jsonify, redirect
+import uuid
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from datetime import date, datetime, timezone, timedelta
-from app.shared import db, uid
+from datetime import datetime, timezone
 from models.user_profile import UserProfile
-from resources.profile.posts.profile_posts.posts_request_schema import ProfilePostsResponseSchema
 from resources.search.new_user_list_request_schema import NewUserListRequestSchema, NewUserListResponseSchema
-from schemas.error import ErrorSchema
-from schemas.meta import MetaSchema
-from app.shared import bcrypt
+from schemas.reponse_schema.meta import MetaSchema
 
 blp = Blueprint("NewUserList", __name__, description="New User List")
 
@@ -33,7 +29,7 @@ class NewUserList(MethodView):
         time = datetime.now(timezone.utc)
 
         meta = MetaSchema()
-        meta.response_id = uid.hex
+        meta.response_id = uuid.uuid4().hex
         meta.response_code = 1000
         meta.response_date = str(time)
         meta.response_timestamp = str(time.timestamp())

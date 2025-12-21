@@ -1,5 +1,5 @@
-from marshmallow import Schema, fields, validates_schema
-from schemas.meta import MetaSchema
+from marshmallow import Schema, fields
+from schemas.reponse_schema.meta import MetaSchema
 
 class NewUserListRequestSchema(Schema):
     offset = fields.Int(required=True)

@@ -1,22 +1,17 @@
-from flask import jsonify
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from flask_jwt_extended import (
-    get_jwt_identity,
-    jwt_required
-)
+from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.shared import db
-from models.post import Post, PostContent, PostImageContent
-from models.user_profile import UserProfile
-from resources.posts.post_create.post_create_request_schema import PostCreateDataRequestSchema, PostCreateRequestSchema, PostsCreateResponseSchema
-from schemas.error import ErrorSchema
-from schemas.meta import MetaSchema
-from app.shared import bcrypt
+from models.post.post import Post, PostContent, PostImageContent
+from resources.posts.post_create.post_create_response_schema import PostsCreateResponseSchema
+from schemas.reponse_schema.meta import MetaSchema
 from app.s3 import client
 import base64
 import os
+from schemas.reponse_schema.meta import MetaSchema
+from schemas.request_schema.post.post_create_request_schema import PostCreateRequestSchema
 
 blp = Blueprint("PostCreate", __name__, description="Post Create")
 
@@ -26,25 +21,26 @@ class PostCreate(MethodView):
     @blp.arguments(PostCreateRequestSchema)
     @blp.response(200, PostsCreateResponseSchema)
     def post(self, request):
+        self.__createPost(request=request)
+        return self.__getPostsCreateResponseSchema(request)
+    
+    def __createPost(self, request):
         data = request["data"]
         visibility = request["visibility"]
-        owner_uid = get_jwt_identity()
         post_id = uuid.uuid4().hex
+        owner_uid = current_user.uid
         post = Post(post_id=post_id,
                     owner_uid=owner_uid,
                     visibility=visibility,
                     type="POST",
                     original_post_id="",
-                    like_count=0,
-                    comment_count=0,
                     created_date_timestamp=int(datetime.now(timezone.utc).timestamp()),
                     updated_date_timestamp=int(datetime.now(timezone.utc).timestamp()))
         db.session.add(post)
         db.session.commit()
-        self.handleContentList(request, post_id)
-        return self.getPostsCreateResponseSchema(request)
-    
-    def handleContentList(self, request, post_id):
+        self.__createContent(request, post_id)
+
+    def __createContent(self, request, post_id):
         for content in list(request["data"]):
             index = content["index"]
             text = content["text"]
@@ -61,7 +57,7 @@ class PostCreate(MethodView):
                                                text_type=text_type)
                     db.session.add(content)
                     db.session.commit()
-                    self.handleContentImage(post_id, content, list(images))
+                    self.__createImageContent(post_id, content, list(images))
                 case _:
                     post_content = PostContent(index=index,
                                                content_id=uuid.uuid4().hex,
@@ -71,9 +67,8 @@ class PostCreate(MethodView):
                                                text_type=text_type)
                     db.session.add(post_content)
                     db.session.commit()
-        pass
     
-    def handleContentImage(self, post_id, content: PostContent, content_image_list: list):
+    def __createImageContent(self, post_id, content: PostContent, content_image_list: list):
         for image in content_image_list:
             image_content_id = uuid.uuid4().hex
             image_path = 'posts/' + post_id + '/' + content.content_id + '/' + image_content_id + '.jpg'
@@ -92,7 +87,7 @@ class PostCreate(MethodView):
             db.session.add(image_content)
             db.session.commit()
 
-    def getPostsCreateResponseSchema(self, data):
+    def __getPostsCreateResponseSchema(self, data):
         time = datetime.now(timezone.utc)
 
         meta = MetaSchema()

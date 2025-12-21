@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
-from schemas.meta import MetaSchema
-from schemas.error import ErrorSchema
+from schemas.reponse_schema.meta import MetaSchema
+from schemas.reponse_schema.error import ErrorSchema
 from app.shared import uid
 
 def get_meta_response(response_code: int, error: ErrorSchema = None) -> MetaSchema:

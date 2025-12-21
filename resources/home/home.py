@@ -9,8 +9,8 @@ from flask_jwt_extended import (
 from datetime import datetime, timezone
 from models.usli import USLI
 from app.shared import uid, bcrypt
-from schemas.error import ErrorSchema
-from schemas.meta import MetaSchema
+from schemas.reponse_schema.error import ErrorSchema
+from schemas.reponse_schema.meta import MetaSchema
 
 blp = Blueprint("Home", __name__, description="Home")
 

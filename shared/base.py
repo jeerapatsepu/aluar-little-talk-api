@@ -1,4 +1,4 @@
-from schemas.error import ErrorSchema
+from schemas.reponse_schema.error import ErrorSchema
 
 def getError(title, description):
     error = ErrorSchema()

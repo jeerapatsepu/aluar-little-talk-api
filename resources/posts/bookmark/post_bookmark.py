@@ -1,15 +1,13 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from flask_jwt_extended import (
-    current_user,
-    jwt_required
-)
+from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.shared import db
-from models.post_bookmark_model import PostBookmarkModel
-from resources.posts.post_schema import PostActionRequestSchema, PostActionResponseSchema
-from schemas.meta import MetaSchema
+from models.post.post_bookmark_model import PostBookmarkModel
+from schemas.reponse_schema.meta import MetaSchema
+from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
+from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
 
 blp = Blueprint("PostBookmark", __name__, description="Post Bookmark")
 
@@ -23,15 +21,18 @@ class PostBookmark(MethodView):
         owner_uid = current_user.uid
         bookmark = PostBookmarkModel.query.filter_by(post_id=post_id, user_uid=owner_uid).first()
         if not bookmark:
-            post_bookmark = PostBookmarkModel(post_id=post_id,
+            self.__createPostBookmarkModel(post_id, owner_uid)
+        return self.__getPostsBookmarkResponseSchema()
+
+    def __createPostBookmarkModel(self, post_id: str, owner_uid: str):
+        post_bookmark = PostBookmarkModel(post_id=post_id,
                                       user_uid=owner_uid,
                                       created_date_timestamp=int(datetime.now(timezone.utc).timestamp()),
                                       updated_date_timestamp=int(datetime.now(timezone.utc).timestamp()))
-            db.session.add(post_bookmark)
-            db.session.commit()
-        return self.getPostsBookmarkResponseSchema()
+        db.session.add(post_bookmark)
+        db.session.commit()
 
-    def getPostsBookmarkResponseSchema(self):
+    def __getPostsBookmarkResponseSchema(self):
         time = datetime.now(timezone.utc)
 
         meta = MetaSchema()

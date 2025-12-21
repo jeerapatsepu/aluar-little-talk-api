@@ -1,15 +1,13 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from flask_jwt_extended import (
-    current_user,
-    jwt_required
-)
+from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.shared import db
-from models.post_bookmark_model import PostBookmarkModel
-from resources.posts.post_schema import PostActionRequestSchema, PostActionResponseSchema
-from schemas.meta import MetaSchema
+from models.post.post_bookmark_model import PostBookmarkModel
+from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
+from schemas.reponse_schema.meta import MetaSchema
+from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
 
 blp = Blueprint("PostUnbookmark", __name__, description="Post Unbookmark")
 
@@ -23,11 +21,14 @@ class PostUnbookmark(MethodView):
         owner_uid = current_user.uid
         like = PostBookmarkModel.query.filter_by(post_id=post_id, user_uid=owner_uid).first()
         if like:
-            db.session.delete(like)
-            db.session.commit()
-        return self.getPostsUnbookmarkResponseSchema()
-
-    def getPostsUnbookmarkResponseSchema(self):
+            self.__deletePostBookmarkModel(like)
+        return self.__getPostsUnbookmarkResponseSchema()
+    
+    def __deletePostBookmarkModel(self, like: PostBookmarkModel):
+        db.session.delete(like)
+        db.session.commit()
+        
+    def __getPostsUnbookmarkResponseSchema(self):
         time = datetime.now(timezone.utc)
 
         meta = MetaSchema()

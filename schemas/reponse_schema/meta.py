@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields
-from schemas.error import ErrorSchema
+from schemas.reponse_schema.error import ErrorSchema
 
 class MetaSchema(Schema):
     response_id = fields.Str()

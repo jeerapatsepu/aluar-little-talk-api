@@ -9,8 +9,6 @@ class Post(db.Model):
     visibility = db.Column(db.String)
     type = db.Column(db.String)
     original_post_id = db.Column(db.String)
-    like_count = db.Column(db.Integer)
-    comment_count = db.Column(db.Integer)
     created_date_timestamp = db.Column(db.Integer)
     updated_date_timestamp = db.Column(db.Integer)
 
