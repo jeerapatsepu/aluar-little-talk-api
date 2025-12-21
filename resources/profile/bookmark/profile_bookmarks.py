@@ -22,7 +22,7 @@ class ProfileBookmarks(MethodView):
         limit = request["limit"]
         bookmarks = PostBookmarkModel.query.filter_by(user_uid=uid).order_by(PostBookmarkModel.created_date_timestamp).offset(offset).limit(limit).all()
         bookmarks.sort(key=self.__sortRePostsList, reverse=True)
-        new_posts = self.__getShortPost(reposts=bookmarks)
+        new_posts = self.__getShortPost(bookmarks=bookmarks)
         return self.__getPofilePostsSuccessResponse(new_posts)
 
     def __getShortPost(self, bookmarks: list):
