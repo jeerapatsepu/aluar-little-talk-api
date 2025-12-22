@@ -22,7 +22,7 @@ class ProfilePosts(MethodView):
         uid = request["uid"]
         offset = request["offset"]
         limit = request["limit"]
-        posts = Post.query.filter_by(owner_uid=uid).order_by(Post.created_date_timestamp).offset(offset).limit(limit).all()
+        posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.owner_uid==uid, Post.visibility=="PUBLIC").offset(offset).limit(limit).all()
         posts.sort(key=self.__sortPostsList, reverse=True)
         new_posts = self.__getShortPost(posts=posts)
         return self.__getPofilePostsSuccessResponse(new_posts)
