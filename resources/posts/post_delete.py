@@ -1,3 +1,4 @@
+import os
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import current_user, jwt_required
@@ -35,9 +36,15 @@ class PostDelete(MethodView):
         PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         db.session.commit()
         try: 
-            client.delete_directory(
-                DirectoryId='posts/' + post_id
-            ) 
+            objects_to_delete = []
+            for obj in client.objects.filter(Prefix=post_id + '/'):
+                objects_to_delete.append({'Key': obj.key})
+            client.delete_objects(
+                Bucket=os.getenv("S3_BUCKET_NAME"),
+                Delete={
+                    'Objects': objects_to_delete
+                }
+            )
         except Exception:
             pass
 
