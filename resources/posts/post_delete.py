@@ -38,16 +38,16 @@ class PostDelete(MethodView):
         # try: 
         objects_to_delete = []
         bucket_name = os.getenv("S3_BUCKET_NAME")
-        for b in client.list_buckets()[bucket_name]:
-            o = b['Name']
-        # client.delete_objects(
-        #     Bucket=bucket_name,
-        #     Delete={
-        #         'Objects': [
-                    
-        #         ]
-        #     }
-        # )
+        client.delete_objects(
+            Bucket=bucket_name,
+            Delete={
+                'Objects': [
+                    {
+                        'Key': 'posts/' + post_id
+                    }
+                ]
+            }
+        )
         # except Exception:
         #     pass
 
