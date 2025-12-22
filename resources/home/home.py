@@ -8,20 +8,30 @@ from models.post.post import Post
 from resources.base.short_post import ShortPost
 from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.profile.profile_posts_request_schema import ProfilePostsRequestSchema
+from schemas.request_schema.home_feed_request_schema import HomeFeedRequestSchema
 
 blp = Blueprint("Home", __name__, description="Home")
 
 @blp.route("/home/feed")
 class Home(MethodView):
     @jwt_required(optional=True)
-    @blp.arguments(ProfilePostsRequestSchema)
+    @blp.arguments(HomeFeedRequestSchema)
     @blp.response(200, ProfilePostsResponseSchema)
     def post(self, request):
         uid = request["uid"]
         offset = request["offset"]
         limit = request["limit"]
-        posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.visibility == "PUBLIC").offset(offset).limit(limit).all()
+        filter = request["filter"]
+        posts = []
+        match filter:
+            case "ALL":
+                posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.visibility == "PUBLIC").offset(offset).limit(limit).all()
+            case "FOLLOW":
+                posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.visibility == "PUBLIC").offset(offset).limit(limit).all()
+            case "FRIENDS":
+                posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.visibility == "PUBLIC").offset(offset).limit(limit).all()
+            case _:
+                posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.visibility == "PUBLIC").offset(offset).limit(limit).all()
         posts.sort(key=self.__sortPostsList, reverse=True)
         new_posts = self.__getShortPost(posts=posts)
         return self.__getPofilePostsSuccessResponse(new_posts)
