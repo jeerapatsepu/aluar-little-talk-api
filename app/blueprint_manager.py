@@ -11,6 +11,7 @@ from resources.search.new_user_list import blp as NewUserListBlueprint
 from resources.posts.post_create.post_create import blp as PostCreateBlueprint
 from resources.posts.like.post_like import blp as PostLikeBlueprint
 from resources.posts.like.post_dislike import blp as PostDisLikeBlueprint
+from resources.posts.post_delete import blp as PostDeleteBlueprint
 from resources.posts.get_post import blp as GetPostBlueprint
 from resources.posts.bookmark.post_bookmark import blp as PostBookmarkBlueprint
 from resources.posts.bookmark.post_unbookmark import blp as PostUnbookmarkBlueprint
@@ -36,3 +37,4 @@ def register_blueprint(app):
     api.register_blueprint(PostUnrepostBlueprint)
     api.register_blueprint(ProfileRePostsBlueprint)
     api.register_blueprint(ProfileBookmarksBlueprint)
+    api.register_blueprint(PostDeleteBlueprint)
