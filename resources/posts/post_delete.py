@@ -26,12 +26,12 @@ class PostDelete(MethodView):
     def __deletePostModel(self, post_id: str):
         owner_uid = current_user.uid
         Post.query.filter_by(post_id=post_id, owner_uid=owner_uid).delete(synchronize_session=False)
-        PostContent.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostImageContent.filter_by(post_id=post_id).delete(synchronize_session=False)
+        PostContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+        PostImageContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         db.session.commit()
         try: 
             client.delete_directory(
-                DirectoryId='posts' + post_id
+                DirectoryId='posts/' + post_id
             ) 
         except Exception:
             pass
