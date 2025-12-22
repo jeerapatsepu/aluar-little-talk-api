@@ -36,18 +36,19 @@ class PostDelete(MethodView):
         PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         db.session.commit()
         # try: 
-        objects_to_delete = []
-        bucket_name = os.getenv("S3_BUCKET_NAME")
-        client.delete_objects(
-            Bucket=bucket_name,
-            Delete={
-                'Objects': [
-                    {
-                        'Key': 'posts/' + post_id
-                    }
-                ]
-            }
+        bucket = os.getenv("S3_BUCKET_NAME")
+        prefix = "posts/" + post_id
+        response = client.list_objects_v2(
+            Bucket=bucket,
+            Prefix=prefix
         )
+        if "Contents" in response:
+            client.delete_objects(
+                Bucket=bucket,
+                Delete={
+                    "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]
+                }
+            )
         # except Exception:
         #     pass
 
