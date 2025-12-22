@@ -35,18 +35,21 @@ class PostDelete(MethodView):
         PostBookmarkModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         db.session.commit()
-        try: 
-            objects_to_delete = []
-            for obj in client.objects.filter(Prefix=post_id + '/'):
-                objects_to_delete.append({'Key': obj.key})
-            client.delete_objects(
-                Bucket=os.getenv("S3_BUCKET_NAME"),
-                Delete={
-                    'Objects': objects_to_delete
-                }
-            )
-        except Exception:
-            pass
+        # try: 
+        objects_to_delete = []
+        bucket_name = os.getenv("S3_BUCKET_NAME")
+        for b in client.list_buckets()[bucket_name]:
+            o = b['Name']
+        # client.delete_objects(
+        #     Bucket=bucket_name,
+        #     Delete={
+        #         'Objects': [
+                    
+        #         ]
+        #     }
+        # )
+        # except Exception:
+        #     pass
 
     def __getPostsLikeResponseSchema(self):
         time = datetime.now(timezone.utc)
