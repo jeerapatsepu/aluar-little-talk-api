@@ -3,6 +3,7 @@ from resources.auth.auth_create import blp as AuthCreateBlueprint
 from resources.auth.auth_apple_login import blp as AuthLoginBlueprint
 from resources.home.home import blp as HomeBlueprint
 from resources.profile.profile.profile import blp as ProfileBlueprint
+from resources.profile.profile_user.profile_user import blp as ProfileUserBlueprint
 from resources.profile.post.profile_posts import blp as ProfilePostsBlueprint
 from resources.profile.repost.profile_reposts import blp as ProfileRePostsBlueprint
 from resources.profile.bookmark.profile_bookmarks import blp as ProfileBookmarksBlueprint
@@ -22,6 +23,7 @@ def register_blueprint(app):
     api.register_blueprint(AuthCreateBlueprint)
     api.register_blueprint(AuthLoginBlueprint)
     api.register_blueprint(ProfileBlueprint)
+    api.register_blueprint(ProfileUserBlueprint)
     api.register_blueprint(ProfilePostsBlueprint)
     api.register_blueprint(NewUserListBlueprint)
     api.register_blueprint(PostCreateBlueprint)
