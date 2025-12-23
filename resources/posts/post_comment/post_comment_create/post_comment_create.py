@@ -25,7 +25,7 @@ class PostCommentCreate(MethodView):
     @blp.arguments(PostCommentCreateRequestSchema)
     @blp.response(200, PostsCommentCreateResponseSchema)
     def post(self, request):
-        self.__createPostComment(request=request)
+        return self.__createPostComment(request=request)
 
     def __createPostComment(self, request):
         text = request["text"]
