@@ -86,6 +86,8 @@ class PostCommentCreate(MethodView):
             data.reply_user_name = reply_profile.full_name
         data.post_id = comment.post_id
         data.is_owner = comment.user_uid == current_user.uid
+        data.text = comment.text
+        data.image_url = comment.image_url
         data.created_date_timestamp = comment.created_date_timestamp
         data.updated_date_timestamp = comment.updated_date_timestamp
 

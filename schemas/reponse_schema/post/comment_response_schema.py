@@ -12,5 +12,7 @@ class CommentResponseSchema(Schema):
     reply_user_name = fields.Str(dump_only=True)
     post_id = fields.Str(dump_only=True)
     is_owner = fields.Boolean(dump_only=True)
+    text = fields.Str(dump_only=True)
+    image_url = fields.Str(dump_only=True)
     created_date_timestamp = fields.Integer(dump_only=True)
     updated_date_timestamp = fields.Integer(dump_only=True)
