@@ -81,8 +81,9 @@ class PostCommentCreate(MethodView):
         data.owner_image = owner_profile.photo
         data.owner_name = owner_profile.full_name
         data.owner_uid = owner_profile.uid
-        data.reply_user_uid = reply_profile.uid
-        data.reply_user_name = reply_profile.full_name
+        if reply_profile:
+            data.reply_user_uid = reply_profile.uid
+            data.reply_user_name = reply_profile.full_name
         data.post_id = comment.post_id
         data.is_owner = comment.user_uid == current_user.uid
         data.created_date_timestamp = comment.created_date_timestamp
