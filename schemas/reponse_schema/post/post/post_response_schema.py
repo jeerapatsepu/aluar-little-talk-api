@@ -13,7 +13,6 @@ class PostResponseSchema(Schema):
     like_count = fields.Integer(dump_only=True)
     is_like = fields.Boolean(dump_only=True)
     is_bookmark = fields.Boolean(dump_only=True)
-    bookmark_count = fields.Integer(dump_only=True)
     is_repost = fields.Boolean(dump_only=True)
     repost_count = fields.Integer(dump_only=True)
     comment_count = fields.Integer(dump_only=True)

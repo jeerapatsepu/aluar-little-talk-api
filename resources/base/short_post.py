@@ -43,7 +43,6 @@ class ShortPost:
             post.is_repost = None
             post.is_owner = False
         post.like_count = len(like_list)
-        post.bookmark_count = PostBookmarkModel.query.filter_by(post_id=post.post_id).count()
         post.repost_count = PostRepostModel.query.filter_by(post_id=post.post_id).count()
         return post
     
