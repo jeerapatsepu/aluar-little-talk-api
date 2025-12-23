@@ -4,7 +4,6 @@ class CommentModel(db.Model):
     __tablename__ = "comments"
 
     id = db.Column(db.Integer, primary_key=True)
-    comment_type = db.Column(db.String)
     comment_uid = db.Column(db.String)
     text = db.Column(db.String)
     image_url = db.Column(db.String)

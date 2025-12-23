@@ -4,7 +4,6 @@ from schemas.reponse_schema.post.post.post_data_schema import PostDataSchema
 
 class CommentResponseSchema(Schema):
     comment_id = fields.Str(dump_only=True)
-    comment_type = fields.Str(dump_only=True)
     parent_comment_id = fields.Str(dump_only=True)
     owner_image = fields.Str(dump_only=True)
     owner_name = fields.Str(dump_only=True)

@@ -2,7 +2,6 @@ from marshmallow import Schema, fields, validate
 from schemas.reponse_schema.post.post.post_response_schema import PostDataSchema
 
 class PostCommentCreateRequestSchema(Schema):
-    comment_type = fields.Str(validate=validate.OneOf(["TEXT", "IMAGE"]), required=True)
     text = fields.Str(required=True)
     image = fields.Str(required=True)
     parent_comment_uid = fields.Str(required=True)
