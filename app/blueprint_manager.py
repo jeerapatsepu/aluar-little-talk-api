@@ -17,8 +17,8 @@ from resources.posts.bookmark.post_bookmark import blp as PostBookmarkBlueprint
 from resources.posts.bookmark.post_unbookmark import blp as PostUnbookmarkBlueprint
 from resources.posts.repost.post_repost import blp as PostRepostBlueprint
 from resources.posts.repost.post_unrepost import blp as PostUnrepostBlueprint
-from resources.posts.post_comment.post_comment_create.post_comment_create import blp as PostCommentCreate
-
+from resources.posts.post_comment.post_comment_create.post_comment_create import blp as PostCommentCreateBlueprint
+from resources.posts.post_comment.post_comment.profile_comment_list import blp as ProfileCommentListBlueprint
 def register_blueprint(app):
     api = Api(app)
     api.register_blueprint(HomeBlueprint)
@@ -39,4 +39,5 @@ def register_blueprint(app):
     api.register_blueprint(ProfileRePostsBlueprint)
     api.register_blueprint(ProfileBookmarksBlueprint)
     api.register_blueprint(PostDeleteBlueprint)
-    api.register_blueprint(PostCommentCreate)
+    api.register_blueprint(PostCommentCreateBlueprint)
+    api.register_blueprint(ProfileCommentListBlueprint)

@@ -90,7 +90,8 @@ class PostCommentCreate(MethodView):
         data.image_url = comment.image_url
         data.created_date_timestamp = comment.created_date_timestamp
         data.updated_date_timestamp = comment.updated_date_timestamp
-
+        data.reply_list = []
+        
         response = PostsCommentCreateResponseSchema()
         response.meta = meta
         response.data = data
