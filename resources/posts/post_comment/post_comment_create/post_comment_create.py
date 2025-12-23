@@ -36,24 +36,28 @@ class PostCommentCreate(MethodView):
         reply_user_uid = request["reply_user_uid"]
         comment_uid = uuid.uuid4().hex
         owner_uid = current_user.uid
+        image_url = ""
         try:
-            image_path = 'comments/' + comment_uid + '.jpg'
-            client.put_object(Body=base64.b64decode(image),
-                              Bucket=os.getenv("S3_BUCKET_NAME"),
-                              Key=image_path,
-                              ACL='public-read',
-                              ContentType='image/jpeg')
-            image_url=os.getenv('LITTLE_TALK_S3_ENDPOINT') + '/' + image_path
+            if len(image) > 0:
+                image_path = 'comments/' + comment_uid + '.jpg'
+                client.put_object(Body=base64.b64decode(image),
+                                Bucket=os.getenv("S3_BUCKET_NAME"),
+                                Key=image_path,
+                                ACL='public-read',
+                                ContentType='image/jpeg')
+                image_url=os.getenv('LITTLE_TALK_S3_ENDPOINT') + '/' + image_path
+            else:
+                image_url = ""
             comment = CommentModel(comment_type=comment_type,
-                                   comment_uid=comment_uid,
-                                   text=text,
-                                   image_url=image_url,
-                                   parent_comment_uid=parent_comment_uid,
-                                   reply_user_uid=reply_user_uid,
-                                   post_id=post_id,
-                                   user_uid=owner_uid,
-                                   created_date_timestamp = int(datetime.now(timezone.utc).timestamp()),
-                                   updated_date_timestamp = int(datetime.now(timezone.utc).timestamp()))
+                                comment_uid=comment_uid,
+                                text=text,
+                                image_url=image_url,
+                                parent_comment_uid=parent_comment_uid,
+                                reply_user_uid=reply_user_uid,
+                                post_id=post_id,
+                                user_uid=owner_uid,
+                                created_date_timestamp = int(datetime.now(timezone.utc).timestamp()),
+                                updated_date_timestamp = int(datetime.now(timezone.utc).timestamp()))
             db.session.add(comment)
             db.session.commit()
             self.__getPostsCommentCreateSuccessResponseSchema(comment=comment)
