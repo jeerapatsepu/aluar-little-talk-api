@@ -47,7 +47,10 @@ class PostCommentCreate(MethodView):
                 image_url=os.getenv('LITTLE_TALK_S3_ENDPOINT') + '/' + image_path
             else:
                 image_url = ""
-            comment = CommentModel(comment_uid=comment_uid,
+        except Exception:
+            image_url = ""
+            # return self.__getPostsCommentCreateFailResponseSchema()
+        comment = CommentModel(comment_uid=comment_uid,
                                 text=text,
                                 image_url=image_url,
                                 parent_comment_uid=parent_comment_uid,
@@ -56,11 +59,9 @@ class PostCommentCreate(MethodView):
                                 user_uid=owner_uid,
                                 created_date_timestamp = int(datetime.now(timezone.utc).timestamp()),
                                 updated_date_timestamp = int(datetime.now(timezone.utc).timestamp()))
-            db.session.add(comment)
-            db.session.commit()
-            return self.__getPostsCommentCreateSuccessResponseSchema(comment=comment)
-        except Exception:
-            return self.__getPostsCommentCreateFailResponseSchema()
+        db.session.add(comment)
+        db.session.commit()
+        return self.__getPostsCommentCreateSuccessResponseSchema(comment=comment)
 
     def __getPostsCommentCreateSuccessResponseSchema(self, comment: CommentModel):
         time = datetime.now(timezone.utc)
