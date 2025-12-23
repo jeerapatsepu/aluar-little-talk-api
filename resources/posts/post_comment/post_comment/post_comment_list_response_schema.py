@@ -4,4 +4,4 @@ from schemas.reponse_schema.post.comment_response_schema import CommentResponseS
 
 class PostsCommentListResponseSchema(Schema):
     meta = fields.Nested(MetaSchema, dump_only=True)
-    data = fields.Nested(CommentResponseSchema, dump_only=True)
+    data = fields.Nested(CommentResponseSchema, dump_only=True, many=True)
