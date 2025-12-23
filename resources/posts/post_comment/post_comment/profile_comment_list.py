@@ -37,9 +37,10 @@ class ProfileCommentList(MethodView):
             comment_response = CommentResponseSchema()
             comment_response.comment_id = comment.comment_uid
             comment_response.parent_comment_id = comment.parent_comment_uid
-            comment_response.owner_image = owner_profile.photo
-            comment_response.owner_name = owner_profile.full_name
-            comment_response.owner_uid = owner_profile.uid
+            if owner_profile:
+                comment_response.owner_image = owner_profile.photo
+                comment_response.owner_name = owner_profile.full_name
+                comment_response.owner_uid = owner_profile.uid
             comment_response.post_id = comment.post_id
             comment_response.text = comment.text
             comment_response.image_url = comment.image_url
