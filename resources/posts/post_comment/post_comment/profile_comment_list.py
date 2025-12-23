@@ -33,7 +33,7 @@ class ProfileCommentList(MethodView):
     def __getCommentResponseSchema(self, comments: list):
         comment_response_list = []
         for comment in comments:
-            owner_profile = UserProfile.query.filter_by(uid=comment.user_uid).first
+            owner_profile = UserProfile.query.filter_by(uid=comment.user_uid).first()
             comment_response = CommentResponseSchema()
             comment_response.comment_id = comment.comment_uid
             comment_response.parent_comment_id = comment.parent_comment_uid
