@@ -29,4 +29,4 @@ class CommentResponseSchema(Schema):
     image_url = fields.Str(dump_only=True)
     created_date_timestamp = fields.Integer(dump_only=True)
     updated_date_timestamp = fields.Integer(dump_only=True)
-    reply_list = fields.Nested(CommentReplySchema(), dump_only=True, many=True)
+    reply_list = fields.Nested(CommentReplySchema, dump_only=True, many=True)
