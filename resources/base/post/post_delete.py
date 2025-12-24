@@ -5,12 +5,12 @@ from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.shared import db
-from models.post.comment_like_model import CommentLikeModel
 from models.post.comment_model import CommentModel
 from models.post.post import Post, PostContent, PostImageContent
 from models.post.post_bookmark_model import PostBookmarkModel
 from models.post.post_like_model import PostLikeModel
 from models.post.post_repost_model import PostRepostModel
+from resources.base.comment.comment_delete_tool import CommentDeleteTool
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
@@ -32,14 +32,15 @@ class PostDelete(MethodView):
         owner_uid = current_user.uid
         post = Post.query.filter_by(post_id=post_id).first()
         if post and post.owner_uid == owner_uid:
-            Post.query.filter_by(post_id=post_id, owner_uid=owner_uid).delete(synchronize_session=False)
             PostContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
             PostImageContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
             PostLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
             PostBookmarkModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
             PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-            CommentModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-            CommentLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+            comment_list = CommentModel.query.filter_by(post_id=post_id).all()
+            for comment in comment_list:
+                CommentDeleteTool(comment_id=comment.comment_uid).deleteComment()
+            Post.query.filter_by(post_id=post_id, owner_uid=owner_uid).delete(synchronize_session=False)
             db.session.commit()
             try: 
                 bucket = os.getenv("S3_BUCKET_NAME")

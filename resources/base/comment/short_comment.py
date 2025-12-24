@@ -1,13 +1,8 @@
 from flask_jwt_extended import current_user
 from models.post.comment_like_model import CommentLikeModel
 from models.post.comment_model import CommentModel
-from models.post.post import Post, PostContent, PostImageContent
-from models.post.post_bookmark_model import PostBookmarkModel
-from models.post.post_like_model import PostLikeModel
-from models.post.post_repost_model import PostRepostModel
 from models.user_profile import UserProfile
 from schemas.reponse_schema.post.comment_response_schema import CommentResponseSchema
-from schemas.reponse_schema.post.post.post_image_data_schema import PostImageDataSchema
 
 class ShortComment:
     def __init__(self, comment_id: str):
@@ -44,6 +39,3 @@ class ShortComment:
         comment_schema.updated_date_timestamp = comment.updated_date_timestamp
         comment_schema.reply_list = []
         return comment_schema
-
-    def __sortReplyList(self, e):
-        return e.index
