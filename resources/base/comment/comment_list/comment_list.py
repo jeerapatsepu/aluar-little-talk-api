@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from models.post.comment_model import CommentModel
 from models.user_profile import UserProfile
 from resources.base.comment.comment_list.comment_list_response_schema import PostsCommentListResponseSchema
+from resources.base.comment.full_comment import FullComment
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.post.comment_response_schema import CommentResponseSchema
@@ -30,28 +31,11 @@ class ProfileCommentList(MethodView):
         return e.created_date_timestamp
 
     def __getCommentResponseSchema(self, comments: list):
-        comment_response_list = []
+        comment_schema_list = []
         for comment in comments:
-            owner_profile = UserProfile.query.filter_by(uid=comment.user_uid).first()
-            comment_response = CommentResponseSchema()
-            comment_response.comment_id = comment.comment_uid
-            comment_response.parent_comment_id = comment.parent_comment_uid
-            if owner_profile:
-                comment_response.owner_image = owner_profile.photo
-                comment_response.owner_name = owner_profile.full_name
-                comment_response.owner_uid = owner_profile.uid
-            comment_response.post_id = comment.post_id
-            comment_response.text = comment.text
-            comment_response.image_url = comment.image_url
-            comment_response.created_date_timestamp = comment.created_date_timestamp
-            comment_response.updated_date_timestamp = comment.updated_date_timestamp
-            try:
-                comment_response.is_owner = comment.comment_uid == current_user.uid
-            except Exception:
-                comment_response.is_owner = False
-
-            comment_response_list.append(comment_response)
-        return comment_response_list
+            comment_schema = FullComment(comment_id=comment.comment_uid).get_comment()
+            comment_schema_list.append(comment_schema)
+        return comment_schema_list
 
     def __getPofileCommentListSuccessResponse(self, comments):
         time = datetime.now(timezone.utc)

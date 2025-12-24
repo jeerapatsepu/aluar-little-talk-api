@@ -7,6 +7,7 @@ from app.shared import db
 from models.post.comment_model import CommentModel
 from models.user_profile import UserProfile
 from resources.base.comment.comment_create.comment_create_response_schema import CommentCreateResponseSchema
+from resources.base.comment.full_comment import FullComment
 from schemas.reponse_schema.error import ErrorSchema
 from schemas.reponse_schema.meta import MetaSchema
 from app.s3 import client
@@ -32,24 +33,10 @@ class PostCommentCreate(MethodView):
         parent_comment_uid = request["parent_comment_uid"]
         post_id = request["post_id"]
         reply_user_uid = request["reply_user_uid"]
-        comment_uid = uuid.uuid4().hex
+        comment_id = uuid.uuid4().hex
         owner_uid = current_user.uid
-        image_url = ""
-        try:
-            if len(image) > 0:
-                image_path = 'comments/' + comment_uid + '.jpg'
-                client.put_object(Body=base64.b64decode(image),
-                                Bucket=os.getenv("S3_BUCKET_NAME"),
-                                Key=image_path,
-                                ACL='public-read',
-                                ContentType='image/jpeg')
-                image_url=os.getenv('LITTLE_TALK_S3_ENDPOINT') + '/' + image_path
-            else:
-                image_url = ""
-        except Exception:
-            image_url = ""
-            # return self.__getPostsCommentCreateFailResponseSchema()
-        comment = CommentModel(comment_uid=comment_uid,
+        image_url = self.__uploadCommentImage(comment_id=comment_id, image=image)
+        comment = CommentModel(comment_uid=comment_id,
                                 text=text,
                                 image_url=image_url,
                                 parent_comment_uid=parent_comment_uid,
@@ -62,6 +49,21 @@ class PostCommentCreate(MethodView):
         db.session.commit()
         return self.__getPostsCommentCreateSuccessResponseSchema(comment=comment)
 
+    def __uploadCommentImage(self, comment_id: str, image: str):
+        try:
+            if len(image) > 0:
+                image_path = 'comments/' + comment_id + '.jpg'
+                client.put_object(Body=base64.b64decode(image),
+                                Bucket=os.getenv("S3_BUCKET_NAME"),
+                                Key=image_path,
+                                ACL='public-read',
+                                ContentType='image/jpeg')
+                return os.getenv('LITTLE_TALK_S3_ENDPOINT') + '/' + image_path
+            else:
+                return ""
+        except Exception:
+            return ""
+    
     def __getPostsCommentCreateSuccessResponseSchema(self, comment: CommentModel):
         time = datetime.now(timezone.utc)
 
@@ -72,45 +74,9 @@ class PostCommentCreate(MethodView):
         meta.response_timestamp = str(time.timestamp())
         meta.error = None
 
-        owner_profile = UserProfile.query.filter_by(uid=comment.user_uid).first()
-        reply_profile = UserProfile.query.filter_by(uid=comment.reply_user_uid).first()
-        data = CommentResponseSchema()
-        data.comment_id = comment.comment_uid
-        data.parent_comment_id = comment.parent_comment_uid
-        data.owner_image = owner_profile.photo
-        data.owner_name = owner_profile.full_name
-        data.owner_uid = owner_profile.uid
-        if reply_profile:
-            data.reply_user_uid = reply_profile.uid
-            data.reply_user_name = reply_profile.full_name
-        data.post_id = comment.post_id
-        data.is_owner = comment.user_uid == current_user.uid
-        data.text = comment.text
-        data.image_url = comment.image_url
-        data.created_date_timestamp = comment.created_date_timestamp
-        data.updated_date_timestamp = comment.updated_date_timestamp
-        data.reply_list = []
+        comment_schema = FullComment(comment_id=comment.comment_uid).get_comment()
         
         response = CommentCreateResponseSchema()
         response.meta = meta
-        response.data = data
-        return response
-    
-    def __getPostsCommentCreateFailResponseSchema(self):
-        time = datetime.now(timezone.utc)
-
-        error = ErrorSchema()
-        error.title = "Service can not answer"
-        error.message = "Can not create comment"
-
-        meta = MetaSchema()
-        meta.response_id = uuid.uuid4().hex
-        meta.response_code = 5000
-        meta.response_date = str(time)
-        meta.response_timestamp = str(time.timestamp())
-        meta.error = error
-
-        response = CommentCreateResponseSchema()
-        response.meta = meta
-        response.data = None
+        response.data = comment_schema
         return response
