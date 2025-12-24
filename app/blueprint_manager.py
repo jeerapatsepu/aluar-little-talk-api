@@ -18,6 +18,8 @@ from resources.base.post.repost.post_unrepost import blp as PostUnrepostBlueprin
 from resources.base.comment.comment_create.comment_create import blp as PostCommentCreateBlueprint
 from resources.base.comment.comment_list.comment_list import blp as ProfileCommentListBlueprint
 from resources.base.comment.comment_like.comment_like import blp as PostCommentLikeBlueprint
+from resources.base.comment.comment_dislike.comment_dislike import blp as PostCommentDisLikeBlueprint
+
 def register_blueprint(app):
     api = Api(app)
     api.register_blueprint(HomeBlueprint)
@@ -39,3 +41,4 @@ def register_blueprint(app):
     api.register_blueprint(PostCommentCreateBlueprint)
     api.register_blueprint(ProfileCommentListBlueprint)
     api.register_blueprint(PostCommentLikeBlueprint)
+    api.register_blueprint(PostCommentDisLikeBlueprint)

@@ -12,7 +12,7 @@ from schemas.request_schema.post.post_action_request_schema import PostActionReq
 blp = Blueprint("PostDislike", __name__, description="Post Dislike")
 
 @blp.route("/post/dislike")
-class PostLike(MethodView):
+class PostDisLike(MethodView):
     @jwt_required()
     @blp.arguments(PostActionRequestSchema)
     @blp.response(200, PostActionResponseSchema)
