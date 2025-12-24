@@ -23,12 +23,9 @@ class ProfileCommentList(MethodView):
         post_id = request["post_id"]
         offset = request["offset"]
         limit = request["limit"]
-        comments = CommentModel.query.order_by(CommentModel.created_date_timestamp).filter(CommentModel.post_id==post_id).offset(offset).limit(limit).all()
+        comments = CommentModel.query.order_by(CommentModel.created_date_timestamp).filter(CommentModel.post_id==post_id, CommentModel.parent_comment_uid=="").offset(offset).limit(limit).all()
         comments = self.__getCommentResponseSchema(comments=comments)
         return self.__getPofileCommentListSuccessResponse(comments=comments)
-
-    def __sortCommentsList(self, e):
-        return e.created_date_timestamp
 
     def __getCommentResponseSchema(self, comments: list):
         comment_schema_list = []

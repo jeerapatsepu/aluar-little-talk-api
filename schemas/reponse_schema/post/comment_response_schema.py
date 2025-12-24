@@ -21,8 +21,6 @@ class CommentResponseSchema(Schema):
     owner_image = fields.Str(dump_only=True)
     owner_name = fields.Str(dump_only=True)
     owner_uid = fields.Str(dump_only=True)
-    reply_user_uid = fields.Str(dump_only=True)
-    reply_user_name = fields.Str(dump_only=True)
     post_id = fields.Str(dump_only=True)
     is_owner = fields.Boolean(dump_only=True)
     text = fields.Str(dump_only=True)
