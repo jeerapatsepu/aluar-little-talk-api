@@ -9,4 +9,4 @@ class MetaSchema(Schema):
     error = fields.Nested(ErrorSchema(), dump_only=True)
 
 class MetaResponseSchema(Schema):
-    meta = fields.Nested(MetaSchema(), dump_only=True)
+    meta = fields.Nested(MetaSchema, only=("response_id", "response_code", "response_date", "response_timestamp", "error"), dump_only=True)

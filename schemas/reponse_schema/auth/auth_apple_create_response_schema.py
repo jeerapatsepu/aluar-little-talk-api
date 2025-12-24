@@ -7,5 +7,5 @@ class AuthAppleCreateDataResponseSchema(Schema):
     uid = fields.Str(dump_only=True, validate=validate.Length(min=1))
 
 class AuthAppleCreateResponseSchema(Schema):
-    meta = fields.Nested(MetaSchema, dump_only=True)
+    meta = fields.Nested(MetaSchema, only=("response_id", "response_code", "response_date", "response_timestamp", "error"), dump_only=True)
     data = fields.Nested(AuthAppleCreateDataResponseSchema, dump_only=True)
