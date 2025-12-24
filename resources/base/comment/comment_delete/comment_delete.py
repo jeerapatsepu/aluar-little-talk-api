@@ -4,6 +4,7 @@ from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.shared import db
+from models.post.comment_like_model import CommentLikeModel
 from models.post.comment_model import CommentModel
 from resources.base.comment.comment_like.comment_like_schema import CommentLikeResponseSchema, CommentLikeResquestSchema
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
@@ -25,6 +26,7 @@ class PostCommentDelete(MethodView):
         owner_uid = current_user.uid
         CommentModel.query.filter_by(comment_uid=comment_id, user_uid=owner_uid).delete(synchronize_session=False)
         CommentModel.query.filter_by(parent_comment_uid=comment_id).delete(synchronize_session=False)
+        CommentLikeModel.query.filter_by(comment_id=comment_id).delete(synchronize_session=False)
         db.session.commit()
 
     def __getPostsCommentDeleteResponseSchema(self):
