@@ -5,14 +5,12 @@ from resources.home.home import blp as HomeBlueprint
 from resources.profile.profile.profile import blp as ProfileBlueprint
 from resources.profile.profile_user.profile_user import blp as ProfileUserBlueprint
 from resources.profile.post.profile_posts import blp as ProfilePostsBlueprint
-from resources.profile.repost.profile_reposts import blp as ProfileRePostsBlueprint
-from resources.profile.bookmark.profile_bookmarks import blp as ProfileBookmarksBlueprint
 from resources.search.new_user_list import blp as NewUserListBlueprint
 from resources.base.post.post_create.post_create import blp as PostCreateBlueprint
 from resources.base.post.like.post_like import blp as PostLikeBlueprint
 from resources.base.post.like.post_dislike import blp as PostDisLikeBlueprint
 from resources.base.post.post_delete import blp as PostDeleteBlueprint
-from resources.base.post.get_post import blp as GetPostBlueprint
+from resources.base.post.get_post.get_post import blp as GetPostBlueprint
 from resources.base.post.bookmark.post_bookmark import blp as PostBookmarkBlueprint
 from resources.base.post.bookmark.post_unbookmark import blp as PostUnbookmarkBlueprint
 from resources.base.post.repost.post_repost import blp as PostRepostBlueprint
@@ -37,8 +35,6 @@ def register_blueprint(app):
     api.register_blueprint(PostUnbookmarkBlueprint)
     api.register_blueprint(PostRepostBlueprint)
     api.register_blueprint(PostUnrepostBlueprint)
-    api.register_blueprint(ProfileRePostsBlueprint)
-    api.register_blueprint(ProfileBookmarksBlueprint)
     api.register_blueprint(PostDeleteBlueprint)
     api.register_blueprint(PostCommentCreateBlueprint)
     api.register_blueprint(ProfileCommentListBlueprint)

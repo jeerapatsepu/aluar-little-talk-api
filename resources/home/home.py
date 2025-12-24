@@ -5,7 +5,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required
 from datetime import datetime, timezone
 from models.post.post import Post
-from resources.base.short_post import ShortPost
+from resources.base.post.short_post import ShortPost
 from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.request_schema.home_feed_request_schema import HomeFeedRequestSchema
