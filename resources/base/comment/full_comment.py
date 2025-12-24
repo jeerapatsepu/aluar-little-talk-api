@@ -59,5 +59,8 @@ class FullComment:
             schema.updated_date_timestamp = reply.updated_date_timestamp
             schema.text = reply.text
             schema.image_url = reply.image_url
+            like_list = CommentLikeModel.query.filter_by(comment_id=reply.comment_uid).all()
+            schema.like_count = len(like_list)
+            schema.is_like = len(list(filter(lambda x: x.user_uid == current_user.uid, like_list))) > 0
             schema_list.append(schema)
         comment_schema.reply_list = schema_list

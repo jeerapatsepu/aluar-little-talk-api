@@ -14,6 +14,8 @@ class CommentReplySchema(Schema):
     updated_date_timestamp = fields.Integer(dump_only=True)
     text = fields.Str(dump_only=True)
     image_url = fields.Str(dump_only=True)
+    is_like = fields.Boolean(dump_only=True)
+    like_count = fields.Integer(dump_only=True)
     
 class CommentResponseSchema(Schema):
     comment_id = fields.Str(dump_only=True)
