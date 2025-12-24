@@ -30,31 +30,33 @@ class PostDelete(MethodView):
     
     def __deletePostModel(self, post_id: str):
         owner_uid = current_user.uid
-        Post.query.filter_by(post_id=post_id, owner_uid=owner_uid).delete(synchronize_session=False)
-        PostContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostImageContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostBookmarkModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        CommentModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        CommentLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        db.session.commit()
-        try: 
-            bucket = os.getenv("S3_BUCKET_NAME")
-            prefix = "posts/" + post_id
-            response = client.list_objects_v2(
-                Bucket=bucket,
-                Prefix=prefix
-            )
-            if "Contents" in response:
-                client.delete_objects(
+        post = Post.query.filter_by(post_id=post_id).first()
+        if post and post.owner_uid == owner_uid:
+            Post.query.filter_by(post_id=post_id, owner_uid=owner_uid).delete(synchronize_session=False)
+            PostContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+            PostImageContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+            PostLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+            PostBookmarkModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+            PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+            CommentModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+            CommentLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+            db.session.commit()
+            try: 
+                bucket = os.getenv("S3_BUCKET_NAME")
+                prefix = "posts/" + post_id
+                response = client.list_objects_v2(
                     Bucket=bucket,
-                    Delete={
-                        "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]
-                    }
+                    Prefix=prefix
                 )
-        except Exception:
-            pass
+                if "Contents" in response:
+                    client.delete_objects(
+                        Bucket=bucket,
+                        Delete={
+                            "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]
+                        }
+                    )
+            except Exception:
+                pass
 
     def __getPostsLikeResponseSchema(self):
         time = datetime.now(timezone.utc)

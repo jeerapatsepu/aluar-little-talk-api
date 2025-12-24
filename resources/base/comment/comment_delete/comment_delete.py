@@ -24,10 +24,12 @@ class PostCommentDelete(MethodView):
 
     def __deleteCommentModel(self, comment_id: str):
         owner_uid = current_user.uid
-        CommentModel.query.filter_by(comment_uid=comment_id, user_uid=owner_uid).delete(synchronize_session=False)
-        CommentLikeModel.query.filter_by(comment_id=comment_id).delete(synchronize_session=False)
-        self.__deleteReply(comment_id=comment_id)
-        db.session.commit()
+        comment = CommentModel.query.filter_by(comment_uid=comment_id).first()
+        if comment and comment.user_uid == owner_uid:
+            CommentModel.query.filter_by(comment_uid=comment_id, user_uid=owner_uid).delete(synchronize_session=False)
+            CommentLikeModel.query.filter_by(comment_id=comment_id).delete(synchronize_session=False)
+            self.__deleteReply(comment_id=comment_id)
+            db.session.commit()
 
     def __deleteReply(self, comment_id: str):
         reply_list = CommentModel.query.filter_by(parent_comment_uid=comment_id).all()
