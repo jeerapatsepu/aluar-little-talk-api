@@ -32,7 +32,6 @@ class PostCommentCreate(MethodView):
         image = request["image"]
         parent_comment_uid = request["parent_comment_uid"]
         post_id = request["post_id"]
-        reply_user_uid = request["reply_user_uid"]
         comment_id = uuid.uuid4().hex
         owner_uid = current_user.uid
         image_url = self.__uploadCommentImage(comment_id=comment_id, image=image)
@@ -40,7 +39,6 @@ class PostCommentCreate(MethodView):
                                 text=text,
                                 image_url=image_url,
                                 parent_comment_uid=parent_comment_uid,
-                                reply_user_uid=reply_user_uid,
                                 post_id=post_id,
                                 user_uid=owner_uid,
                                 created_date_timestamp = int(datetime.now(timezone.utc).timestamp()),

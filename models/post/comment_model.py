@@ -8,7 +8,6 @@ class CommentModel(db.Model):
     text = db.Column(db.String)
     image_url = db.Column(db.String)
     parent_comment_uid = db.Column(db.String)
-    reply_user_uid = db.Column(db.String)
     post_id = db.Column(db.String)
     user_uid = db.Column(db.String)
     created_date_timestamp = db.Column(db.Integer)
