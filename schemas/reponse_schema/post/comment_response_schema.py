@@ -27,7 +27,7 @@ class CommentResponseSchema(Schema):
     image_url = fields.Str(dump_only=True)
     created_date_timestamp = fields.Integer(dump_only=True)
     updated_date_timestamp = fields.Integer(dump_only=True)
-    reply_list = fields.Nested(CommentReplySchema, dump_only=True, many=True)
+    reply_list = fields.Nested(CommentReplySchema, only=("comment_id", "parent_comment_id"), dump_only=True, many=True)
     is_see_reply_more = fields.Boolean(dump_only=True)
     is_like = fields.Boolean(dump_only=True)
     like_count = fields.Integer(dump_only=True)

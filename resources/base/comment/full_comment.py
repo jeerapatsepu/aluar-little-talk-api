@@ -40,7 +40,8 @@ class FullComment:
         schema_list = []
         reply_list = CommentModel.query.filter_by(parent_comment_uid=self.__comment_id).order_by(CommentModel.created_date_timestamp).offset(0).limit(4).all()
         comment_schema.is_see_reply_more = len(reply_list) > 3
-        reply_list.pop()
+        if len(reply_list) > 3:
+            reply_list.pop()
         for reply in reply_list:
             owner_profile = UserProfile.query.filter_by(uid=reply.user_uid).first()
             schema = CommentReplySchema()
