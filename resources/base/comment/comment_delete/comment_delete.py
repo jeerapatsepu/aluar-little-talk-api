@@ -25,9 +25,15 @@ class PostCommentDelete(MethodView):
     def __deleteCommentModel(self, comment_id: str):
         owner_uid = current_user.uid
         CommentModel.query.filter_by(comment_uid=comment_id, user_uid=owner_uid).delete(synchronize_session=False)
-        CommentModel.query.filter_by(parent_comment_uid=comment_id).delete(synchronize_session=False)
         CommentLikeModel.query.filter_by(comment_id=comment_id).delete(synchronize_session=False)
+        self.__deleteReply(comment_id=comment_id)
         db.session.commit()
+
+    def __deleteReply(self, comment_id: str):
+        reply_list = CommentModel.query.filter_by(parent_comment_uid=comment_id).all()
+        for reply in reply_list:
+            CommentLikeModel.query.filter_by(comment_id=reply.comment_uid).delete(synchronize_session=False)
+        CommentModel.query.filter_by(parent_comment_uid=comment_id).delete(synchronize_session=False)
 
     def __getPostsCommentDeleteResponseSchema(self):
         time = datetime.now(timezone.utc)

@@ -5,6 +5,7 @@ from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.shared import db
+from models.post.comment_like_model import CommentLikeModel
 from models.post.comment_model import CommentModel
 from models.post.post import Post, PostContent, PostImageContent
 from models.post.post_bookmark_model import PostBookmarkModel
@@ -36,6 +37,7 @@ class PostDelete(MethodView):
         PostBookmarkModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         CommentModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+        CommentLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         db.session.commit()
         try: 
             bucket = os.getenv("S3_BUCKET_NAME")
