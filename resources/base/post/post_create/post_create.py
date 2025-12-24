@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 import uuid
 from app.shared import db
 from models.post.post import Post, PostContent, PostImageContent
-from resources.posts.post_create.post_create_response_schema import PostsCreateResponseSchema
+from resources.base.post.post_create.post_create_response_schema import PostsCreateResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from app.s3 import client
 import base64

@@ -8,17 +8,18 @@ from resources.profile.post.profile_posts import blp as ProfilePostsBlueprint
 from resources.profile.repost.profile_reposts import blp as ProfileRePostsBlueprint
 from resources.profile.bookmark.profile_bookmarks import blp as ProfileBookmarksBlueprint
 from resources.search.new_user_list import blp as NewUserListBlueprint
-from resources.posts.post_create.post_create import blp as PostCreateBlueprint
-from resources.posts.like.post_like import blp as PostLikeBlueprint
-from resources.posts.like.post_dislike import blp as PostDisLikeBlueprint
-from resources.posts.post_delete import blp as PostDeleteBlueprint
-from resources.posts.get_post import blp as GetPostBlueprint
-from resources.posts.bookmark.post_bookmark import blp as PostBookmarkBlueprint
-from resources.posts.bookmark.post_unbookmark import blp as PostUnbookmarkBlueprint
-from resources.posts.repost.post_repost import blp as PostRepostBlueprint
-from resources.posts.repost.post_unrepost import blp as PostUnrepostBlueprint
-from resources.posts.post_comment.post_comment_create.post_comment_create import blp as PostCommentCreateBlueprint
-from resources.posts.post_comment.post_comment.profile_comment_list import blp as ProfileCommentListBlueprint
+from resources.base.post.post_create.post_create import blp as PostCreateBlueprint
+from resources.base.post.like.post_like import blp as PostLikeBlueprint
+from resources.base.post.like.post_dislike import blp as PostDisLikeBlueprint
+from resources.base.post.post_delete import blp as PostDeleteBlueprint
+from resources.base.post.get_post import blp as GetPostBlueprint
+from resources.base.post.bookmark.post_bookmark import blp as PostBookmarkBlueprint
+from resources.base.post.bookmark.post_unbookmark import blp as PostUnbookmarkBlueprint
+from resources.base.post.repost.post_repost import blp as PostRepostBlueprint
+from resources.base.post.repost.post_unrepost import blp as PostUnrepostBlueprint
+from resources.base.comment.comment_create.comment_create import blp as PostCommentCreateBlueprint
+from resources.base.comment.comment_list.comment_list import blp as ProfileCommentListBlueprint
+
 def register_blueprint(app):
     api = Api(app)
     api.register_blueprint(HomeBlueprint)

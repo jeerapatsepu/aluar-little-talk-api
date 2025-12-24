@@ -5,7 +5,7 @@ from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 from models.post.comment_model import CommentModel
 from models.user_profile import UserProfile
-from resources.posts.post_comment.post_comment.post_comment_list_response_schema import PostsCommentListResponseSchema
+from resources.base.comment.comment_list.comment_list_response_schema import PostsCommentListResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.post.comment_response_schema import CommentResponseSchema

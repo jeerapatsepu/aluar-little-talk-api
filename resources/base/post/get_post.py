@@ -5,7 +5,7 @@ from flask_smorest import Blueprint
 from datetime import datetime, timezone
 from models.post.post import Post
 from resources.base.full_post import FullPost
-from resources.posts.get_post_reponse_schema import GetPostResponseSchema
+from resources.base.post.get_post_reponse_schema import GetPostResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
 

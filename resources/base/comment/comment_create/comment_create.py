@@ -6,8 +6,7 @@ import uuid
 from app.shared import db
 from models.post.comment_model import CommentModel
 from models.user_profile import UserProfile
-from resources.posts.post_comment.post_comment_create.post_comment_create_response_schema import PostsCommentCreateResponseSchema
-from resources.posts.post_create.post_create_response_schema import PostsCreateResponseSchema
+from resources.base.comment.comment_create.comment_create_response_schema import CommentCreateResponseSchema
 from schemas.reponse_schema.error import ErrorSchema
 from schemas.reponse_schema.meta import MetaSchema
 from app.s3 import client
@@ -23,7 +22,7 @@ blp = Blueprint("PostCommentCreate", __name__, description="Post Comment Create"
 class PostCommentCreate(MethodView):
     @jwt_required()
     @blp.arguments(PostCommentCreateRequestSchema)
-    @blp.response(200, PostsCommentCreateResponseSchema)
+    @blp.response(200, CommentCreateResponseSchema)
     def post(self, request):
         return self.__createPostComment(request=request)
 
@@ -92,7 +91,7 @@ class PostCommentCreate(MethodView):
         data.updated_date_timestamp = comment.updated_date_timestamp
         data.reply_list = []
         
-        response = PostsCommentCreateResponseSchema()
+        response = CommentCreateResponseSchema()
         response.meta = meta
         response.data = data
         return response
@@ -111,7 +110,7 @@ class PostCommentCreate(MethodView):
         meta.response_timestamp = str(time.timestamp())
         meta.error = error
 
-        response = PostsCommentCreateResponseSchema()
+        response = CommentCreateResponseSchema()
         response.meta = meta
         response.data = None
         return response
