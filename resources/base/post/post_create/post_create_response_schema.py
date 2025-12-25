@@ -4,4 +4,4 @@ from marshmallow import Schema, fields
 
 class PostsCreateResponseSchema(Schema):
     meta = fields.Nested(MetaSchema, only=("response_id", "response_code", "response_date", "response_timestamp", "error"), dump_only=True)
-    data = fields.Nested(PostCreateRequestSchema, dump_only=True)
+    data = fields.Nested(PostCreateRequestSchema, only=("visibility", "data"), dump_only=True)

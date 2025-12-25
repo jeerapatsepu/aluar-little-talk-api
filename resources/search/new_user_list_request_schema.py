@@ -12,4 +12,4 @@ class NewUserListDataResponseSchema(Schema):
 
 class NewUserListResponseSchema(Schema):
     meta = fields.Nested(MetaSchema, only=("response_id", "response_code", "response_date", "response_timestamp", "error"), dump_only=True)
-    data = fields.Nested(NewUserListDataResponseSchema, dump_only=True, many=True)
+    data = fields.Nested(NewUserListDataResponseSchema, only=("full_name", "uid", "photo"), dump_only=True, many=True)

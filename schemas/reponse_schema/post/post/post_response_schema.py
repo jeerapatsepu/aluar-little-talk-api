@@ -18,6 +18,6 @@ class PostResponseSchema(Schema):
     comment_count = fields.Integer(dump_only=True)
     created_date_timestamp = fields.Integer(dump_only=True)
     updated_date_timestamp = fields.Integer(dump_only=True)
-    contents = fields.Nested(PostDataSchema, dump_only=True, many=True)
+    contents = fields.Nested(PostDataSchema, only=("index", "text", "text_type", "type", "images"), dump_only=True, many=True)
     is_see_more = fields.Boolean(dump_only=True)
     is_owner = fields.Boolean(dump_only=True)

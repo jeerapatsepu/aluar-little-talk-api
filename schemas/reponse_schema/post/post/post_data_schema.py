@@ -7,5 +7,5 @@ class PostDataSchema(Schema):
     text = fields.Str(required=True)
     text_type = fields.Str(validate=validate.OneOf(["TITLE", "SUB_TITLE", "TEXT", "QUOTE", ""]), required=True) # TITLE, SUB_TITLE, TEXT, QUOTE
     type = fields.Str(validate=validate.OneOf(["TEXT", "IMAGE", "SECTION", "LINK"]), required=True) # TEXT, IMAGE, SECTION, LINK
-    images = fields.Nested(PostImageDataSchema, required=True, many=True)
+    images = fields.Nested(PostImageDataSchema, only=("index", "data"), required=True, many=True)
     # images = fields.List(fields.Str(), required=True)
