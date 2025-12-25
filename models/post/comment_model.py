@@ -10,5 +10,6 @@ class CommentModel(db.Model):
     parent_comment_uid = db.Column(db.String)
     post_id = db.Column(db.String)
     user_uid = db.Column(db.String)
+    reply_uid = db.Column(db.String)
     created_date_timestamp = db.Column(db.Integer)
     updated_date_timestamp = db.Column(db.Integer)
