@@ -62,5 +62,10 @@ class FullComment:
             like_list = CommentLikeModel.query.filter_by(comment_id=reply.comment_uid).all()
             schema.like_count = len(like_list)
             schema.is_like = len(list(filter(lambda x: x.user_uid == current_user.uid, like_list))) > 0
+            parent_comment = CommentModel.query.filter_by(comment_uid=reply.parent_comment_uid).first()
+            parent_comment_profile = UserProfile.query.filter_by(uid=parent_comment.user_uid).first()
+            schema.reply_image = parent_comment_profile.photo
+            schema.reply_name = parent_comment_profile.full_name
+            schema.reply_uid = parent_comment_profile.uid
             schema_list.append(schema)
         comment_schema.reply_list = schema_list
