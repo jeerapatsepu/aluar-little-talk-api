@@ -22,7 +22,7 @@ class PostCommentUserList(MethodView):
         profile_list = self.__getProfileList(uid_list=uid_list)
         return self.__getPostLikeListResponseSchema(profile_list=profile_list)
     
-    def __map_list_get_uid(val):
+    def __map_list_get_uid(self, val):
         return val.user_uid
     
     def __getProfileList(self, uid_list: list):
