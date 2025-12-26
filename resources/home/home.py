@@ -18,7 +18,6 @@ class Home(MethodView):
     @blp.arguments(HomeFeedRequestSchema)
     @blp.response(200, ProfilePostsResponseSchema)
     def post(self, request):
-        uid = request["uid"]
         offset = request["offset"]
         limit = request["limit"]
         filter = request["filter"]
