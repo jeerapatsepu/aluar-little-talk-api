@@ -18,7 +18,7 @@ class PostRepostUserList(MethodView):
         post_id = request["post_id"]
         offset = request["offset"]
         limit = request["limit"]
-        repost_list = PostRepostModel.query.filter_by(post_id=post_id).order_by(CommentModel.created_date_timestamp).offset(offset=offset).limit(limit=limit).all()
+        repost_list = PostRepostModel.query.filter_by(post_id=post_id).order_by(PostRepostModel.created_date_timestamp).offset(offset=offset).limit(limit=limit).all()
         uid_list = list(set(list(map(self.__map_list_get_uid, repost_list))))
         profile_list = self.__getProfileList(uid_list=uid_list)
         return self.__getPostLikeListResponseSchema(profile_list=profile_list)
