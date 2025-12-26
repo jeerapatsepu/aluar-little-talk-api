@@ -25,6 +25,7 @@ class PostLikeList(MethodView):
         profile_list = []
         for like in like_list:
             profile = UserProfile.query.filter_by(uid=like.user_uid).one()
+            profile.name = profile.full_name
             profile_list.append(profile)
         return profile_list
 
