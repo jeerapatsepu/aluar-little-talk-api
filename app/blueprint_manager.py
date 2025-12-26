@@ -20,6 +20,7 @@ from resources.base.comment.comment_list.comment_list import blp as ProfileComme
 from resources.base.comment.comment_like.comment_like import blp as PostCommentLikeBlueprint
 from resources.base.comment.comment_dislike.comment_dislike import blp as PostCommentDisLikeBlueprint
 from resources.base.comment.comment_delete.comment_delete import blp as PostCommentDeleteBlueprint
+from resources.base.post.post_like_list.post_like_list import blp as PostLikeListBlueprint
 
 def register_blueprint(app):
     api = Api(app)
@@ -44,3 +45,4 @@ def register_blueprint(app):
     api.register_blueprint(PostCommentLikeBlueprint)
     api.register_blueprint(PostCommentDisLikeBlueprint)
     api.register_blueprint(PostCommentDeleteBlueprint)
+    api.register_blueprint(PostLikeListBlueprint)
