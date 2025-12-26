@@ -19,6 +19,6 @@ def create_app(db_url=None) -> Flask:
         db.create_all()
 
     bcrypt.init_app(app)
-    migrate = Migrate(app, db)
+    migrate = Migrate(app, db, compare_type=True)
 
     return app
