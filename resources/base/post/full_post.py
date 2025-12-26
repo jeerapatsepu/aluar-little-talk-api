@@ -1,4 +1,5 @@
 from flask_jwt_extended import current_user
+from models.post.comment_model import CommentModel
 from models.post.post import Post, PostContent, PostImageContent
 from models.post.post_bookmark_model import PostBookmarkModel
 from models.post.post_like_model import PostLikeModel
@@ -39,6 +40,7 @@ class FullPost:
             post.is_owner = False
         post.like_count = len(like_list)
         post.repost_count = PostRepostModel.query.filter_by(post_id=post.post_id).count()
+        post.comment_count = CommentModel.query.filter_by(post_id=post.post_id).count()
         return post
     
     def __getImageContentList(self, contentList: list):
