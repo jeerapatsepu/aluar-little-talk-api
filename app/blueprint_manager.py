@@ -22,6 +22,7 @@ from resources.base.comment.comment_dislike.comment_dislike import blp as PostCo
 from resources.base.comment.comment_delete.comment_delete import blp as PostCommentDeleteBlueprint
 from resources.base.post.post_like_list.post_like_list import blp as PostLikeListBlueprint
 from resources.base.post.post_comment_user_list.post_comment_user_list import blp as PostCommentUserListBlueprint
+from resources.base.post.post_repost_user_list.post_repost_user_list import blp as PostRepostUserListBlueprint
 
 def register_blueprint(app):
     api = Api(app)
@@ -48,3 +49,4 @@ def register_blueprint(app):
     api.register_blueprint(PostCommentDeleteBlueprint)
     api.register_blueprint(PostLikeListBlueprint)
     api.register_blueprint(PostCommentUserListBlueprint)
+    api.register_blueprint(PostRepostUserListBlueprint)
