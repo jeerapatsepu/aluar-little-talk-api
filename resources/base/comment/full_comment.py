@@ -51,6 +51,7 @@ class FullComment:
             schema.owner_name = owner_profile.full_name
             schema.owner_uid = owner_profile.uid
             schema.post_id = reply.post_id
+            like_list = CommentLikeModel.query.filter_by(comment_id=reply.comment_uid).all()
             try:
                 schema.is_owner = current_user.uid == owner_profile.uid
                 schema.is_like = len(list(filter(lambda x: x.user_uid == current_user.uid, like_list))) > 0
@@ -61,12 +62,10 @@ class FullComment:
             schema.updated_date_timestamp = reply.updated_date_timestamp
             schema.text = reply.text
             schema.image_url = reply.image_url
-            like_list = CommentLikeModel.query.filter_by(comment_id=reply.comment_uid).all()
             schema.like_count = len(like_list)
-            parent_comment = CommentModel.query.filter_by(comment_uid=reply.parent_comment_uid).first()
-            parent_comment_profile = UserProfile.query.filter_by(uid=parent_comment.user_uid).first()
-            schema.reply_image = parent_comment_profile.photo
-            schema.reply_name = parent_comment_profile.full_name
-            schema.reply_uid = parent_comment_profile.uid
+            reply_profile = UserProfile.query.filter_by(uid=reply.reply_uid).first()
+            schema.reply_image = reply_profile.photo
+            schema.reply_name = reply_profile.full_name
+            schema.reply_uid = reply_profile.uid
             schema_list.append(schema)
         comment_schema.reply_list = schema_list
