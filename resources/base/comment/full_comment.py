@@ -23,7 +23,7 @@ class FullComment:
         comment_schema.owner_uid = owner_profile.uid
         comment_schema.post_id = comment.post_id
         # if reply_uid:
-        reply_profile = UserProfile.query.filter_by(uid=comment.reply_uid).first()
+        reply_profile = UserProfile.query.filter_by(uid=comment.reply_uid).one()
         comment_schema.reply_uid = reply_profile.uid
         comment_schema.reply_name = reply_profile.full_name
         comment_schema.reply_image = reply_profile.photo
