@@ -18,7 +18,7 @@ class PostCommentLike(MethodView):
     @blp.response(200, CommentLikeResponseSchema)
     def post(self, request):
         comment_id = request["comment_id"]
-        comment_like = CommentLikeModel.query.filter_by(comment_id=comment_id).first()
+        comment_like = CommentLikeModel.query.filter_by(comment_id=comment_id, user_uid=current_user.uid).first()
         if not comment_like:
             self.__createCommentLikeModel(comment_id=comment_id)
         return self.__getCommentLikeResponseSchema()
