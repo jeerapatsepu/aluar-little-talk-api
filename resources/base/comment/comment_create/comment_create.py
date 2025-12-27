@@ -47,7 +47,7 @@ class PostCommentCreate(MethodView):
                                 updated_date_timestamp = int(datetime.now(timezone.utc).timestamp()))
         db.session.add(comment)
         db.session.commit()
-        return self.__getPostsCommentCreateSuccessResponseSchema(comment=comment)
+        return self.__getPostsCommentCreateSuccessResponseSchema(comment=comment, reply_uid=reply_uid)
 
     def __uploadCommentImage(self, comment_id: str, image: str):
         try:
@@ -64,7 +64,7 @@ class PostCommentCreate(MethodView):
         except Exception:
             return ""
     
-    def __getPostsCommentCreateSuccessResponseSchema(self, comment: CommentModel):
+    def __getPostsCommentCreateSuccessResponseSchema(self, comment: CommentModel, reply_uid: str):
         time = datetime.now(timezone.utc)
 
         meta = MetaSchema()
@@ -75,7 +75,12 @@ class PostCommentCreate(MethodView):
         meta.error = None
 
         comment_schema = FullComment(comment_id=comment.comment_uid).get_comment()
-        
+        if reply_uid:
+            reply_profile = UserProfile.query.filter_by(uid=reply_uid).one()
+            comment_schema.reply_uid = reply_profile.uid
+            comment_schema.reply_name = reply_profile.full_name
+            comment_schema.reply_image = reply_profile.photo
+
         response = CommentCreateResponseSchema()
         response.meta = meta
         response.data = comment_schema
