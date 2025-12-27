@@ -2,7 +2,7 @@ import uuid
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
-from models.user_profile import UserProfile
+from models.profile.user_profile import UserProfile
 from resources.search.new_user_list_request_schema import NewUserListRequestSchema, NewUserListResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 

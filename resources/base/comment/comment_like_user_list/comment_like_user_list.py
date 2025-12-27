@@ -3,7 +3,7 @@ from flask_smorest import Blueprint
 from datetime import datetime, timezone
 import uuid
 from models.post.comment_like_model import CommentLikeModel
-from models.user_profile import UserProfile
+from models.profile.user_profile import UserProfile
 from resources.base.comment.comment_like.comment_like_schema import CommentLikeResquestSchema
 from resources.base.post.post_like_list.post_like_list_schema import PostLikeListResponseSchema
 from schemas.reponse_schema.meta import MetaSchema

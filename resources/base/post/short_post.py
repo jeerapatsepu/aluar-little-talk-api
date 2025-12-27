@@ -4,7 +4,7 @@ from models.post.post import Post, PostContent, PostImageContent
 from models.post.post_bookmark_model import PostBookmarkModel
 from models.post.post_like_model import PostLikeModel
 from models.post.post_repost_model import PostRepostModel
-from models.user_profile import UserProfile
+from models.profile.user_profile import UserProfile
 from schemas.reponse_schema.post.post.post_image_data_schema import PostImageDataSchema
 
 class ShortPost:

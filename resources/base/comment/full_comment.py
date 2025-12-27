@@ -1,7 +1,7 @@
 from flask_jwt_extended import current_user
 from models.post.comment_like_model import CommentLikeModel
 from models.post.comment_model import CommentModel
-from models.user_profile import UserProfile
+from models.profile.user_profile import UserProfile
 from schemas.reponse_schema.post.comment_response_schema import CommentReplySchema, CommentResponseSchema
 
 class FullComment:

@@ -4,7 +4,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 from models.post.comment_model import CommentModel
-from models.user_profile import UserProfile
+from models.profile.user_profile import UserProfile
 from resources.base.comment.comment_list.comment_list_response_schema import PostsCommentListResponseSchema
 from resources.base.comment.full_comment import FullComment
 from schemas.reponse_schema.meta import MetaSchema

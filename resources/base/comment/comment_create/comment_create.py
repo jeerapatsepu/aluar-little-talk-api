@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 import uuid
 from app.shared import db
 from models.post.comment_model import CommentModel
-from models.user_profile import UserProfile
+from models.profile.user_profile import UserProfile
 from resources.base.comment.comment_create.comment_create_response_schema import CommentCreateResponseSchema
 from resources.base.comment.full_comment import FullComment
 from schemas.reponse_schema.error import ErrorSchema

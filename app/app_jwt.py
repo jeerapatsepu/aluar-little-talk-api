@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_jwt_extended import JWTManager
-from models.user_profile import UserProfile
+from models.profile.user_profile import UserProfile
 from shared.block_list import BLOCKLIST
 
 def handle_jwt(app):

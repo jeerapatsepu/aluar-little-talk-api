@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, current_user
 from datetime import datetime, timezone
 from models.usli import USLI
 from app.shared import db, uid
-from models.user_profile import UserProfile
+from models.profile.user_profile import UserProfile
 from resources.profile.profile.profile_response_schema import ProfileResponseSchema
 from schemas.reponse_schema.error import ErrorSchema
 from schemas.reponse_schema.meta import MetaSchema
