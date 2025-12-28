@@ -1,4 +1,3 @@
-from marshmallow import Schema, fields
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required, current_user
@@ -17,6 +16,7 @@ blp = Blueprint("ProfileUser", __name__, description="Profile User")
 
 @blp.route("/profile/user")
 class ProfileUser(MethodView):
+    @jwt_required(optional=True)
     @blp.arguments(ProfileRequestSchema)
     @blp.response(200, ProfileResponseSchema)
     def post(self, request):
@@ -40,14 +40,17 @@ class ProfileUser(MethodView):
         data.photo = profile.photo
         data.caption = profile.caption
         data.link = profile.link
-        relationship_status_of_current_user = UserRelationship.query.filter_by(receiver_id=current_user.uid, sender_id=data.uid).first()
-        relationship_status_of_user = UserRelationship.query.filter_by(receiver_id=data.uid, sender_id=current_user.uid).first()
-        relationship_status = ""
-        if relationship_status_of_current_user:
-            relationship_status = relationship_status_of_current_user.status
-        if relationship_status_of_user:
-            relationship_status = "FRIEND"
-        data.relationship_status = relationship_status
+        try:
+            relationship_status_of_current_user = UserRelationship.query.filter_by(receiver_id=current_user.uid, sender_id=data.uid).first()
+            relationship_status_of_user = UserRelationship.query.filter_by(receiver_id=data.uid, sender_id=current_user.uid).first()
+            relationship_status = ""
+            if relationship_status_of_current_user:
+                relationship_status = relationship_status_of_current_user.status
+            if relationship_status_of_user:
+                relationship_status = "FRIEND"
+            data.relationship_status = relationship_status
+        except Exception:
+            data.relationship_status = None
 
         meta = MetaSchema()
         meta.response_id = uid.hex
