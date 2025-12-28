@@ -3,6 +3,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required, current_user
 from datetime import datetime, timezone
+from models.profile.user_relationship import UserRelationship
 from models.usli import USLI
 from app.shared import db, uid
 from models.profile.user_profile import UserProfile
@@ -35,11 +36,18 @@ class ProfileUser(MethodView):
 
         data = ProfileDataResponseSchema()
         data.name = profile.full_name
-        data.email = profile.email
         data.uid = profile.uid
         data.photo = profile.photo
         data.caption = profile.caption
         data.link = profile.link
+        relationship_status_of_current_user = UserRelationship.query.filter_by(receiver_id=current_user.uid, sender_id=data.uid).first()
+        relationship_status_of_user = UserRelationship.query.filter_by(receiver_id=data.uid, sender_id=current_user.uid).first()
+        relationship_status = ""
+        if relationship_status_of_current_user:
+            relationship_status = relationship_status_of_current_user.status
+        if relationship_status_of_user:
+            relationship_status = "FRIEND"
+        data.relationship_status = relationship_status
 
         meta = MetaSchema()
         meta.response_id = uid.hex
