@@ -41,8 +41,8 @@ class ProfileUser(MethodView):
         data.caption = profile.caption
         data.link = profile.link
         try:
-            relationship_status_of_current_user = UserRelationship.query.filter_by(receiver_id=current_user.uid, sender_id=data.uid).first()
-            relationship_status_of_user = UserRelationship.query.filter_by(receiver_id=data.uid, sender_id=current_user.uid).first()
+            relationship_status_of_current_user = UserRelationship.query.filter_by(sender_id=current_user.uid, receiver_id=data.uid).first() ## bb -> jee
+            relationship_status_of_user = UserRelationship.query.filter_by(sender_id=data.uid, receiver_id=current_user.uid).first() # jee -> bb
             relationship_status = ""
             if relationship_status_of_current_user.status == "FOLLOW":
                 relationship_status = "FOLLOW"
