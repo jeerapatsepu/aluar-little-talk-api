@@ -1,3 +1,4 @@
+import logging
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required, current_user
@@ -50,6 +51,7 @@ class ProfileUser(MethodView):
                 relationship_status = "FRIEND"
             data.relationship_status = relationship_status
         except Exception:
+            logging.exception(Exception)
             data.relationship_status = None
 
         meta = MetaSchema()
