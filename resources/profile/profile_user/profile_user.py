@@ -44,9 +44,9 @@ class ProfileUser(MethodView):
             relationship_status_of_current_user = UserRelationship.query.filter_by(receiver_id=current_user.uid, sender_id=data.uid).first()
             relationship_status_of_user = UserRelationship.query.filter_by(receiver_id=data.uid, sender_id=current_user.uid).first()
             relationship_status = ""
-            if relationship_status_of_current_user:
-                relationship_status = relationship_status_of_current_user.status
             if relationship_status_of_user:
+                relationship_status = relationship_status_of_current_user.status
+            if relationship_status_of_user and relationship_status_of_current_user:
                 relationship_status = "FRIEND"
             data.relationship_status = relationship_status
         except Exception:
