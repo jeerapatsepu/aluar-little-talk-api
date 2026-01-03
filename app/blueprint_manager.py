@@ -26,6 +26,7 @@ from resources.base.post.post_repost_user_list.post_repost_user_list import blp 
 from resources.base.comment.comment_like_user_list.comment_like_user_list import blp as PostCommentLikeUserListBlueprint
 from resources.profile.profile_follow.profile_follow import blp as ProfileFollowBlueprint
 from resources.profile.profile_unfollow.profile_unfollow import blp as ProfileUnfollowBlueprint
+from resources.profile.profile_change_photo.profile_change_photo import blp as ProfileChangePhotoBlueprint
 
 def register_blueprint(app):
     api = Api(app)
@@ -56,3 +57,4 @@ def register_blueprint(app):
     api.register_blueprint(PostCommentLikeUserListBlueprint)
     api.register_blueprint(ProfileFollowBlueprint)
     api.register_blueprint(ProfileUnfollowBlueprint)
+    api.register_blueprint(ProfileChangePhotoBlueprint)
