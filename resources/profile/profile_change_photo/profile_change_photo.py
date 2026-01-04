@@ -47,7 +47,6 @@ class ProfileChangePhoto(MethodView):
             pass
 
     def __upload_photo(self, image_data: str):
-        image_content_id = uuid.uuid4().hex
         image_path = 'photos/' + current_user.uid + '/' + current_user.uid + '.jpg'
         client.put_object(Body=base64.b64decode(image_data),
                             Bucket=os.getenv("S3_BUCKET_NAME"),
