@@ -5,8 +5,8 @@ from schemas.reponse_schema.profile.profile_data_response_schema import ProfileD
 
 class ProfileEditRequestSchema(Schema):
     name = fields.Str(required=True, validate=validate.Length(min=1))
-    website = fields.Str(required=True, validate=validate.Length(min=1))
-    bio = fields.Str(required=True, validate=validate.Length(min=1))
+    website = fields.Str(required=True)
+    bio = fields.Str(required=True)
 
 class ProfileEditResponseSchema(Schema):
     meta = fields.Nested(MetaSchema, only=("response_id", "response_code", "response_date", "response_timestamp", "error"), dump_only=True)
