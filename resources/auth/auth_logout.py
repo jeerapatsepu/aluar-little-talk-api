@@ -14,7 +14,7 @@ blp = Blueprint("AuthLogout", __name__, description="Auth Logout")
 class AuthLogout(MethodView):
     @jwt_required()
     @blp.response(200, AuthAppleCreateResponseSchema)
-    def post(self, request):
+    def post(self):
         jti = get_jwt()["jti"]
         now = int(datetime.now(timezone.utc).timestamp())
         token_block = TokenBlock(jti=jti, created_date_timestamp=now)
