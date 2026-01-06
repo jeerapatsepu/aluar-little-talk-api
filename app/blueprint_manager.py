@@ -1,6 +1,7 @@
 from flask_smorest import Api
 from resources.auth.auth_create import blp as AuthCreateBlueprint
 from resources.auth.auth_apple_login import blp as AuthLoginBlueprint
+from resources.auth.auth_logout import blp as AuthLogoutBlueprint
 from resources.home.home import blp as HomeBlueprint
 from resources.profile.profile.profile import blp as ProfileBlueprint
 from resources.profile.profile_user.profile_user import blp as ProfileUserBlueprint
@@ -34,6 +35,7 @@ def register_blueprint(app):
     api.register_blueprint(HomeBlueprint)
     api.register_blueprint(AuthCreateBlueprint)
     api.register_blueprint(AuthLoginBlueprint)
+    api.register_blueprint(AuthLogoutBlueprint)
     api.register_blueprint(ProfileBlueprint)
     api.register_blueprint(ProfileUserBlueprint)
     api.register_blueprint(ProfilePostsBlueprint)

@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_jwt_extended import JWTManager
 from models.profile.user_profile import UserProfile
-from shared.block_list import BLOCKLIST
+from models.token_block import TokenBlock
 
 def handle_jwt(app):
     jwt = JWTManager(app)
@@ -28,8 +28,10 @@ def handle_jwt(app):
         )
 
     @jwt.token_in_blocklist_loader
-    def check_if_token_in_blocklist(jwt_header, jwt_payload):
-        return jwt_payload["jti"] in BLOCKLIST
+    def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
+        jti = jwt_payload["jti"]
+        token = TokenBlock.query.filter_by(jti=jti).scalar()
+        return token is not None
 
     @jwt.revoked_token_loader
     def revoked_token_callback(jwt_header, jwt_payload):
