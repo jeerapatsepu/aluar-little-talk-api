@@ -23,10 +23,12 @@ class InternalDeleteUser(MethodView):
         if internal_header_key == os.getenv("INTERNAL_AUTH_KEY"):
             self.__deleteUserThan15Days()
             return self.__getSuccessResponse()
-        return self.__getFailResponse()
+        else:
+            return self.__getFailResponse()
     
     def __deleteUserThan15Days(self):
-        user_uid_list = UserDeleteRequest.query.filter_by(self.__isThan15Days(created_date_timestamp=credits)).all()
+        user_uid_list = UserDeleteRequest.query.all()
+        user_uid_list = self.__filterThan15Days(request_list=user_uid_list)
         for uid in user_uid_list:
             USLI.query.filter_by(uid=uid).delete()
             UserProfile.query.filter_by(uid=uid).delete()
@@ -37,9 +39,13 @@ class InternalDeleteUser(MethodView):
             for post in post_list:
                 FullPost(post_id=post.post_id, owner_uid=uid).delete_post()
 
-    def __isThan15Days(self, created_date_timestamp: int) -> bool:
-        ts_date = datetime.fromtimestamp(float(str(created_date_timestamp)))
-        return datetime.now() - ts_date > timedelta(days=15)
+    def __filterThan15Days(self, request_list: list):
+        list = []
+        for item in request_list:
+            ts_date = datetime.fromtimestamp(item.created_date_timestamp)
+            if datetime.now() - ts_date > timedelta(days=15):
+                list.append(item)
+        return list
     
     def __getSuccessResponse(self):
         time = datetime.now(timezone.utc)
