@@ -38,7 +38,7 @@ class InternalDeleteUser(MethodView):
                 FullPost(post_id=post.post_id, owner_uid=uid).delete_post()
 
     def __isThan15Days(self, created_date_timestamp: int) -> bool:
-        ts_date = datetime.fromtimestamp(created_date_timestamp)
+        ts_date = datetime.fromtimestamp(float(created_date_timestamp))
         return datetime.now() - ts_date > timedelta(days=15)
     
     def __getSuccessResponse(self):
