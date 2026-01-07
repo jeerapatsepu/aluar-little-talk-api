@@ -1,3 +1,4 @@
+import os
 from flask_jwt_extended import current_user
 from models.post.comment_model import CommentModel
 from models.post.post import Post, PostContent, PostImageContent
@@ -5,7 +6,11 @@ from models.post.post_bookmark_model import PostBookmarkModel
 from models.post.post_like_model import PostLikeModel
 from models.post.post_repost_model import PostRepostModel
 from models.profile.user_profile import UserProfile
+from resources.base.comment.comment_delete_tool import CommentDeleteTool
 from schemas.reponse_schema.post.post.post_image_data_schema import PostImageDataSchema
+from app.shared import db
+from app.s3 import client
+
 class FullPost:
     def __init__(self, post_id: str):
         self.__post_id = post_id
@@ -15,6 +20,34 @@ class FullPost:
         owner = UserProfile.query.filter_by(uid=post.owner_uid).first()
         new_post = self.__getContentList(owner, post)
         return new_post
+    
+    def delete_post(self, owner_uid: str):
+        PostContent.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostImageContent.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostLikeModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostBookmarkModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostRepostModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        comment_list = CommentModel.query.filter_by(post_id=self.__post_id).all()
+        for comment in comment_list:
+            CommentDeleteTool(comment_id=comment.comment_uid).deleteComment()
+        Post.query.filter_by(post_id=self.__post_id, owner_uid=owner_uid).delete(synchronize_session=False)
+        db.session.commit()
+        try: 
+            bucket = os.getenv("S3_BUCKET_NAME")
+            prefix = "posts/" + self.__post_id
+            response = client.list_objects_v2(
+                Bucket=bucket,
+                Prefix=prefix
+            )
+            if "Contents" in response:
+                client.delete_objects(
+                    Bucket=bucket,
+                    Delete={
+                        "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]
+                    }
+                )
+        except Exception:
+            pass
     
     def __getContentList(self, owner: UserProfile, post: Post):
         contents = PostContent.query.filter_by(post_id=post.post_id).all()
