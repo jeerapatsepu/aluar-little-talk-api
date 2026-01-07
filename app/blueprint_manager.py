@@ -29,7 +29,8 @@ from resources.profile.profile_follow.profile_follow import blp as ProfileFollow
 from resources.profile.profile_unfollow.profile_unfollow import blp as ProfileUnfollowBlueprint
 from resources.profile.profile_change_photo.profile_change_photo import blp as ProfileChangePhotoBlueprint
 from resources.profile.profile_edit.profile_edit import blp as ProfileEditBlueprint
-
+from resources.delete_user.delete_user_term.delete_user_term import blp as DeleteUserTermBlueprint
+from resources.delete_user.delete_user_request.delete_user_request import blp as DeleteUserRequestBlueprint
 def register_blueprint(app):
     api = Api(app)
     api.register_blueprint(HomeBlueprint)
@@ -62,3 +63,5 @@ def register_blueprint(app):
     api.register_blueprint(ProfileUnfollowBlueprint)
     api.register_blueprint(ProfileChangePhotoBlueprint)
     api.register_blueprint(ProfileEditBlueprint)
+    api.register_blueprint(DeleteUserTermBlueprint)
+    api.register_blueprint(DeleteUserRequestBlueprint)
