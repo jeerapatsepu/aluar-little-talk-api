@@ -29,15 +29,15 @@ class InternalDeleteUser(MethodView):
     def __deleteUserThan15Days(self):
         user_uid_list = UserDeleteRequest.query.all()
         user_uid_list = self.__filterThan15Days(request_list=user_uid_list)
-        for uid in user_uid_list:
-            USLI.query.filter_by(uid=uid).delete()
-            UserProfile.query.filter_by(uid=uid).delete()
-            UserRelationship.query.filter_by(sender_id=uid).delete()
-            UserRelationship.query.filter_by(receiver_id=uid).delete()
-            UserDeleteRequest.query.filter_by(user_uid=uid).delete()
-            post_list = Post.query.filter_by(owner_uid=uid).all()
+        for user_request in user_uid_list:
+            USLI.query.filter_by(uid=user_request.user_uid).delete()
+            UserProfile.query.filter_by(uid=user_request.user_uid).delete()
+            UserRelationship.query.filter_by(sender_id=user_request.user_uid).delete()
+            UserRelationship.query.filter_by(receiver_id=user_request.user_uid).delete()
+            UserDeleteRequest.query.filter_by(user_uid=user_request.user_uid).delete()
+            post_list = Post.query.filter_by(owner_uid=user_request.user_uid).all()
             for post in post_list:
-                FullPost(post_id=post.post_id, owner_uid=uid).delete_post()
+                FullPost(post_id=post.post_id, owner_uid=user_request.user_uid).delete_post()
 
     def __filterThan15Days(self, request_list: list):
         list = []
