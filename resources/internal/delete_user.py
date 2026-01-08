@@ -10,6 +10,7 @@ from models.profile.user_relationship import UserRelationship
 from models.user_delete_request import UserDeleteRequest
 from models.usli import USLI
 from resources.full_post import FullPost
+from resources.internal.tools.InternalDeletePostManager import InternalDeletePostManager
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
 
@@ -37,7 +38,7 @@ class InternalDeleteUser(MethodView):
             UserDeleteRequest.query.filter_by(user_uid=user_request.user_uid).delete()
             post_list = Post.query.filter_by(owner_uid=user_request.user_uid).all()
             for post in post_list:
-                FullPost(post_id=post.post_id).delete_post(owner_uid=user_request.user_uid)
+                InternalDeletePostManager(post_id=post.post_id).delete_post(owner_uid=user_request.user_uid)
 
     def __filterThan15Days(self, request_list: list):
         list = []
