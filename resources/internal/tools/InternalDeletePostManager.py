@@ -20,7 +20,7 @@ class InternalDeletePostManager:
         PostRepostModel.query.filter_by(post_id=self.__post_id).delete()
         comment_list = CommentModel.query.filter_by(post_id=self.__post_id).all()
         for comment in comment_list:
-            InternalDeleteCommentManager(comment_id=comment.comment_uid).deleteComment()
+            InternalDeleteCommentManager(comment_id=comment.comment_uid).deleteComment(owner_uid=owner_uid)
         Post.query.filter_by(post_id=self.__post_id, owner_uid=owner_uid).delete()
         db.session.commit()
         try: 
