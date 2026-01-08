@@ -4,7 +4,7 @@ from models.post.post import Post, PostContent, PostImageContent
 from models.post.post_bookmark_model import PostBookmarkModel
 from models.post.post_like_model import PostLikeModel
 from models.post.post_repost_model import PostRepostModel
-from resources.internal.tools import InternalDeleteCommentManager
+from resources.internal.tools.InternalDeleteCommentManager import InternalDeleteCommentManager
 from app.shared import db
 from app.s3 import client
 
