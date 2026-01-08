@@ -22,15 +22,15 @@ class FullPost:
         return new_post
     
     def delete_post(self, owner_uid: str):
-        PostContent.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
-        PostImageContent.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
-        PostLikeModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
-        PostBookmarkModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
-        PostRepostModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostContent.query.filter_by(post_id=self.__post_id).delete()
+        PostImageContent.query.filter_by(post_id=self.__post_id).delete()
+        PostLikeModel.query.filter_by(post_id=self.__post_id).delete()
+        PostBookmarkModel.query.filter_by(post_id=self.__post_id).delete()
+        PostRepostModel.query.filter_by(post_id=self.__post_id).delete()
         comment_list = CommentModel.query.filter_by(post_id=self.__post_id).all()
         for comment in comment_list:
             CommentDeleteTool(comment_id=comment.comment_uid).deleteComment()
-        Post.query.filter_by(post_id=self.__post_id, owner_uid=owner_uid).delete(synchronize_session=False)
+        Post.query.filter_by(post_id=self.__post_id, owner_uid=owner_uid).delete()
         db.session.commit()
         try: 
             bucket = os.getenv("S3_BUCKET_NAME")
