@@ -12,6 +12,12 @@ def config(app, db_url):
     app.config["OPENAPI_VERSION"] = "3.0.3"
 
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "pool_recycle": 280,
+        "pool_timeout": 5
+    }
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = SQLALCHEMY_ENGINE_OPTIONS
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=15)
