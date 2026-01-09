@@ -6,10 +6,10 @@ from models.profile.user_profile import UserProfile
 from resources.search.search_user_list.search_user_list_schema import SearchUserListRequestSchema, SearchUserListResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 
-blp = Blueprint("PostRepostUserList", __name__, description="Post Repost User List")
+blp = Blueprint("SearchUserList", __name__, description="Search User List")
 
 @blp.route("/search/user/list")
-class PostRepostUserList(MethodView):
+class SearchUserList(MethodView):
     @blp.arguments(SearchUserListRequestSchema)
     @blp.response(200, SearchUserListResponseSchema)
     def post(self, request):

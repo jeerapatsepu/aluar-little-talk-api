@@ -31,7 +31,7 @@ from resources.profile.profile_edit.profile_edit import blp as ProfileEditBluepr
 from resources.delete_user.delete_user_term.delete_user_term import blp as DeleteUserTermBlueprint
 from resources.delete_user.delete_user_request.delete_user_request import blp as DeleteUserRequestBlueprint
 from resources.internal.delete_user import blp as InternalDeleteUserBlueprint
-from resources.search.search_user_list.search_user_list import blp as PostRepostUserListBlueprint
+from resources.search.search_user_list.search_user_list import blp as SearchUserListBlueprint
 
 def register_blueprint(app):
     api = Api(app)
@@ -67,4 +67,4 @@ def register_blueprint(app):
     api.register_blueprint(DeleteUserTermBlueprint)
     api.register_blueprint(DeleteUserRequestBlueprint)
     api.register_blueprint(InternalDeleteUserBlueprint)
-    api.register_blueprint(PostRepostUserListBlueprint)
+    api.register_blueprint(SearchUserListBlueprint)
