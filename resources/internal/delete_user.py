@@ -4,6 +4,7 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone, timedelta
+from models.post.comment_like_model import CommentLikeModel
 from models.post.comment_model import CommentModel
 from models.post.post import Post, PostContent, PostImageContent
 from models.post.post_bookmark_model import PostBookmarkModel
@@ -13,9 +14,7 @@ from models.profile.user_profile import UserProfile
 from models.profile.user_relationship import UserRelationship
 from models.user_delete_request import UserDeleteRequest
 from models.usli import USLI
-from resources.full_post import FullPost
 from resources.internal.tools.InternalDeleteCommentManager import InternalDeleteCommentManager
-from resources.internal.tools.InternalDeletePostManager import InternalDeletePostManager
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
 from app.shared import db
@@ -47,6 +46,14 @@ class InternalDeleteUser(MethodView):
             Post.query.filter_by(owner_uid=user_request.user_uid).delete(synchronize_session=False)
             for post in post_list:
                 self.__delete_post_contents(post_id=post.post_id)
+            CommentLikeModel.query.filter_by(user_uid=user_request.user_uid).delete(synchronize_session=False)
+            CommentModel.query.filter_by(user_uid=user_request.user_uid).delete(synchronize_session=False)
+            PostContent.query.filter_by(owner_uid=user_request.user_uid).delete(synchronize_session=False)
+            PostImageContent.query.filter_by(owner_uid=user_request.user_uid).delete(synchronize_session=False)
+            PostLikeModel.query.filter_by(user_uid=user_request.user_uid).delete(synchronize_session=False)
+            PostBookmarkModel.query.filter_by(user_uid=user_request.user_uid).delete(synchronize_session=False)
+            PostRepostModel.query.filter_by(user_uid=user_request.user_uid).delete(synchronize_session=False)
+            db.session.commit()
 
     def __filterThan15Days(self, request_list: list):
         list = []
@@ -57,16 +64,11 @@ class InternalDeleteUser(MethodView):
         return list
     
     def __delete_post_contents(self, post_id: str):
-        PostContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostImageContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostBookmarkModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
-        PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
         InternalDeleteCommentManager().deleteAllCommentOfPost(post_id=post_id)
         db.session.commit()
         try: 
             bucket = os.getenv("S3_BUCKET_NAME")
-            prefix = "posts/" + self.__post_id
+            prefix = "posts/" + post_id
             response = client.list_objects_v2(
                 Bucket=bucket,
                 Prefix=prefix
