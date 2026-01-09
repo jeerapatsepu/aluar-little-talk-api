@@ -4,15 +4,22 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone, timedelta
-from models.post.post import Post
+from models.post.comment_model import CommentModel
+from models.post.post import Post, PostContent, PostImageContent
+from models.post.post_bookmark_model import PostBookmarkModel
+from models.post.post_like_model import PostLikeModel
+from models.post.post_repost_model import PostRepostModel
 from models.profile.user_profile import UserProfile
 from models.profile.user_relationship import UserRelationship
 from models.user_delete_request import UserDeleteRequest
 from models.usli import USLI
 from resources.full_post import FullPost
+from resources.internal.tools.InternalDeleteCommentManager import InternalDeleteCommentManager
 from resources.internal.tools.InternalDeletePostManager import InternalDeletePostManager
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
+from app.shared import db
+from app.s3 import client
 
 blp = Blueprint("InternalDeleteUser", __name__, description="Internal Delete User")
 
@@ -37,8 +44,9 @@ class InternalDeleteUser(MethodView):
             UserRelationship.query.filter_by(receiver_id=user_request.user_uid).delete()
             UserDeleteRequest.query.filter_by(user_uid=user_request.user_uid).delete()
             post_list = Post.query.filter_by(owner_uid=user_request.user_uid).all()
+            Post.query.filter_by(owner_uid=user_request.user_uid).delete(synchronize_session=False)
             for post in post_list:
-                InternalDeletePostManager(post_id=post.post_id).delete_post(owner_uid=user_request.user_uid)
+                self.__delete_post_contents(post_id=post.post_id)
 
     def __filterThan15Days(self, request_list: list):
         list = []
@@ -48,6 +56,31 @@ class InternalDeleteUser(MethodView):
                 list.append(item)
         return list
     
+    def __delete_post_contents(self, post_id: str):
+        PostContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+        PostImageContent.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+        PostLikeModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+        PostBookmarkModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+        PostRepostModel.query.filter_by(post_id=post_id).delete(synchronize_session=False)
+        InternalDeleteCommentManager().deleteAllCommentOfPost(post_id=post_id)
+        db.session.commit()
+        try: 
+            bucket = os.getenv("S3_BUCKET_NAME")
+            prefix = "posts/" + self.__post_id
+            response = client.list_objects_v2(
+                Bucket=bucket,
+                Prefix=prefix
+            )
+            if "Contents" in response:
+                client.delete_objects(
+                    Bucket=bucket,
+                    Delete={
+                        "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]
+                    }
+                )
+        except Exception:
+            pass
+        
     def __getSuccessResponse(self):
         time = datetime.now(timezone.utc)
 
