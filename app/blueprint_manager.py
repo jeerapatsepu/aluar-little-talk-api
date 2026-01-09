@@ -6,7 +6,6 @@ from resources.home.home import blp as HomeBlueprint
 from resources.profile.profile.profile import blp as ProfileBlueprint
 from resources.profile.profile_user.profile_user import blp as ProfileUserBlueprint
 from resources.profile.post.profile_posts import blp as ProfilePostsBlueprint
-from resources.search.new_user_list import blp as NewUserListBlueprint
 from resources.base.post.post_create.post_create import blp as PostCreateBlueprint
 from resources.base.post.like.post_like import blp as PostLikeBlueprint
 from resources.base.post.like.post_dislike import blp as PostDisLikeBlueprint
@@ -32,6 +31,7 @@ from resources.profile.profile_edit.profile_edit import blp as ProfileEditBluepr
 from resources.delete_user.delete_user_term.delete_user_term import blp as DeleteUserTermBlueprint
 from resources.delete_user.delete_user_request.delete_user_request import blp as DeleteUserRequestBlueprint
 from resources.internal.delete_user import blp as InternalDeleteUserBlueprint
+from resources.search.search_user_list.search_user_list import blp as PostRepostUserListBlueprint
 
 def register_blueprint(app):
     api = Api(app)
@@ -42,7 +42,6 @@ def register_blueprint(app):
     api.register_blueprint(ProfileBlueprint)
     api.register_blueprint(ProfileUserBlueprint)
     api.register_blueprint(ProfilePostsBlueprint)
-    api.register_blueprint(NewUserListBlueprint)
     api.register_blueprint(PostCreateBlueprint)
     api.register_blueprint(PostLikeBlueprint)
     api.register_blueprint(PostDisLikeBlueprint)
@@ -68,3 +67,4 @@ def register_blueprint(app):
     api.register_blueprint(DeleteUserTermBlueprint)
     api.register_blueprint(DeleteUserRequestBlueprint)
     api.register_blueprint(InternalDeleteUserBlueprint)
+    api.register_blueprint(PostRepostUserListBlueprint)
