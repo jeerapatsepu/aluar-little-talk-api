@@ -1,19 +1,19 @@
 from flask import jsonify
 from flask_jwt_extended import JWTManager
-from models.profile.user_profile import UserProfile
 from models.token_block import TokenBlock
+from models.usli import USLI
 
 def handle_jwt(app):
     jwt = JWTManager(app)
 
     @jwt.user_identity_loader
     def user_identity_lookup(user):
-        return user
+        return user.uid
 
     @jwt.user_lookup_loader
     def user_lookup_callback(_jwt_header, jwt_data):
         identity = jwt_data["sub"]
-        return UserProfile.query.filter_by(uid=identity).one_or_none()
+        return USLI.query.filter_by(uid=identity).one_or_none()
 
     @jwt.needs_fresh_token_loader
     def token_not_fresh_callback(jwt_header, jwt_payload):
