@@ -16,7 +16,7 @@ class SearchUserList(MethodView):
         search = request["search"]
         offset = request["offset"]
         limit = request["limit"]
-        profile_list = UserProfile.query.filter_by(full_name=search).order_by(UserProfile.full_name).offset(offset=offset).limit(limit=limit).all()
+        profile_list = UserProfile.query.filter(search.lower() in UserProfile.full_name.lower()).order_by(UserProfile.full_name).offset(offset=offset).limit(limit=limit).all()
         return self.__getSuccessResponseSchema(profile_list=profile_list)
 
     def __getSuccessResponseSchema(self, profile_list: list):
