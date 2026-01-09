@@ -22,6 +22,7 @@ class PostContent(db.Model):
     type = db.Column(db.String)
     text = db.Column(db.String)
     text_type = db.Column(db.String)
+    owner_uid = db.Column(db.String)
 
 class PostImageContent(db.Model):
     __tablename__ = "post_image_contents"
@@ -32,3 +33,4 @@ class PostImageContent(db.Model):
     content_id = db.Column(db.String)
     image_content_id = db.Column(db.String)
     link = db.Column(db.String)
+    owner_uid = db.Column(db.String)

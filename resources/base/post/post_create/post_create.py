@@ -54,7 +54,8 @@ class PostCreate(MethodView):
                                                post_id=post_id,
                                                type=type,
                                                text=text,
-                                               text_type=text_type)
+                                               text_type=text_type,
+                                               owner_uid=current_user.uid)
                     db.session.add(content)
                     db.session.commit()
                     self.__createImageContent(post_id, content, list(images))
@@ -64,7 +65,8 @@ class PostCreate(MethodView):
                                                post_id=post_id,
                                                type=type,
                                                text=text,
-                                               text_type=text_type)
+                                               text_type=text_type,
+                                               owner_uid=current_user.uid)
                     db.session.add(post_content)
                     db.session.commit()
     
@@ -82,7 +84,8 @@ class PostCreate(MethodView):
                                              post_id=post_id,
                                              content_id=content.content_id,
                                              image_content_id=image_content_id,
-                                             link=image_url)
+                                             link=image_url,
+                                             owner_uid=current_user.uid)
             
             db.session.add(image_content)
             db.session.commit()

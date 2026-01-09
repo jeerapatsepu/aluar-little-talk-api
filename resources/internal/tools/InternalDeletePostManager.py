@@ -39,3 +39,10 @@ class InternalDeletePostManager:
                 )
         except Exception:
             pass
+
+    def delete_all_posts_of_user(self, owner_uid: str):
+        PostContent.query.filter_by(post_id=self.__post_id).delete()
+        PostImageContent.query.filter_by(post_id=self.__post_id).delete()
+        PostLikeModel.query.filter_by(post_id=self.__post_id).delete()
+        PostBookmarkModel.query.filter_by(post_id=self.__post_id).delete()
+        PostRepostModel.query.filter_by(post_id=self.__post_id).delete()
