@@ -29,7 +29,19 @@ class SearchUserList(MethodView):
         meta.response_timestamp = str(time.timestamp())
         meta.error = None
 
+        data = []
+        for profile in profile_list:
+            profile_data = {
+                "uid": profile.uid,
+                "email": profile.email,
+                "name": profile.full_name,
+                "photo": profile.photo,
+                "caption": profile.caption,
+                "link": profile.link
+            }
+            data.append(profile_data)
+
         response = SearchUserListResponseSchema()
         response.meta = meta
-        response.data = profile_list
+        response.data = data
         return response
