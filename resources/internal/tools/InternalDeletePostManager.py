@@ -13,15 +13,15 @@ class InternalDeletePostManager:
         self.__post_id = post_id
 
     def delete_post(self, owner_uid: str):
-        PostContent.query.filter_by(post_id=self.__post_id).delete()
-        PostImageContent.query.filter_by(post_id=self.__post_id).delete()
-        PostLikeModel.query.filter_by(post_id=self.__post_id).delete()
-        PostBookmarkModel.query.filter_by(post_id=self.__post_id).delete()
-        PostRepostModel.query.filter_by(post_id=self.__post_id).delete()
+        PostContent.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostImageContent.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostLikeModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostBookmarkModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
+        PostRepostModel.query.filter_by(post_id=self.__post_id).delete(synchronize_session=False)
         comment_list = CommentModel.query.filter_by(post_id=self.__post_id).all()
         for comment in comment_list:
             InternalDeleteCommentManager(comment_id=comment.comment_uid).deleteComment(owner_uid=owner_uid)
-        Post.query.filter_by(post_id=self.__post_id, owner_uid=owner_uid).delete()
+        Post.query.filter_by(post_id=self.__post_id, owner_uid=owner_uid).delete(synchronize_session=False)
         db.session.commit()
         try: 
             bucket = os.getenv("S3_BUCKET_NAME")
@@ -39,10 +39,3 @@ class InternalDeletePostManager:
                 )
         except Exception:
             pass
-
-    def delete_all_posts_of_user(self, owner_uid: str):
-        PostContent.query.filter_by(post_id=self.__post_id).delete()
-        PostImageContent.query.filter_by(post_id=self.__post_id).delete()
-        PostLikeModel.query.filter_by(post_id=self.__post_id).delete()
-        PostBookmarkModel.query.filter_by(post_id=self.__post_id).delete()
-        PostRepostModel.query.filter_by(post_id=self.__post_id).delete()
