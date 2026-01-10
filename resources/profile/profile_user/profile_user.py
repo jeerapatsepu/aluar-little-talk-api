@@ -7,6 +7,7 @@ from models.profile.user_relationship import UserRelationship
 from models.usli import USLI
 from app.shared import db, uid
 from models.profile.user_profile import UserProfile
+from resources.base.profile import ProfileBase
 from resources.profile.profile.profile_response_schema import ProfileResponseSchema
 from schemas.reponse_schema.error import ErrorSchema
 from schemas.reponse_schema.meta import MetaSchema
@@ -35,24 +36,7 @@ class ProfileUser(MethodView):
     def __getProfileSuccessResponse(self, profile: UserProfile):
         time = datetime.now(timezone.utc)
 
-        data = ProfileDataResponseSchema()
-        data.name = profile.full_name
-        data.uid = profile.uid
-        data.photo = profile.photo
-        data.caption = profile.caption
-        data.link = profile.link
-        try:
-            relationship_status_of_current_user = UserRelationship.query.filter_by(sender_id=current_user.uid, receiver_id=profile.uid).first() ## bb -> jee
-            relationship_status_of_user = UserRelationship.query.filter_by(sender_id=profile.uid, receiver_id=current_user.uid).first() # jee -> bb
-            relationship_status = ""
-            if relationship_status_of_current_user and relationship_status_of_current_user.status == "FOLLOW":
-                relationship_status = "FOLLOW"
-            if relationship_status_of_user and relationship_status_of_user.status == "FOLLOW" and relationship_status_of_current_user and relationship_status_of_current_user.status == "FOLLOW":
-                relationship_status = "FRIEND"
-            data.relationship_status = relationship_status
-        except Exception:
-            logging.exception(Exception)
-            data.relationship_status = None
+        data = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
 
         meta = MetaSchema()
         meta.response_id = uid.hex
