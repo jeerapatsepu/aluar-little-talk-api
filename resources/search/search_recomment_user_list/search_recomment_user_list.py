@@ -37,8 +37,15 @@ class SearchRecommentUserList(MethodView):
         if len(filtered_list) > 0:
             return filtered_list
         else:
-            return profile_list
+            return self.__filterProfileListRemoveFollowed(profile_list=profile_list)
     
+    def __filterProfileListRemoveFollowed(self, profile_list: list):
+        filtered_list = profile_list
+        for profile in profile_list:
+            if profile.relationship_status == "FOLLOW" or profile.relationship_status == "FRIEND":
+                filtered_list.remove(profile)
+        return filtered_list
+
     def __getSuccessResponseSchema(self, profile_list: list):
         time = datetime.now(timezone.utc)
 
@@ -63,5 +70,5 @@ class SearchRecommentUserList(MethodView):
 
         response = SearchRecommentUserListResponseSchema()
         response.meta = meta
-        response.data = profile_list
+        response.data = data
         return response
