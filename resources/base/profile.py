@@ -26,6 +26,8 @@ class ProfileBase:
             if relationship_status_of_user and relationship_status_of_user.status == "FOLLOW" and relationship_status_of_current_user and relationship_status_of_current_user.status == "FOLLOW":
                 relationship_status = "FRIEND"
             data.relationship_status = relationship_status
+            data.follower_count = UserRelationship.query.filter_by(receiver_id=current_user.uid).count()
+            data.following_count = UserRelationship.query.filter_by(sender_id=current_user.uid).count()
         except Exception:
             logging.exception(Exception)
             data.relationship_status = None

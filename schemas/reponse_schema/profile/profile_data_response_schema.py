@@ -8,3 +8,5 @@ class ProfileDataResponseSchema(Schema):
     photo = fields.Str(dump_only=True)
     caption = fields.Str(dump_only=True)
     link = fields.Str(dump_only=True)
+    follower_count = fields.Integer(dump_only=True)
+    following_count = fields.Integer(dump_only=True)

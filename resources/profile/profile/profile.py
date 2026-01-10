@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from models.usli import USLI
 from app.shared import db, uid
 from models.profile.user_profile import UserProfile
+from resources.base.profile import ProfileBase
 from resources.profile.profile.profile_response_schema import ProfileResponseSchema
 from schemas.reponse_schema.error import ErrorSchema
 from schemas.reponse_schema.meta import MetaSchema
@@ -46,13 +47,7 @@ class Profile(MethodView):
     def __getProfileSuccessResponse(self, profile: UserProfile):
         time = datetime.now(timezone.utc)
 
-        data = ProfileDataResponseSchema()
-        data.name = profile.full_name
-        data.email = profile.email
-        data.uid = profile.uid
-        data.photo = profile.photo
-        data.caption = profile.caption
-        data.link = profile.link
+        data = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
 
         meta = MetaSchema()
         meta.response_id = uid.hex
