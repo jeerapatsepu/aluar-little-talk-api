@@ -30,8 +30,11 @@ class SearchRecommentUserList(MethodView):
             verify_content = PostContent.query.filter(len(PostContent.text)>=255).count() > 2
             not_relationship = profile_schema.relationship_status != "FOLLOW" and profile_schema.relationship_status != "FRIEND"
             if verify_photo and verify_content and not_relationship:
-                filtered_list.append(profile_schema)
-        return filtered_list
+                filtered_list.append(profile)
+        if len(filtered_list) > 0:
+            return filtered_list
+        else:
+            profile_list
     
     def __getSuccessResponseSchema(self, profile_list: list):
         time = datetime.now(timezone.utc)
@@ -42,6 +45,18 @@ class SearchRecommentUserList(MethodView):
         meta.response_date = str(time)
         meta.response_timestamp = str(time.timestamp())
         meta.error = None
+
+        data = []
+        for profile in profile_list:
+            profile_data = {
+                "uid": profile.uid,
+                "email": profile.email,
+                "name": profile.full_name,
+                "photo": profile.photo,
+                "caption": profile.caption,
+                "link": profile.link
+            }
+            data.append(profile_data)
 
         response = SearchRecommentUserListResponseSchema()
         response.meta = meta
