@@ -42,7 +42,8 @@ class SearchRecommentUserList(MethodView):
     def __filterProfileListRemoveFollowed(self, profile_list: list):
         filtered_list = profile_list
         for profile in profile_list:
-            if profile.relationship_status == "FOLLOW" or profile.relationship_status == "FRIEND":
+            profile_schema = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
+            if profile_schema.relationship_status == "FOLLOW" or profile_schema.relationship_status == "FRIEND":
                 filtered_list.remove(profile)
         return filtered_list
 
