@@ -29,7 +29,7 @@ class ProfileBase:
             data.follower_count = UserRelationship.query.filter_by(receiver_id=current_user.uid).count()
             data.following_count = UserRelationship.query.filter_by(sender_id=current_user.uid).count()
         except Exception:
-            logging.exception(Exception)
+            # logging.exception(Exception)
             data.relationship_status = None
         return data
     

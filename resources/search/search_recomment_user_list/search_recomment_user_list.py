@@ -26,11 +26,14 @@ class SearchRecommentUserList(MethodView):
         filtered_list = []
         for profile in profile_list:
             profile_schema = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
-            verify_photo = ImageManager(profile_schema.photo).verify_profile_photo()
-            verify_content = PostContent.query.filter(len(PostContent.text)>=255).count() > 2
-            not_relationship = profile_schema.relationship_status != "FOLLOW" and profile_schema.relationship_status != "FRIEND"
-            if verify_photo and verify_content and not_relationship:
-                filtered_list.append(profile)
+            if len(profile_schema.photo) > 0:
+                verify_photo = ImageManager(profile_schema.photo).verify_profile_photo()
+                content_list = PostContent.query.filter_by(owner_uid=profile_schema.uid).all()
+                verify_content = len(list(filter(lambda x: len(x.text) >= 255, content_list))) > 5
+                not_relationship = profile_schema.relationship_status != "FOLLOW" and profile_schema.relationship_status != "FRIEND"
+                print(verify_photo, verify_content, not_relationship)
+                if verify_photo and verify_content and not_relationship:
+                    filtered_list.append(profile)
         if len(filtered_list) > 0:
             return filtered_list
         else:

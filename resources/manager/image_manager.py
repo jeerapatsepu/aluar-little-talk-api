@@ -1,7 +1,9 @@
+
 import urllib
 
 import cv2
 import numpy as np
+
 
 class ImageManager:
     def __init__(self, image_url: str):
