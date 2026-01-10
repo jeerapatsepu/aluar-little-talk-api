@@ -34,7 +34,7 @@ class SearchRecommentUserList(MethodView):
         if len(filtered_list) > 0:
             return filtered_list
         else:
-            profile_list
+            return profile_list
     
     def __getSuccessResponseSchema(self, profile_list: list):
         time = datetime.now(timezone.utc)
