@@ -1,0 +1,49 @@
+from flask.views import MethodView
+from flask_smorest import Blueprint
+from datetime import datetime, timezone
+import uuid
+from models.post.post import PostContent
+from models.profile.user_profile import UserProfile
+from resources.base.profile import ProfileBase
+from resources.manager.image_manager import ImageManager
+from resources.search.search_recomment_user_list.search_recomment_user_list_schema import SearchRecommentUserListRequestSchema, SearchRecommentUserListResponseSchema
+from schemas.reponse_schema.meta import MetaSchema
+
+blp = Blueprint("SearchRecommentUserList", __name__, description="Search Recomment User List")
+
+@blp.route("/search/recomment/user/list")
+class SearchRecommentUserList(MethodView):
+    @blp.arguments(SearchRecommentUserListRequestSchema)
+    @blp.response(200, SearchRecommentUserListResponseSchema)
+    def post(self, request):
+        offset = request["offset"]
+        limit = request["limit"]
+        profile_list = UserProfile.query.offset(offset=offset).limit(limit=limit).all()
+        profile_list = self.__filterProfileList(profile_list=profile_list)
+        return self.__getSuccessResponseSchema(profile_list=profile_list)
+
+    def __filterProfileList(self, profile_list: list):
+        filtered_list = []
+        for profile in profile_list:
+            profile_schema = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
+            verify_photo = ImageManager(profile_schema.photo).verify_profile_photo()
+            verify_content = PostContent.query.filter(len(PostContent.text)>=255).count() > 2
+            not_relationship = profile_schema.relationship_status != "FOLLOW" and profile_schema.relationship_status != "FRIEND"
+            if verify_photo and verify_content and not_relationship:
+                filtered_list.append(profile_schema)
+        return filtered_list
+    
+    def __getSuccessResponseSchema(self, profile_list: list):
+        time = datetime.now(timezone.utc)
+
+        meta = MetaSchema()
+        meta.response_id = uuid.uuid4().hex
+        meta.response_code = 1000
+        meta.response_date = str(time)
+        meta.response_timestamp = str(time.timestamp())
+        meta.error = None
+
+        response = SearchRecommentUserListResponseSchema()
+        response.meta = meta
+        response.data = profile_list
+        return response

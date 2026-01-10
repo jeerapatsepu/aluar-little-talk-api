@@ -11,3 +11,5 @@ marshmallow_enum
 psycopg2-binary
 requests
 boto3
+numpy
+opencv-python
