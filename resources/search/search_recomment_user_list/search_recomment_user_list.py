@@ -8,6 +8,7 @@ from resources.base.profile import ProfileBase
 from resources.manager.image_manager import ImageManager
 from resources.search.search_recomment_user_list.search_recomment_user_list_schema import SearchRecommentUserListRequestSchema, SearchRecommentUserListResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
+import logging
 
 blp = Blueprint("SearchRecommentUserList", __name__, description="Search Recomment User List")
 
@@ -31,7 +32,8 @@ class SearchRecommentUserList(MethodView):
                 content_list = PostContent.query.filter_by(owner_uid=profile_schema.uid).all()
                 verify_content = len(list(filter(lambda x: len(x.text) >= 255, content_list))) > 5
                 not_relationship = profile_schema.relationship_status != "FOLLOW" and profile_schema.relationship_status != "FRIEND"
-                print(verify_photo, verify_content, not_relationship)
+                # print(verify_photo, verify_content, not_relationship)
+                logging.log(logging.INFO, f"verify_photo: {verify_photo}, verify_content: {verify_content}, not_relationship: {not_relationship}")
                 if verify_photo and verify_content and not_relationship:
                     filtered_list.append(profile)
         if len(filtered_list) > 0:
