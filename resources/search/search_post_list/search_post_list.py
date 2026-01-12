@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 import uuid
-from models.post.post import PostContent
+from models.post.post import Post, PostContent
 from models.profile.user_profile import UserProfile
 from resources.search.search_post_list.search_post_list_schema import SearchPostListDataSchema, SearchPostListRequestSchema, SearchPostListResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
@@ -27,9 +27,11 @@ class SearchPostList(MethodView):
     
     def __map_content_list(self, content: SearchPostListDataSchema):
         profile = UserProfile.query.filter(UserProfile.uid == content.owner_uid).first()
+        post = Post.query.filter(Post.post_id == content.post_id).first()
         if profile:
             content.owner_name = profile.full_name
             content.owner_photo = profile.photo
+        content.created_date_timestamp = post.created_date_timestamp
         return content
     
     def __get_success_esponse_schema(self, content_list: list):
