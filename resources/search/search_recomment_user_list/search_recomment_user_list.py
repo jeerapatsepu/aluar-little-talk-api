@@ -21,7 +21,7 @@ class SearchRecommentUserList(MethodView):
     @blp.response(200, SearchRecommentUserListResponseSchema)
     def post(self, request):
         profile_list = self.__get_profile_list(request=request)
-        return self.__getSuccessResponseSchema(profile_list=profile_list)
+        return self.__getSuccessResponseSchema(data=profile_list)
 
     def __get_profile_list(self, request):
         offset = request["offset"]
