@@ -27,7 +27,7 @@ class SearchRecommentUserList(MethodView):
         offset = request["offset"]
         limit = request["limit"]
         profile_recommendation_list = ProfileRecommendation.query.offset(offset=offset).limit(limit=limit).all()
-        if (profile_recommendation_list) > 0:
+        if len(profile_recommendation_list) > 0:
             map_profile_list = list(map(self.__map_profile_list, profile_recommendation_list))
             return map_profile_list
         else:
