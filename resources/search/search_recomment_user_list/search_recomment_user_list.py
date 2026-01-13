@@ -4,11 +4,14 @@ from datetime import datetime, timezone
 import uuid
 from models.post.post import PostContent
 from models.profile.user_profile import UserProfile
+from models.profile_recommendations import ProfileRecommendation
 from resources.base.profile import ProfileBase
 from resources.manager.image_manager import ImageManager
 from resources.search.search_recomment_user_list.search_recomment_user_list_schema import SearchRecommentUserListRequestSchema, SearchRecommentUserListResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 import logging
+
+from schemas.reponse_schema.profile.profile_data_response_schema import ProfileDataResponseSchema
 
 blp = Blueprint("SearchRecommentUserList", __name__, description="Search Recomment User List")
 
@@ -17,39 +20,26 @@ class SearchRecommentUserList(MethodView):
     @blp.arguments(SearchRecommentUserListRequestSchema)
     @blp.response(200, SearchRecommentUserListResponseSchema)
     def post(self, request):
-        offset = request["offset"]
-        limit = request["limit"]
-        profile_list = UserProfile.query.offset(offset=offset).limit(limit=limit).all()
-        profile_list = self.__filterProfileList(profile_list=profile_list)
+        profile_list = self.__get_profile_list(request=request)
         return self.__getSuccessResponseSchema(profile_list=profile_list)
 
-    def __filterProfileList(self, profile_list: list):
-        filtered_list = []
-        for profile in profile_list:
-            profile_schema = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
-            if len(profile_schema.photo) > 0:
-                verify_photo = ImageManager(profile_schema.photo).verify_profile_photo()
-                content_list = PostContent.query.filter_by(owner_uid=profile_schema.uid).all()
-                verify_content = len(list(filter(lambda x: len(x.text) >= 255, content_list))) > 5
-                not_relationship = profile_schema.relationship_status != "FOLLOW" and profile_schema.relationship_status != "FRIEND"
-                # print(verify_photo, verify_content, not_relationship)
-                logging.log(logging.INFO, f"verify_photo: {verify_photo}, verify_content: {verify_content}, not_relationship: {not_relationship}")
-                if verify_photo and verify_content and not_relationship:
-                    filtered_list.append(profile)
-        if len(filtered_list) > 0:
-            return filtered_list
+    def __get_profile_list(self, request):
+        offset = request["offset"]
+        limit = request["limit"]
+        profile_recommendation_list = ProfileRecommendation.query.offset(offset=offset).limit(limit=limit).all()
+        if (profile_recommendation_list) > 0:
+            map_profile_list = list(map(self.__map_profile_list, profile_recommendation_list))
+            return map_profile_list
         else:
-            return self.__filterProfileListRemoveFollowed(profile_list=profile_list)
+            profile_list = UserProfile.query.offset(offset=offset).limit(limit=limit).all()
+            map_profile_list = list(map(self.__map_profile_list, profile_list))
+            return map_profile_list
     
-    def __filterProfileListRemoveFollowed(self, profile_list: list):
-        filtered_list = profile_list
-        for profile in profile_list:
-            profile_schema = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
-            if profile_schema.relationship_status == "FOLLOW" or profile_schema.relationship_status == "FRIEND":
-                filtered_list.remove(profile)
-        return filtered_list
+    def __map_profile_list(self, profile):
+        map_profile = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
+        return map_profile
 
-    def __getSuccessResponseSchema(self, profile_list: list):
+    def __getSuccessResponseSchema(self, data: list):
         time = datetime.now(timezone.utc)
 
         meta = MetaSchema()
@@ -58,18 +48,6 @@ class SearchRecommentUserList(MethodView):
         meta.response_date = str(time)
         meta.response_timestamp = str(time.timestamp())
         meta.error = None
-
-        data = []
-        for profile in profile_list:
-            profile_data = {
-                "uid": profile.uid,
-                "email": profile.email,
-                "name": profile.full_name,
-                "photo": profile.photo,
-                "caption": profile.caption,
-                "link": profile.link
-            }
-            data.append(profile_data)
 
         response = SearchRecommentUserListResponseSchema()
         response.meta = meta
