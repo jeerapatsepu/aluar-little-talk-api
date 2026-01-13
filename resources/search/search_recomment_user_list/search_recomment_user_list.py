@@ -28,13 +28,17 @@ class SearchRecommentUserList(MethodView):
         limit = request["limit"]
         profile_recommendation_list = ProfileRecommendation.query.offset(offset=offset).limit(limit=limit).all()
         if len(profile_recommendation_list) > 0:
-            map_profile_list = list(map(self.__map_profile_list, profile_recommendation_list))
+            map_profile_list = list(map(self.__map_profile_recommendation_list, profile_recommendation_list))
             return map_profile_list
         else:
             profile_list = UserProfile.query.offset(offset=offset).limit(limit=limit).all()
             map_profile_list = list(map(self.__map_profile_list, profile_list))
             return map_profile_list
     
+    def __map_profile_recommendation_list(self, profile):
+        map_profile = ProfileBase(uid=profile.user_id).get_ProfileDataResponseSchema()
+        return map_profile
+
     def __map_profile_list(self, profile):
         map_profile = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
         return map_profile

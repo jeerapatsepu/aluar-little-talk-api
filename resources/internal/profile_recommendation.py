@@ -45,10 +45,7 @@ class InternalProfileRecommendation(MethodView):
             content_list = PostContent.query.filter_by(owner_uid=profile.uid).all()
             verify_content = len(list(filter(lambda x: len(x.text) >= 255, content_list))) > 5
             profile_in_recommendation = ProfileRecommendation.query.filter(ProfileRecommendation.user_id == profile.uid).first()
-            if profile_in_recommendation:
-                db.session.delete(profile_in_recommendation)
-                db.session.commit()
-            if verify_photo and verify_content:
+            if verify_photo and verify_content and not profile_in_recommendation:
                 recommend_profile = ProfileRecommendation(user_id=profile.uid, created_date_timestamp=now)
                 db.session.add(recommend_profile)
                 db.session.commit()
