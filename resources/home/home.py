@@ -2,13 +2,15 @@
 import uuid
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 from models.post.post import Post
+from models.profile.user_relationship import UserRelationship
 from resources.short_post import ShortPost
 from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.request_schema.home_feed_request_schema import HomeFeedRequestSchema
+from app.shared import db
 
 blp = Blueprint("Home", __name__, description="Home")
 
@@ -26,7 +28,17 @@ class Home(MethodView):
             case "ALL":
                 posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.visibility == "PUBLIC").offset(offset).limit(limit).all()
             case "FOLLOW":
-                posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.visibility == "PUBLIC").offset(offset).limit(limit).all()
+                try:
+                    posts = (
+                        db.session.query(Post)
+                        .join(UserRelationship, UserRelationship.receiver_id == Post.owner_uid)
+                        .filter(UserRelationship.sender_id == current_user.uid)
+                        .filter(Post.visibility == "PUBLIC")
+                        .order_by(Post.created_date_timestamp)
+                        .all()
+                    )
+                except Exception:
+                    posts = []
             case "FRIENDS":
                 posts = Post.query.order_by(Post.created_date_timestamp).filter(Post.visibility == "PUBLIC").offset(offset).limit(limit).all()
             case _:
