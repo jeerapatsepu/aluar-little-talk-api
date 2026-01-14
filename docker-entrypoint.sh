@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ls -a
+
 # flask db downgrade
 flask db upgrade
 
