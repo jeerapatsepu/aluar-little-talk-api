@@ -2,23 +2,17 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 import uuid
-from models.post.post import Post, PostContent
-from models.profile.user_profile import UserProfile
-from models.profile_recommendations import ProfileRecommendation
+from models.post.post import Post
 from resources.base.profile import ProfileBase
-from resources.manager.image_manager import ImageManager
 from resources.search.search_recomment_post_list.search_recomment_post_list_schema import SearchRecommentPostListRequestSchema, SearchRecommentPostListResponseSchema
 from resources.short_post import ShortPost
 from schemas.reponse_schema.meta import MetaSchema
-import logging
 from app.shared import bigqueryClient
 
-from schemas.reponse_schema.profile.profile_data_response_schema import ProfileDataResponseSchema
-
-blp = Blueprint("SearchRecommentUserList", __name__, description="Search Recomment User List")
+blp = Blueprint("SearchRecommentPostList", __name__, description="Search Recomment Post List")
 
 @blp.route("/search/recomment/post/list")
-class SearchRecommentUserList(MethodView):
+class SearchRecommentPostList(MethodView):
     @blp.arguments(SearchRecommentPostListRequestSchema)
     @blp.response(200, SearchRecommentPostListResponseSchema)
     def post(self, request):
