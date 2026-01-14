@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "littletalk-alpha",
+  "private_key_id": "8efbbcb8f036e4ea504739517325aeb7951ee348",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCePLb0Np00+Us2\nNDNU8PHY/OS6fzyZ1d6687pTCc66tKQKmxKR6EB+EDQmlYw/rNVZ9pl6dLcP49kS\naIdcDcIAnj3u9sfsk1Ijr/CyQm9c1UXqN8pMGvVlPP0V1QcgxJg//Y7UZ86KZ9Tb\n9sMJIcGhcBRKcmzXcTpQI6EXbJHtr6W6OcNkNM6Dv1hUzRALHgYVv7K5wcwrHXSd\ng24Y196Hfz361hxMG50fz92apRmP+tEjlapaAhz5UZE9lchYwQsPEpYuyHJpNSTU\nXq2Jxff7eOkr/ifPIEOtnjekthSzx0JKrdH6KVVIj2ZKIdFQHPjeSZZ852psJxfy\na5sPIwsRAgMBAAECggEAA+ar45xr4Fz1aW1jBvwqGJ18R0uQvM6Rf0FrMNXkKb7M\nI1Jl/ecTnY5pT4doHdlbqMXUGQYPzbP70e2pL9Z+l55PGSxhvgFDYqU/q8PIh0NF\nkuJaOel/1RJqWOOK5lg1oRcJGOjdDJUS7qaIPpoW8hOkMTh3jd4sP/W8G6qhDfkf\nHck/mP4KAviKqMwlnoPC5NuvXZyHmfW0FJFkWr6TMrrlMc7/mo5vZqywqN7ByEWm\nXKNQuoyHvq2m3IKfmtv40oKU88kKzjagxKJMdsxFHPT4dXxc5TL6ixP4trKUmWDk\nsfbAewy6NI7zwLL9KDJMndtjRg5QRtALfmn+4ALbywKBgQDfjR2zL5r1OhurEuSE\nR2PNgJozFhePyOWVE2ElORYi5Bfird3xBclHHVsDZsZKPyufOv4q3zX+xkKC3gph\nbITpLMDqMi1HAJbNuaUYz4hh0WizE1JCP8DWnEz9YEeZTXSRHv+HNV+zy6daNMKW\nyYa1pzdKvaE+1w5us963UbLo0wKBgQC1NJwS5IBGbFSXi1S2wb/8r+1TcxIQIa7H\nrqjxmLyn7UmtCr2K1xY+kvGvml2vOdRnBXbQ5P5s4crzOMJxipa36zD5hOredXaO\nvZSJakCEHPZl5/5e1w65INOlLNsYxibi2ZlGcWF53O5V8UmTeq3GFP070QWhXc+2\nPkxrgrqOCwKBgQCwc4Fa2xuTro8CREJNStAy9+w+oJRucKMOPSKzr9CSL7nOuW/y\ne5+42ynokGm5Vw1GfNj72/2RoMoE4+ALsA1kw2duM7bbUVK3BW6UG9NJanIazwhh\ntFKw0uROJn29Oo7ksTP+dBmbIAdzQyvIuz7yCQ+yleU9ZaBFrwH/bqQp8wKBgCQJ\nD1SuflgC6RuuCK3DgBOXROIIizoMCL8LG+vXzQS0Kqev8BuxRGozPL8IOsNDA9ts\n+cD3GSW8DWkrC3ga8Hgo3HdymGafA3HFf8mICMZ9H/8KEMr5h6MHRS+e6P9XQJpy\nXYnluFXMutT6hABBMFepCucfXThG+KysXPQwbjsbAoGAdyjG2NH284VnBhHmaauC\nL1PMV/1pcZOBnAp9SfUnyOLFJ9kbQplfHvPzPc/OKQB2X7A6KY+VbmeOm3v8hUVW\npMR/TfL2eb8ILQ3Vm0jhUUguyNIO40pRYFkLIQlNWowxQxfwa1hXWiYbCOtZDh/t\nn7dvDXW0okrfSdNqj2QoeV0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "little-talk@littletalk-alpha.iam.gserviceaccount.com",
+  "client_id": "102397271370594055007",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/little-talk%40littletalk-alpha.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
