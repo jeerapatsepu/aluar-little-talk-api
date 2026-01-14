@@ -45,10 +45,10 @@ class Home(MethodView):
                 try:
                     posts = (
                         db.session.query(Post)
-                        .join(UserRelationship, UserRelationship.receiver_id == Post.owner_uid and UserRelationship.sender_id == Post.owner_uid)
+                        .join(UserRelationship, UserRelationship.receiver_id == Post.owner_uid)
                         .filter(Post.visibility == "FRIENDS")
                         .filter(Post.owner_uid != current_user.uid)
-                        .filter(UserRelationship.receiver_id == current_user.uid and UserRelationship.sender_id == Post.owner_uid or UserRelationship.sender_id == current_user.uid and UserRelationship.receiver_id == Post.owner_uid)
+                        .filter(UserRelationship.sender_id == current_user.uid)
                         .order_by(Post.created_date_timestamp)
                         .offset(offset)
                         .limit(limit)
