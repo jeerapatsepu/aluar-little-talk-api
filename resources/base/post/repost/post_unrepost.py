@@ -4,10 +4,10 @@ from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.extensions import db
-from models.post.post_repost_model import PostRepostModel
-from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
+from app.models.post_repost_model import PostRepostModel
+from app.schemas.reponse_schema.post_action_response_schema import PostActionResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.post_action_request_schema import PostActionRequestSchema
 
 blp = Blueprint("PostUnrepost", __name__, description="Post Unrepost")
 

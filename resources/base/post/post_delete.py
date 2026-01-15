@@ -5,15 +5,15 @@ from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.extensions import db
-from models.post.comment_model import CommentModel
-from models.post.post import Post, PostContent, PostImageContent
-from models.post.post_bookmark_model import PostBookmarkModel
-from models.post.post_like_model import PostLikeModel
-from models.post.post_repost_model import PostRepostModel
+from app.models.comment_model import CommentModel
+from app.models.post import Post, PostContent, PostImageContent
+from app.models.post_bookmark_model import PostBookmarkModel
+from app.models.post_like_model import PostLikeModel
+from app.models.post_repost_model import PostRepostModel
 from resources.base.comment.comment_delete_tool import CommentDeleteTool
-from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
+from app.schemas.reponse_schema.post_action_response_schema import PostActionResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.post_action_request_schema import PostActionRequestSchema
 from app.extensions import boto_client
 
 blp = Blueprint("PostDelete", __name__, description="Post Delete")

@@ -5,7 +5,7 @@ from flask_smorest import Blueprint
 from datetime import datetime, timezone
 from resources.delete_user.delete_user_term.delete_user_term_schema import DeleteUserTermDataSchema, DeleteUserTermResponseSchema
 from resources.profile.profile_change_photo.profile_change_photo_schema import ProfileChangePhotoResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 
 blp = Blueprint("DeleteUserTerm", __name__, description="Delete User Term")
 

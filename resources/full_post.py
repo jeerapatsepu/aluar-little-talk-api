@@ -1,13 +1,13 @@
 import os
 from flask_jwt_extended import current_user
-from models.post.comment_model import CommentModel
-from models.post.post import Post, PostContent, PostImageContent
-from models.post.post_bookmark_model import PostBookmarkModel
-from models.post.post_like_model import PostLikeModel
-from models.post.post_repost_model import PostRepostModel
-from models.profile.user_profile import UserProfile
+from app.models.comment_model import CommentModel
+from app.models.post import Post, PostContent, PostImageContent
+from app.models.post_bookmark_model import PostBookmarkModel
+from app.models.post_like_model import PostLikeModel
+from app.models.post_repost_model import PostRepostModel
+from app.models.user_profile import UserProfile
 from resources.base.comment.comment_delete_tool import CommentDeleteTool
-from schemas.reponse_schema.post.post.post_image_data_schema import PostImageDataSchema
+from app.schemas.reponse_schema.post_image_data_schema import PostImageDataSchema
 from app.extensions import db, boto_client
 
 class FullPost:

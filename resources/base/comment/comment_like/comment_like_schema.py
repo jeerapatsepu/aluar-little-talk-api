@@ -1,6 +1,6 @@
-from schemas.reponse_schema.meta import MetaSchema
-from marshmallow import Schema, fields, validate
-from schemas.reponse_schema.post.comment_response_schema import CommentResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from marshmallow import Schema, fields
+from app.schemas.reponse_schema.comment_response_schema import CommentResponseSchema
 
 class CommentLikeResquestSchema(Schema):
     comment_id = fields.Str(required=True)

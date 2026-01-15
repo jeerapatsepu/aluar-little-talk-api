@@ -4,19 +4,19 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone, timedelta
-from models.post.comment_like_model import CommentLikeModel
-from models.post.comment_model import CommentModel
-from models.post.post import Post, PostContent, PostImageContent
-from models.post.post_bookmark_model import PostBookmarkModel
-from models.post.post_like_model import PostLikeModel
-from models.post.post_repost_model import PostRepostModel
-from models.profile.user_profile import UserProfile
-from models.profile.user_relationship import UserRelationship
-from models.user_delete_request import UserDeleteRequest
-from models.usli import USLI
+from app.models.comment_like_model import CommentLikeModel
+from app.models.comment_model import CommentModel
+from app.models.post import Post, PostContent, PostImageContent
+from app.models.post_bookmark_model import PostBookmarkModel
+from app.models.post_like_model import PostLikeModel
+from app.models.post_repost_model import PostRepostModel
+from app.models.user_profile import UserProfile
+from app.models.user_relationship import UserRelationship
+from app.models.user_delete_request import UserDeleteRequest
+from app.models.usli import USLI
 from resources.internal.tools.InternalDeleteCommentManager import InternalDeleteCommentManager
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.post_action_response_schema import PostActionResponseSchema
 from app.extensions import db
 from app.extensions import boto_client
 

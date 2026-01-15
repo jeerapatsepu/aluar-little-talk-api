@@ -1,8 +1,8 @@
 from flask_jwt_extended import current_user
-from models.post.comment_like_model import CommentLikeModel
-from models.post.comment_model import CommentModel
-from models.profile.user_profile import UserProfile
-from schemas.reponse_schema.post.comment_response_schema import CommentReplySchema, CommentResponseSchema
+from app.models.comment_like_model import CommentLikeModel
+from app.models.comment_model import CommentModel
+from app.models.user_profile import UserProfile
+from app.schemas.reponse_schema.comment_response_schema import CommentReplySchema, CommentResponseSchema
 
 class FullComment:
     def __init__(self, comment_id: str):

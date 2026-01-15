@@ -1,7 +1,6 @@
 from marshmallow import Schema, fields
 
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.profile.profile_data_response_schema import ProfileDataResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 
 class DeleteUserTermDataSchema(Schema):
     title = fields.Str()

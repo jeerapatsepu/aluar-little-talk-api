@@ -1,9 +1,9 @@
 import os
-from models.post.comment_model import CommentModel
-from models.post.post import Post, PostContent, PostImageContent
-from models.post.post_bookmark_model import PostBookmarkModel
-from models.post.post_like_model import PostLikeModel
-from models.post.post_repost_model import PostRepostModel
+from app.models.comment_model import CommentModel
+from app.models.post import Post, PostContent, PostImageContent
+from app.models.post_bookmark_model import PostBookmarkModel
+from app.models.post_like_model import PostLikeModel
+from app.models.post_repost_model import PostRepostModel
 from resources.internal.tools.InternalDeleteCommentManager import InternalDeleteCommentManager
 from app.extensions import db
 from app.extensions import boto_client

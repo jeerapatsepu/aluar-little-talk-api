@@ -5,8 +5,8 @@ from datetime import datetime, timezone
 import uuid
 from resources.base.comment.comment_delete_tool import CommentDeleteTool
 from resources.base.comment.comment_like.comment_like_schema import CommentLikeResponseSchema, CommentLikeResquestSchema
-from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.post_action_response_schema import PostActionResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 
 
 blp = Blueprint("PostCommentDelete", __name__, description="Post Comment Delete")

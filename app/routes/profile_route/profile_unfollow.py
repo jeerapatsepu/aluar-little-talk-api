@@ -3,30 +3,24 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required, current_user
 from datetime import datetime, timezone
-from models.profile.user_relationship import UserRelationship
+from app.models.user_relationship import UserRelationship
 from app.extensions import db
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
-from schemas.request_schema.profile.profile_request_schema import ProfileRequestSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.post_action_response_schema import PostActionResponseSchema
+from app.schemas.request_schema.profile_request_schema import ProfileRequestSchema
 
-blp = Blueprint("ProfileFollow", __name__, description="Profile Follow")
+blp = Blueprint("ProfileUnfollow", __name__, description="Profile Unfollow")
 
-@blp.route("/profile/follow")
-class ProfileFollow(MethodView):
+@blp.route("/profile/unfollow")
+class ProfileUnfollow(MethodView):
     @jwt_required()
     @blp.arguments(ProfileRequestSchema)
     @blp.response(200, PostActionResponseSchema)
     def post(self, request):
         uid = request["uid"]
         relationship = UserRelationship.query.filter_by(sender_id=current_user.uid, receiver_id=uid).first()
-        if not relationship:
-            new_relationship = UserRelationship(
-                sender_id=current_user.uid,
-                receiver_id=uid,
-                status="FOLLOW",
-                created_date_timestamp=int(datetime.now(timezone.utc).timestamp())
-            )
-            db.session.add(new_relationship)
+        if relationship:
+            db.session.delete(relationship)
             db.session.commit()
         return self.__getSuccessResponse()
 

@@ -3,11 +3,11 @@ from flask.views import MethodView
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
-from models.post.post import Post
+from app.models.post import Post
 from resources.full_post import FullPost
 from resources.base.post.get_post.get_post_reponse_schema import GetPostResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.post_action_request_schema import PostActionRequestSchema
 
 blp = Blueprint("GetPost", __name__, description="Get Post")
 

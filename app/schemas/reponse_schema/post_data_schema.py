@@ -1,6 +1,6 @@
 
 from marshmallow import Schema, fields, validate
-from schemas.reponse_schema.post.post.post_image_data_schema import PostImageDataSchema
+from app.schemas.reponse_schema.post_image_data_schema import PostImageDataSchema
 
 class PostDataSchema(Schema):
     index = fields.Integer(required=True)

@@ -2,11 +2,11 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 import uuid
-from models.post.comment_model import CommentModel
-from models.post.post_repost_model import PostRepostModel
-from models.profile.user_profile import UserProfile
+from app.models.comment_model import CommentModel
+from app.models.post_repost_model import PostRepostModel
+from app.models.user_profile import UserProfile
 from resources.base.post.post_like_list.post_like_list_schema import PostLikeListRequestSchema, PostLikeListResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 
 blp = Blueprint("PostRepostUserList", __name__, description="Post Repost User List")
 

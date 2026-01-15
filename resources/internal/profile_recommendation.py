@@ -4,12 +4,12 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
-from models.post.post import PostContent
-from models.profile.user_profile import UserProfile
-from models.profile_recommendations import ProfileRecommendation
+from app.models.post import PostContent
+from app.models.user_profile import UserProfile
+from app.models.profile_recommendations import ProfileRecommendation
 from resources.manager.image_manager import ImageManager
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.post_action_response_schema import PostActionResponseSchema
 from app.extensions import db
 
 blp = Blueprint("InternalProfileRecommendation", __name__, description="Internal Profile Recommendation")

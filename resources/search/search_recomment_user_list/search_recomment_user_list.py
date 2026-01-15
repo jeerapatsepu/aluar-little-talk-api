@@ -2,16 +2,16 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 import uuid
-from models.post.post import PostContent
-from models.profile.user_profile import UserProfile
-from models.profile_recommendations import ProfileRecommendation
+from app.models.post import PostContent
+from app.models.user_profile import UserProfile
+from app.models.profile_recommendations import ProfileRecommendation
 from resources.base.profile import ProfileBase
 from resources.manager.image_manager import ImageManager
 from resources.search.search_recomment_user_list.search_recomment_user_list_schema import SearchRecommentUserListRequestSchema, SearchRecommentUserListResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 import logging
 
-from schemas.reponse_schema.profile.profile_data_response_schema import ProfileDataResponseSchema
+from app.schemas.reponse_schema.profile_data_response_schema import ProfileDataResponseSchema
 
 blp = Blueprint("SearchRecommentUserList", __name__, description="Search Recomment User List")
 

@@ -2,11 +2,11 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 import uuid
-from models.post.post import Post
+from app.models.post import Post
 from resources.base.profile import ProfileBase
 from resources.search.search_recomment_post_list.search_recomment_post_list_schema import SearchRecommentPostListRequestSchema, SearchRecommentPostListResponseSchema
 from resources.short_post import ShortPost
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 # from app.extensions import bigqueryClient
 
 blp = Blueprint("SearchRecommentPostList", __name__, description="Search Recomment Post List")

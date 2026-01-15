@@ -1,8 +1,8 @@
 import logging
 from flask_jwt_extended import current_user
-from models.profile.user_profile import UserProfile
-from models.profile.user_relationship import UserRelationship
-from schemas.reponse_schema.profile.profile_data_response_schema import ProfileDataResponseSchema
+from app.models.user_profile import UserProfile
+from app.models.user_relationship import UserRelationship
+from app.schemas.reponse_schema.profile_data_response_schema import ProfileDataResponseSchema
 
 class ProfileBase:
     def __init__(self, uid: str):

@@ -4,16 +4,16 @@ from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.extensions import db
-from models.post.comment_model import CommentModel
-from models.profile.user_profile import UserProfile
+from app.models.comment_model import CommentModel
+from app.models.user_profile import UserProfile
 from resources.base.comment.comment_create.comment_create_response_schema import CommentCreateResponseSchema
 from resources.full_comment import FullComment
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 from app.extensions import boto_client
 import base64
 import os
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.post.post_comment_create_request_schema import PostCommentCreateRequestSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.post_comment_create_request_schema import PostCommentCreateRequestSchema
 
 blp = Blueprint("PostCommentCreate", __name__, description="Post Comment Create")
 

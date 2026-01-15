@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
-from models.token_block import TokenBlock
-from models.usli import USLI
+from app.models.token_block import TokenBlock
+from app.models.usli import USLI
 
 class JWTHelper:
     def __init__(self, app: Flask):

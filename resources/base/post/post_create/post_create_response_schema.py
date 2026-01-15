@@ -1,5 +1,5 @@
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.post.post_create_request_schema import PostCreateRequestSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.post_create_request_schema import PostCreateRequestSchema
 from marshmallow import Schema, fields
 
 class PostsCreateResponseSchema(Schema):

@@ -3,15 +3,14 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required
 from datetime import datetime, timezone
-from models.post.post import Post
-from models.post.post_bookmark_model import PostBookmarkModel
-from models.post.post_repost_model import PostRepostModel
+from app.models.post import Post
+from app.models.post_bookmark_model import PostBookmarkModel
+from app.models.post_repost_model import PostRepostModel
 from resources.short_post import ShortPost
 from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.post.post.post_data_schema import PostDataSchema
-from schemas.request_schema.profile.profile_posts_request_schema import ProfilePostsRequestSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.profile_posts_request_schema import ProfilePostsRequestSchema
 
 blp = Blueprint("ProfilePosts", __name__, description="Profile Posts")
 

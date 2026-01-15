@@ -1,5 +1,5 @@
 from marshmallow import Schema, validate, fields
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 
 class AuthAppleCreateDataResponseSchema(Schema):
     access_token = fields.Str(dump_only=True, validate=validate.Length(min=1))

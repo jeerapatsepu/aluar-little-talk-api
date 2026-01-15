@@ -4,14 +4,14 @@ from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
 from app.extensions import db
-from models.post.post import Post, PostContent, PostImageContent
+from app.models.post import Post, PostContent, PostImageContent
 from resources.base.post.post_create.post_create_response_schema import PostsCreateResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 from app.extensions import boto_client
 import base64
 import os
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.post.post_create_request_schema import PostCreateRequestSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.post_create_request_schema import PostCreateRequestSchema
 
 blp = Blueprint("PostCreate", __name__, description="Post Create")
 

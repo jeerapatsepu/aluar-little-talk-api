@@ -3,14 +3,14 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
-from models.post.comment_model import CommentModel
-from models.profile.user_profile import UserProfile
+from app.models.comment_model import CommentModel
+from app.models.user_profile import UserProfile
 from resources.base.comment.comment_list.comment_list_response_schema import PostsCommentListResponseSchema
 from resources.full_comment import FullComment
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.post.comment_response_schema import CommentResponseSchema
-from schemas.request_schema.post.post_comment_list_request_schema import PostCommentListRequestSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.comment_response_schema import CommentResponseSchema
+from app.schemas.request_schema.post_comment_list_request_schema import PostCommentListRequestSchema
 
 blp = Blueprint("ProfileCommentList", __name__, description="Profile Comment List")
 

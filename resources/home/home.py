@@ -4,12 +4,12 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
-from models.post.post import Post
-from models.profile.user_relationship import UserRelationship
+from app.models.post import Post
+from app.models.user_relationship import UserRelationship
 from resources.short_post import ShortPost
 from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.home_feed_request_schema import HomeFeedRequestSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.home_feed_request_schema import HomeFeedRequestSchema
 from app.extensions import db
 
 blp = Blueprint("Home", __name__, description="Home")

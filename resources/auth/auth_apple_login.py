@@ -4,12 +4,12 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import create_access_token, create_refresh_token
 from datetime import datetime, timezone
-from models.user_delete_request import UserDeleteRequest
-from models.usli import USLI
-from schemas.reponse_schema.auth.auth_apple_create_response_schema import AuthAppleCreateDataResponseSchema, AuthAppleCreateResponseSchema
-from schemas.reponse_schema.error import ErrorSchema
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.request_schema.auth.auth_apple_login_request_schema import AuthAppleLoginRequestSchema
+from app.models.user_delete_request import UserDeleteRequest
+from app.models.usli import USLI
+from app.schemas.reponse_schema.auth_apple_create_response_schema import AuthAppleCreateDataResponseSchema, AuthAppleCreateResponseSchema
+from app.schemas.reponse_schema.error import ErrorSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.request_schema.auth_apple_login_request_schema import AuthAppleLoginRequestSchema
 from app.extensions import db
 
 blp = Blueprint("AuthLogin", __name__, description="Auth Login")

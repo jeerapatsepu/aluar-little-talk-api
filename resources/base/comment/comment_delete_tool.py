@@ -1,7 +1,7 @@
 import os
 from flask_jwt_extended import current_user
-from models.post.comment_like_model import CommentLikeModel
-from models.post.comment_model import CommentModel
+from app.models.comment_like_model import CommentLikeModel
+from app.models.comment_model import CommentModel
 from app.extensions import db, boto_client
 
 class CommentDeleteTool:

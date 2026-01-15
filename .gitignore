@@ -4,6 +4,9 @@ instance/*
 .env
 .venv
 __pycache__
-models/__pycache__/*
+app/__pycache__/*
+app/models/__pycache__/*
+app/routes/__pycache__/*
+app/routes/profile_route/__pycache__/*
 migrations/__pycache__/*
 migrations/versions/__pycache__/*

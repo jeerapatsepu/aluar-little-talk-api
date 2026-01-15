@@ -1,5 +1,5 @@
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.profile.profile_data_response_schema import ProfileDataResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.profile_data_response_schema import ProfileDataResponseSchema
 from marshmallow import Schema, fields
 
 class ProfileResponseSchema(Schema):

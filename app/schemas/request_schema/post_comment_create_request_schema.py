@@ -1,5 +1,4 @@
-from marshmallow import Schema, fields, validate
-from schemas.reponse_schema.post.post.post_response_schema import PostDataSchema
+from marshmallow import Schema, fields
 
 class PostCommentCreateRequestSchema(Schema):
     text = fields.Str(required=True)

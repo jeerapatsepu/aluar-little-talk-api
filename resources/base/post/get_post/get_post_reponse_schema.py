@@ -1,5 +1,5 @@
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.post.post.post_response_schema import PostResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.post_response_schema import PostResponseSchema
 from marshmallow import Schema, fields
 
 class GetPostResponseSchema(Schema):

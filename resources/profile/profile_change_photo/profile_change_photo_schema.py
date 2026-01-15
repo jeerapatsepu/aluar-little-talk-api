@@ -1,7 +1,7 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields
 
-from schemas.reponse_schema.meta import MetaSchema
-from schemas.reponse_schema.profile.profile_data_response_schema import ProfileDataResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.profile_data_response_schema import ProfileDataResponseSchema
 
 class ProfileChangePhotoRequestSchema(Schema):
     image = fields.Str(required=True)

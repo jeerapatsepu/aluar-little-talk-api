@@ -1,6 +1,6 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields
 
-from schemas.reponse_schema.post.post.post_data_schema import PostDataSchema
+from app.schemas.reponse_schema.post_data_schema import PostDataSchema
 
 class PostResponseSchema(Schema):
     post_id = fields.Str(dump_only=True)

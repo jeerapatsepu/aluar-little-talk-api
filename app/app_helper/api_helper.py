@@ -4,9 +4,9 @@ from resources.auth.auth_create import blp as AuthCreateBlueprint
 from resources.auth.auth_apple_login import blp as AuthLoginBlueprint
 from resources.auth.auth_logout import blp as AuthLogoutBlueprint
 from resources.home.home import blp as HomeBlueprint
-from resources.profile.profile.profile import blp as ProfileBlueprint
-from resources.profile.profile_user.profile_user import blp as ProfileUserBlueprint
-from resources.profile.post.profile_posts import blp as ProfilePostsBlueprint
+from app.routes.profile_route.profile import blp as ProfileBlueprint
+from app.routes.profile_route.profile_user import blp as ProfileUserBlueprint
+from app.routes.profile_route.profile_posts import blp as ProfilePostsBlueprint
 from resources.base.post.post_create.post_create import blp as PostCreateBlueprint
 from resources.base.post.like.post_like import blp as PostLikeBlueprint
 from resources.base.post.like.post_dislike import blp as PostDisLikeBlueprint
@@ -25,10 +25,10 @@ from resources.base.post.post_like_list.post_like_list import blp as PostLikeLis
 from resources.base.post.post_comment_user_list.post_comment_user_list import blp as PostCommentUserListBlueprint
 from resources.base.post.post_repost_user_list.post_repost_user_list import blp as PostRepostUserListBlueprint
 from resources.base.comment.comment_like_user_list.comment_like_user_list import blp as PostCommentLikeUserListBlueprint
-from resources.profile.profile_follow.profile_follow import blp as ProfileFollowBlueprint
-from resources.profile.profile_unfollow.profile_unfollow import blp as ProfileUnfollowBlueprint
-from resources.profile.profile_change_photo.profile_change_photo import blp as ProfileChangePhotoBlueprint
-from resources.profile.profile_edit.profile_edit import blp as ProfileEditBlueprint
+from app.routes.profile_route.profile_follow import blp as ProfileFollowBlueprint
+from app.routes.profile_route.profile_unfollow import blp as ProfileUnfollowBlueprint
+from app.routes.profile_route.profile_change_photo import blp as ProfileChangePhotoBlueprint
+from app.routes.profile_route.profile_edit import blp as ProfileEditBlueprint
 from resources.delete_user.delete_user_term.delete_user_term import blp as DeleteUserTermBlueprint
 from resources.delete_user.delete_user_request.delete_user_request import blp as DeleteUserRequestBlueprint
 from resources.internal.delete_user import blp as InternalDeleteUserBlueprint

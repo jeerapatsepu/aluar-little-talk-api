@@ -2,9 +2,9 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 import uuid
-from models.profile.user_profile import UserProfile
+from app.models.user_profile import UserProfile
 from resources.search.search_user_list.search_user_list_schema import SearchUserListRequestSchema, SearchUserListResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 
 blp = Blueprint("SearchUserList", __name__, description="Search User List")
 

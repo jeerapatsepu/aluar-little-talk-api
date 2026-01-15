@@ -3,11 +3,11 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required, current_user
 from datetime import datetime, timezone
-from models.profile.user_profile import UserProfile
+from app.models.user_profile import UserProfile
 from app.extensions import db
 from resources.base.profile import ProfileBase
 from resources.profile.profile_edit.profile_edit_schema import ProfileEditRequestSchema, ProfileEditResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 
 blp = Blueprint("ProfileEdit", __name__, description="Profile Edit")
 

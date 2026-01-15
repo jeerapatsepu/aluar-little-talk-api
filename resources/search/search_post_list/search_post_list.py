@@ -2,10 +2,10 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from datetime import datetime, timezone
 import uuid
-from models.post.post import Post, PostContent
-from models.profile.user_profile import UserProfile
+from app.models.post import Post, PostContent
+from app.models.user_profile import UserProfile
 from resources.search.search_post_list.search_post_list_schema import SearchPostListDataSchema, SearchPostListRequestSchema, SearchPostListResponseSchema
-from schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.meta import MetaSchema
 
 blp = Blueprint("SearchPostList", __name__, description="Search Post List")
 
