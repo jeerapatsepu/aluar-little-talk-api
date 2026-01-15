@@ -49,7 +49,7 @@ class Profile(MethodView):
         data = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
 
         meta = MetaSchema()
-        meta.response_id = uid.hex
+        meta.response_id = uuid.uuid4().hex
         meta.response_code = 1000
         meta.response_date = str(time)
         meta.response_timestamp = str(time.timestamp())

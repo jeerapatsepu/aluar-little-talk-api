@@ -1,3 +1,4 @@
+import uuid
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required
@@ -36,7 +37,7 @@ class ProfileUser(MethodView):
         data = ProfileBase(uid=profile.uid).get_ProfileDataResponseSchema()
 
         meta = MetaSchema()
-        meta.response_id = uid.hex
+        meta.response_id = uuid.uuid4().hex
         meta.response_code = 1000
         meta.response_date = str(time)
         meta.response_timestamp = str(time.timestamp())
@@ -55,7 +56,7 @@ class ProfileUser(MethodView):
         error.message = "Email is not unique"
 
         meta = MetaSchema()
-        meta.response_id = uid.hex
+        meta.response_id = uuid.uuid4().hex
         meta.response_code = response_code
         meta.response_date = str(time)
         meta.response_timestamp = str(time.timestamp())
