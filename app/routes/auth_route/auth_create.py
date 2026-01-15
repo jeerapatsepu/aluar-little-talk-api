@@ -1,13 +1,6 @@
-import uuid
-from flask import redirect
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from flask_jwt_extended import create_access_token, create_refresh_token
-from datetime import datetime, timezone
-from app.models.usli import USLI
-from app.extensions import db
-from app.schemas.reponse_schema.auth_apple_create_response_schema import AuthAppleCreateDataResponseSchema, AuthAppleCreateResponseSchema
-from app.schemas.reponse_schema.meta import MetaSchema
+from app.schemas.reponse_schema.auth_apple_create_response_schema import AuthAppleCreateResponseSchema
 from app.schemas.request_schema.auth_apple_create_request_schema import AuthAppleCreateRequestSchema
 from app.services.auth_service import register_apple_signin
 
