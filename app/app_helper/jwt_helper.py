@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from app.models.token_block import TokenBlock
 from app.models.usli import USLI
+from app.utils.response_code import ResponseCode
+from app.utils.resposne_helper import get_meta_fail_jsonify_response
 
 class JWTHelper:
     def __init__(self, app: Flask):
@@ -71,8 +73,8 @@ class JWTHelper:
         @jwt.expired_token_loader
         def expired_token_callback(jwt_header, jwt_payload):
             return (
-                jsonify({"message": "The token has expired.", "error": "token_expired"}),
-                401,
+                jsonify(get_meta_fail_jsonify_response(ResponseCode.TOKEN_EXPIRED.value)),
+                ResponseCode.TOKEN_EXPIRED.value,
             )
         
     def __register_callback_invalid_token_loader(self, jwt: JWTManager):
