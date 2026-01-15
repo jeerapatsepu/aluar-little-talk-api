@@ -90,12 +90,12 @@ def __get_login_apple_signin_fail():
     response.data = None
     return response
 
-def __get_logout_success_response(self):
+def __get_logout_success_response():
     response = AuthAppleCreateResponseSchema()
     response.meta = get_meta_sucess_response()
     return response
 
-def __get_logout_fail_response(self):
+def __get_logout_fail_response():
     response = AuthAppleCreateResponseSchema()
     response.meta = get_meta_fail_response(5000, "Service can not answer", "Can not authen the user")
     return response
