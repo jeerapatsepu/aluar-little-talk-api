@@ -4,7 +4,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import get_jwt, jwt_required
 from datetime import datetime, timezone
 from models.token_block import TokenBlock
-from app.shared import db
+from app.extensions import db
 from schemas.reponse_schema.auth.auth_apple_create_response_schema import AuthAppleCreateResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 

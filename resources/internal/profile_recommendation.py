@@ -10,7 +10,7 @@ from models.profile_recommendations import ProfileRecommendation
 from resources.manager.image_manager import ImageManager
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
-from app.shared import db
+from app.extensions import db
 
 blp = Blueprint("InternalProfileRecommendation", __name__, description="Internal Profile Recommendation")
 

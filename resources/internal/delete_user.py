@@ -17,8 +17,8 @@ from models.usli import USLI
 from resources.internal.tools.InternalDeleteCommentManager import InternalDeleteCommentManager
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
-from app.shared import db
-from app.s3 import client
+from app.extensions import db
+from app.extensions import boto_client
 
 blp = Blueprint("InternalDeleteUser", __name__, description="Internal Delete User")
 
@@ -69,12 +69,12 @@ class InternalDeleteUser(MethodView):
         try: 
             bucket = os.getenv("S3_BUCKET_NAME")
             prefix = "posts/" + post_id
-            response = client.list_objects_v2(
+            response = boto_client.list_objects_v2(
                 Bucket=bucket,
                 Prefix=prefix
             )
             if "Contents" in response:
-                client.delete_objects(
+                boto_client.delete_objects(
                     Bucket=bucket,
                     Delete={
                         "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]

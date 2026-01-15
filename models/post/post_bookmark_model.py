@@ -1,4 +1,4 @@
-from app.shared import db
+from app.extensions import db
 
 class PostBookmarkModel(db.Model):
     __tablename__ = "post_bookmarks"

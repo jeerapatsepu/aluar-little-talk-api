@@ -1,4 +1,4 @@
-from app.shared import db
+from app.extensions import db
 
 class TokenBlock(db.Model):
     __tablename__ = "token_blocks"

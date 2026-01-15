@@ -10,7 +10,7 @@ from resources.short_post import ShortPost
 from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.request_schema.home_feed_request_schema import HomeFeedRequestSchema
-from app.shared import db
+from app.extensions import db
 
 blp = Blueprint("Home", __name__, description="Home")
 

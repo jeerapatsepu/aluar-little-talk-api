@@ -3,11 +3,11 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
-from app.shared import db
+from app.extensions import db
 from models.post.post import Post, PostContent, PostImageContent
 from resources.base.post.post_create.post_create_response_schema import PostsCreateResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
-from app.s3 import client
+from app.extensions import boto_client
 import base64
 import os
 from schemas.reponse_schema.meta import MetaSchema
@@ -74,7 +74,7 @@ class PostCreate(MethodView):
         for image in content_image_list:
             image_content_id = uuid.uuid4().hex
             image_path = 'posts/' + post_id + '/' + content.content_id + '/' + image_content_id + '.jpg'
-            client.put_object(Body=base64.b64decode(str(image["data"])),
+            boto_client.put_object(Body=base64.b64decode(str(image["data"])),
                               Bucket=os.getenv("S3_BUCKET_NAME"),
                               Key=image_path,
                               ACL='public-read',

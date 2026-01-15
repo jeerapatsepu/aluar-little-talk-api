@@ -5,8 +5,8 @@ from models.post.post_bookmark_model import PostBookmarkModel
 from models.post.post_like_model import PostLikeModel
 from models.post.post_repost_model import PostRepostModel
 from resources.internal.tools.InternalDeleteCommentManager import InternalDeleteCommentManager
-from app.shared import db
-from app.s3 import client
+from app.extensions import db
+from app.extensions import boto_client
 
 class InternalDeletePostManager:
     def __init__(self, post_id: str):
@@ -26,12 +26,12 @@ class InternalDeletePostManager:
         try: 
             bucket = os.getenv("S3_BUCKET_NAME")
             prefix = "posts/" + self.__post_id
-            response = client.list_objects_v2(
+            response = boto_client.list_objects_v2(
                 Bucket=bucket,
                 Prefix=prefix
             )
             if "Contents" in response:
-                client.delete_objects(
+                boto_client.delete_objects(
                     Bucket=bucket,
                     Delete={
                         "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]

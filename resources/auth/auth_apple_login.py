@@ -10,7 +10,7 @@ from schemas.reponse_schema.auth.auth_apple_create_response_schema import AuthAp
 from schemas.reponse_schema.error import ErrorSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.request_schema.auth.auth_apple_login_request_schema import AuthAppleLoginRequestSchema
-from app.shared import db
+from app.extensions import db
 
 blp = Blueprint("AuthLogin", __name__, description="Auth Login")
 

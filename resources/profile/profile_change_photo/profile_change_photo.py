@@ -6,11 +6,11 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required, current_user
 from datetime import datetime, timezone
 from models.profile.user_profile import UserProfile
-from app.shared import db
+from app.extensions import db
 from resources.base.profile import ProfileBase
 from resources.profile.profile_change_photo.profile_change_photo_schema import ProfileChangePhotoRequestSchema, ProfileChangePhotoResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
-from app.s3 import client
+from app.extensions import boto_client
 
 blp = Blueprint("ProfileChangePhoto", __name__, description="Profile Change Photo")
 
@@ -32,12 +32,12 @@ class ProfileChangePhoto(MethodView):
         try: 
             bucket = os.getenv("S3_BUCKET_NAME")
             prefix = "photos/" + current_user.uid
-            response = client.list_objects_v2(
+            response = boto_client.list_objects_v2(
                 Bucket=bucket,
                 Prefix=prefix
             )
             if "Contents" in response:
-                client.delete_objects(
+                boto_client.delete_objects(
                     Bucket=bucket,
                     Delete={
                         "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]
@@ -48,7 +48,7 @@ class ProfileChangePhoto(MethodView):
 
     def __upload_photo(self, image_data: str):
         image_path = 'photos/' + current_user.uid + '/' + current_user.uid + '.jpg'
-        client.put_object(Body=base64.b64decode(image_data),
+        boto_client.put_object(Body=base64.b64decode(image_data),
                             Bucket=os.getenv("S3_BUCKET_NAME"),
                             Key=image_path,
                             ACL='public-read',

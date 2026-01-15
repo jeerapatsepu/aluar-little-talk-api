@@ -4,7 +4,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required, current_user
 from datetime import datetime, timezone
 from models.usli import USLI
-from app.shared import db, uid
+from app.extensions import db
 from models.profile.user_profile import UserProfile
 from resources.base.profile import ProfileBase
 from resources.profile.profile.profile_response_schema import ProfileResponseSchema

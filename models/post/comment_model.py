@@ -1,4 +1,4 @@
-from app.shared import db
+from app.extensions import db
 
 class CommentModel(db.Model):
     __tablename__ = "comments"

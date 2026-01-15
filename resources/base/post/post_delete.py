@@ -4,7 +4,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
-from app.shared import db
+from app.extensions import db
 from models.post.comment_model import CommentModel
 from models.post.post import Post, PostContent, PostImageContent
 from models.post.post_bookmark_model import PostBookmarkModel
@@ -14,7 +14,7 @@ from resources.base.comment.comment_delete_tool import CommentDeleteTool
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.request_schema.post.post_action_request_schema import PostActionRequestSchema
-from app.s3 import client
+from app.extensions import boto_client
 
 blp = Blueprint("PostDelete", __name__, description="Post Delete")
 
@@ -45,12 +45,12 @@ class PostDelete(MethodView):
             try: 
                 bucket = os.getenv("S3_BUCKET_NAME")
                 prefix = "posts/" + post_id
-                response = client.list_objects_v2(
+                response = boto_client.list_objects_v2(
                     Bucket=bucket,
                     Prefix=prefix
                 )
                 if "Contents" in response:
-                    client.delete_objects(
+                    boto_client.delete_objects(
                         Bucket=bucket,
                         Delete={
                             "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]

@@ -4,7 +4,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import jwt_required, current_user
 from datetime import datetime, timezone
 from models.profile.user_relationship import UserRelationship
-from app.shared import db
+from app.extensions import db
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
 from schemas.request_schema.profile.profile_request_schema import ProfileRequestSchema

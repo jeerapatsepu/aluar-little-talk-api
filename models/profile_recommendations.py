@@ -1,4 +1,4 @@
-from app.shared import db
+from app.extensions import db
 
 class ProfileRecommendation(db.Model):
     __tablename__ = "profile_recommendations"

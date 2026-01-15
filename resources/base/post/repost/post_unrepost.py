@@ -3,7 +3,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
-from app.shared import db
+from app.extensions import db
 from models.post.post_repost_model import PostRepostModel
 from schemas.reponse_schema.post.post_action_response_schema import PostActionResponseSchema
 from schemas.reponse_schema.meta import MetaSchema

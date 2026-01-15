@@ -1,4 +1,4 @@
-from app.shared import db
+from app.extensions import db
 
 class PostLikeModel(db.Model):
     __tablename__ = "post_likes"

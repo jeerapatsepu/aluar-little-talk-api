@@ -7,7 +7,7 @@ from resources.base.profile import ProfileBase
 from resources.search.search_recomment_post_list.search_recomment_post_list_schema import SearchRecommentPostListRequestSchema, SearchRecommentPostListResponseSchema
 from resources.short_post import ShortPost
 from schemas.reponse_schema.meta import MetaSchema
-from app.shared import bigqueryClient
+# from app.extensions import bigqueryClient
 
 blp = Blueprint("SearchRecommentPostList", __name__, description="Search Recomment Post List")
 
@@ -17,21 +17,22 @@ class SearchRecommentPostList(MethodView):
     @blp.response(200, SearchRecommentPostListResponseSchema)
     def post(self, request):
         # profile_list = self.__get_post_list(request=request)
-        query = """
-        SELECT
-        param.value.string_value AS post_id,
-        COUNT(*) AS view_count
-        FROM `project_id.analytics_xxxx.events_*`,
-        UNNEST(event_params) AS param
-        WHERE event_name = 'SEE_POST_DETAIL'
-        AND param.key = 'post_id'
-        GROUP BY post_id
-        ORDER BY view_count DESC
-        """
+        # query = """
+        # SELECT
+        # param.value.string_value AS post_id,
+        # COUNT(*) AS view_count
+        # FROM `littletalk-alpha.analytics_xxxx.events_*`,
+        # UNNEST(event_params) AS param
+        # WHERE event_name = 'SEE_POST_DETAIL'
+        # AND param.key = 'post_id'
+        # GROUP BY post_id
+        # ORDER BY view_count DESC
+        # """
 
-        df = bigqueryClient.query(query).to_dataframe()
-        objects = df.to_dict("records")
-        return self.__getSuccessResponseSchema(data=[])
+        # df = bigqueryClient.query(query).to_dataframe()
+        # objects = df.to_dict("records")
+        # return self.__getSuccessResponseSchema(data=[])
+        pass
 
     def __get_post_list(self, request):
         offset = request["offset"]

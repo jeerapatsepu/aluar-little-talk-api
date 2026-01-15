@@ -1,4 +1,4 @@
-from app.shared import db
+from app.extensions import db
 
 class PostRepostModel(db.Model):
     __tablename__ = "post_reposts"

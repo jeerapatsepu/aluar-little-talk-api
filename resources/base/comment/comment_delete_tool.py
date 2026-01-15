@@ -2,8 +2,7 @@ import os
 from flask_jwt_extended import current_user
 from models.post.comment_like_model import CommentLikeModel
 from models.post.comment_model import CommentModel
-from app.s3 import client
-from app.shared import db
+from app.extensions import db, boto_client
 
 class CommentDeleteTool:
     def __init__(self, comment_id: str):
@@ -39,12 +38,12 @@ class CommentDeleteTool:
         try: 
             bucket = os.getenv("S3_BUCKET_NAME")
             prefix = "comments/" + comment_id
-            response = client.list_objects_v2(
+            response = boto_client.list_objects_v2(
                 Bucket=bucket,
                 Prefix=prefix
             )
             if "Contents" in response:
-                client.delete_objects(
+                boto_client.delete_objects(
                     Bucket=bucket,
                     Delete={
                         "Objects": [{"Key": obj["Key"]} for obj in response["Contents"]]

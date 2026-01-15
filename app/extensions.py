@@ -1,8 +1,15 @@
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+from google.cloud import bigquery
 import boto3, os
 from botocore.client import Config
 
-session = boto3.session.Session()
-client = session.client(
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+# bigqueryClient = bigquery.Client()
+
+boto_session = boto3.session.Session()
+boto_client = boto_session.client(
     's3',
     region_name='sgp1',
     endpoint_url=os.getenv('S3_ENDPOINT'),
@@ -10,7 +17,3 @@ client = session.client(
     aws_secret_access_key=os.getenv('S3_SECRET_KEY'),
     config=Config(s3={'addressing_style': 'virtual'})
 )
-
-# client.create_bucket(Bucket='my-new-space')
-# print([b['Name'] for b in client.list_buckets()['Buckets']])
-

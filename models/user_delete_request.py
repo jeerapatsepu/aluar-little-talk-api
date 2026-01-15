@@ -1,4 +1,4 @@
-from app.shared import db
+from app.extensions import db
 
 class UserDeleteRequest(db.Model):
     __tablename__ = "user_delete_requests"

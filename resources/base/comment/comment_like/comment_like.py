@@ -3,7 +3,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import current_user, jwt_required
 from datetime import datetime, timezone
 import uuid
-from app.shared import db
+from app.extensions import db
 from models.post.comment_like_model import CommentLikeModel
 from models.post.comment_model import CommentModel
 from resources.base.comment.comment_like.comment_like_schema import CommentLikeResponseSchema, CommentLikeResquestSchema

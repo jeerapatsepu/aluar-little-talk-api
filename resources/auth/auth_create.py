@@ -5,7 +5,7 @@ from flask_smorest import Blueprint
 from flask_jwt_extended import create_access_token, create_refresh_token
 from datetime import datetime, timezone
 from models.usli import USLI
-from app.shared import db
+from app.extensions import db
 from schemas.reponse_schema.auth.auth_apple_create_response_schema import AuthAppleCreateDataResponseSchema, AuthAppleCreateResponseSchema
 from schemas.reponse_schema.meta import MetaSchema
 from schemas.request_schema.auth.auth_apple_create_request_schema import AuthAppleCreateRequestSchema
