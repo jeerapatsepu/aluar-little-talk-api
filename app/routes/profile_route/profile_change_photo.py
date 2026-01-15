@@ -7,8 +7,8 @@ from flask_jwt_extended import jwt_required, current_user
 from datetime import datetime, timezone
 from app.models.user_profile import UserProfile
 from app.extensions import db
-from resources.base.profile import ProfileBase
-from resources.profile.profile_change_photo.profile_change_photo_schema import ProfileChangePhotoRequestSchema, ProfileChangePhotoResponseSchema
+from app.utils.profile import ProfileBase
+from app.schemas.request_schema.profile_change_photo_schema import ProfileChangePhotoRequestSchema, ProfileChangePhotoResponseSchema
 from app.schemas.reponse_schema.meta import MetaSchema
 from app.extensions import boto_client
 

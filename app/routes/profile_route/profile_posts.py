@@ -6,8 +6,8 @@ from datetime import datetime, timezone
 from app.models.post import Post
 from app.models.post_bookmark_model import PostBookmarkModel
 from app.models.post_repost_model import PostRepostModel
-from resources.short_post import ShortPost
-from resources.profile.post.profile_posts_response import ProfilePostsResponseSchema
+from app.utils.short_post import ShortPost
+from app.schemas.reponse_schema.profile_posts_response import ProfilePostsResponseSchema
 from app.schemas.reponse_schema.meta import MetaSchema
 from app.schemas.reponse_schema.meta import MetaSchema
 from app.schemas.request_schema.profile_posts_request_schema import ProfilePostsRequestSchema

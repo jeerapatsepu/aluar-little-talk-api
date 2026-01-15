@@ -6,8 +6,8 @@ from datetime import datetime, timezone
 from app.models.usli import USLI
 from app.extensions import db
 from app.models.user_profile import UserProfile
-from resources.base.profile import ProfileBase
-from resources.profile.profile.profile_response_schema import ProfileResponseSchema
+from app.utils.profile import ProfileBase
+from app.schemas.reponse_schema.profile_response_schema import ProfileResponseSchema
 from app.schemas.reponse_schema.error import ErrorSchema
 from app.schemas.reponse_schema.meta import MetaSchema
 from app.schemas.request_schema.profile_request_schema import ProfileRequestSchema

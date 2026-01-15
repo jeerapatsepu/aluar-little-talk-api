@@ -1,0 +1,56 @@
+from flask.views import MethodView
+from flask_smorest import Blueprint
+from datetime import datetime, timezone
+import uuid
+from app.models.user_profile import UserProfile
+from app.routes.search_route.search_user_list.search_user_list_schema import SearchUserListRequestSchema, SearchUserListResponseSchema
+from app.schemas.reponse_schema.meta import MetaSchema
+
+blp = Blueprint("SearchUserList", __name__, description="Search User List")
+
+@blp.route("/search/user/list")
+class SearchUserList(MethodView):
+    @blp.arguments(SearchUserListRequestSchema)
+    @blp.response(200, SearchUserListResponseSchema)
+    def post(self, request):
+        search = request["search"]
+        offset = request["offset"]
+        limit = request["limit"]
+        profile_list = UserProfile.query.order_by(UserProfile.full_name).offset(offset=offset).limit(limit=limit).all()
+        profile_list = self.__filterProfileListBySearch(profile_list=profile_list, search=search)
+        return self.__getSuccessResponseSchema(profile_list=profile_list)
+
+    def __filterProfileListBySearch(self, profile_list: list, search: str):
+        filtered_list = []
+        search_lower = search.lower()
+        for profile in profile_list:
+            if search_lower in profile.full_name.lower() or search_lower in profile.email.lower():
+                filtered_list.append(profile)
+        return filtered_list
+    
+    def __getSuccessResponseSchema(self, profile_list: list):
+        time = datetime.now(timezone.utc)
+
+        meta = MetaSchema()
+        meta.response_id = uuid.uuid4().hex
+        meta.response_code = 1000
+        meta.response_date = str(time)
+        meta.response_timestamp = str(time.timestamp())
+        meta.error = None
+
+        data = []
+        for profile in profile_list:
+            profile_data = {
+                "uid": profile.uid,
+                "email": profile.email,
+                "name": profile.full_name,
+                "photo": profile.photo,
+                "caption": profile.caption,
+                "link": profile.link
+            }
+            data.append(profile_data)
+
+        response = SearchUserListResponseSchema()
+        response.meta = meta
+        response.data = data
+        return response
