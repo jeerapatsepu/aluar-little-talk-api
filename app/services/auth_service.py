@@ -56,7 +56,7 @@ def __create_usli_model(email: str, full_name: str, user_identifier: str):
         db.session.commit()
         return new_user
 
-def __get_register_apple_signin_success(self, new_user: USLI):
+def __get_register_apple_signin_success(new_user: USLI):
     access_token = create_access_token(identity=new_user)
     refresh_token = create_refresh_token(identity=new_user)
 
