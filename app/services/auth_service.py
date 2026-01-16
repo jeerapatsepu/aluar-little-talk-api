@@ -23,7 +23,7 @@ def register_apple_signin(request):
     user_identifier = request["user_identifier"]
     usli = USLI.query.filter_by(email=email).first()
     if usli:
-        redirect("/auth/apple/login")
+        return login_apple_signin(user_identifier)
     else:
         new_user = __create_usli_model(email, full_name, user_identifier)
         return __get_register_apple_signin_success(new_user)
