@@ -37,6 +37,7 @@ from app.routes.search_route.search_user_list.search_user_list import blp as Sea
 from app.routes.search_route.search_recomment_user_list.search_recomment_user_list import blp as SearchRecommentUserListBlueprint
 from app.routes.search_route.search_post_list.search_post_list import blp as SearchPostListBlueprint
 from app.routes.search_route.search_recomment_post_list.search_recomment_post_list import blp as SearchRecommentPostListBlueprint
+from app.routes.post_route.comment.comment_reply_list.comment_reply_list import blp as PostCommentReplyListBlueprint
 
 class APIHelper:
     def __init__(self, app: Flask):
@@ -81,3 +82,4 @@ class APIHelper:
         api.register_blueprint(SearchRecommentUserListBlueprint)
         api.register_blueprint(SearchPostListBlueprint)
         api.register_blueprint(SearchRecommentPostListBlueprint)
+        api.register_blueprint(PostCommentReplyListBlueprint)
