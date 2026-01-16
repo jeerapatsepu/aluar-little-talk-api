@@ -38,7 +38,7 @@ def __map_reply_list(reply: CommentModel):
     reply_schema.like_count = CommentLikeModel.query.filter(CommentLikeModel.comment_id == reply.comment_uid).count()
     try:
         reply_schema.is_owner = current_user.uid == reply.user_uid
-        reply_schema.is_like = CommentLikeModel.query.filter(CommentLikeModel.user_uid == current_user.uid and CommentLikeModel.comment_id == reply.comment_uid).first() != None
+        reply_schema.is_like = CommentLikeModel.query.filter(CommentLikeModel.user_uid == current_user.uid and CommentLikeModel.comment_id == reply.comment_uid).first() is not None
     except Exception:
         reply_schema.is_owner = False
         reply_schema.is_like = False
