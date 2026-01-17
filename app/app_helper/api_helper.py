@@ -3,6 +3,7 @@ from flask_smorest import Api
 from app.routes.auth_route.auth_create import blp as AuthCreateBlueprint
 from app.routes.auth_route.auth_apple_login import blp as AuthLoginBlueprint
 from app.routes.auth_route.auth_logout import blp as AuthLogoutBlueprint
+from app.routes.auth_route.auth_refresh import blp as AuthRefreshBlueprint
 from app.routes.home_route.home import blp as HomeBlueprint
 from app.routes.profile_route.profile import blp as ProfileBlueprint
 from app.routes.profile_route.profile_user import blp as ProfileUserBlueprint
@@ -83,3 +84,4 @@ class APIHelper:
         api.register_blueprint(SearchPostListBlueprint)
         api.register_blueprint(SearchRecommentPostListBlueprint)
         api.register_blueprint(PostCommentReplyListBlueprint)
+        api.register_blueprint(AuthRefreshBlueprint)

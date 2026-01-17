@@ -1,12 +1,13 @@
 from datetime import datetime, timezone
+import logging
 import uuid
-from flask import redirect
 from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt, get_jwt_identity
 from app.models.token_block import TokenBlock
 from app.models.user_delete_request import UserDeleteRequest
 from app.models.usli import USLI
 from app.extensions import db
 from app.schemas.reponse_schema.auth_apple_create_response_schema import AuthAppleCreateDataResponseSchema, AuthAppleCreateResponseSchema
+from app.utils.response_code import ResponseCode
 from app.utils.resposne_helper import get_meta_fail_response, get_meta_sucess_response
 
 def login_apple_signin(user_identifier: str):
@@ -39,6 +40,14 @@ def logout():
         return __get_logout_success_response()
     else:
         return __get_logout_fail_response()
+
+def refresh():
+    indentity = get_jwt_identity()
+    usli = USLI.query.filter(USLI.uid==indentity.uid).first()
+    if usli:
+        return __get_register_apple_signin_success(usli)
+    else:
+        return __get_refresh_fail_response()
 
 def __delete_user_request_deactivate(uid: str):
     user_delete = UserDeleteRequest.query.filter_by(user_uid=uid).first()
@@ -97,5 +106,10 @@ def __get_logout_success_response():
 
 def __get_logout_fail_response():
     response = AuthAppleCreateResponseSchema()
-    response.meta = get_meta_fail_response(5000, "Service can not answer", "Can not authen the user")
+    response.meta = get_meta_fail_response(ResponseCode.GENERAL_ERROR.value, "Service can not answer", "Can not authen the user")
+    return response
+
+def __get_refresh_fail_response():
+    response = AuthAppleCreateResponseSchema()
+    response.meta = get_meta_fail_response(ResponseCode.REFRESH_FAIL.value, "Service can not answer", "Can not authen the user")
     return response

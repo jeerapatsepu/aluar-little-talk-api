@@ -24,6 +24,6 @@ class AppHelper:
         self.__app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
         self.__app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
-        self.__app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=15)
-        self.__app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
+        self.__app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(seconds=300)
+        self.__app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(seconds=600)
         self.__app.config['JWT_TOKEN_LOCATION'] = ['headers']
