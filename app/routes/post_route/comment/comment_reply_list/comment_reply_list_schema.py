@@ -9,4 +9,4 @@ class CommentReplyListResquestSchema(Schema):
 
 class CommentReplyListResponseSchema(Schema):
     meta = fields.Nested(MetaSchema, only=("response_id", "response_code", "response_date", "response_timestamp", "error"), dump_only=True)
-    data = fields.Nested(CommentResponseSchema, only=("comment_id", "parent_comment_id", "owner_image", "owner_name", "owner_uid", "post_id", "is_owner", "text", "image_url", "created_date_timestamp", "updated_date_timestamp", "reply_list", "reply_image", "reply_uid", "reply_name", "", "is_see_reply_more", "is_like", "like_count"), dump_only=True, many=True)
+    data = fields.Nested(CommentResponseSchema, only=("comment_id", "parent_comment_id", "owner_image", "owner_name", "owner_uid", "post_id", "is_owner", "text", "image_url", "created_date_timestamp", "updated_date_timestamp", "reply_list", "reply_image", "reply_uid", "reply_name", "is_see_reply_more", "is_like", "like_count"), dump_only=True, many=True)
