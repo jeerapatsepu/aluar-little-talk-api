@@ -49,6 +49,6 @@ def get_meta_fail_jsonify_response(code: int, error_title: str, error_descriptio
             "error": {
                 "title": error_title,
                 "message": error_description,
-            },
+            }
         }
     }
