@@ -56,10 +56,8 @@ class JWTHelper:
         @jwt.revoked_token_loader
         def revoked_token_callback(jwt_header, jwt_payload):
             return (
-                jsonify(
-                    {"description": "The token has been revoked.", "error": "token_revoked"}
-                ),
-                401,
+                jsonify(get_meta_fail_jsonify_response(ResponseCode.TOKEN_REVOKED.value)),
+                ResponseCode.TOKEN_REVOKED.value,
             )
     
     def __register_callback_additional_claims_loader(self, jwt: JWTManager):
