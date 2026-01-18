@@ -57,7 +57,7 @@ class JWTHelper:
         def revoked_token_callback(jwt_header, jwt_payload):
             return (
                 jsonify(get_meta_fail_jsonify_response(ResponseCode.TOKEN_REVOKED.value, "Your token has been revoked", "Please login again")),
-                ResponseCode.TOKEN_REVOKED.value,
+                200,
             )
     
     def __register_callback_additional_claims_loader(self, jwt: JWTManager):
@@ -72,17 +72,15 @@ class JWTHelper:
         def expired_token_callback(jwt_header, jwt_payload):
             return (
                 jsonify(get_meta_fail_jsonify_response(ResponseCode.TOKEN_EXPIRED.value, "Your token has expired", "Please login again")),
-                ResponseCode.TOKEN_EXPIRED.value,
+                200,
             )
         
     def __register_callback_invalid_token_loader(self, jwt: JWTManager):
         @jwt.invalid_token_loader
         def invalid_token_callback(error):
             return (
-                jsonify(
-                    {"message": "Signature verification failed.", "error": "invalid_token"}
-                ),
-                401,
+                jsonify(get_meta_fail_jsonify_response(ResponseCode.TOKEN_INVALID.value, "Your token is invalid", "Please login again")),
+                200,
             )
     
     def __register_callback_unauthorized_loader(self, jwt: JWTManager):
