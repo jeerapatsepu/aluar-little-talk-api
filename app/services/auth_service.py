@@ -43,7 +43,7 @@ def logout():
 
 def refresh():
     indentity = get_jwt_identity()
-    usli = USLI.query.filter(USLI.uid==indentity.uid).first()
+    usli = USLI.query.filter(USLI.uid==indentity).first()
     if usli:
         return __get_register_apple_signin_success(usli)
     else:
