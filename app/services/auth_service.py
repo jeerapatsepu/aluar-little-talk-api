@@ -32,11 +32,7 @@ def register_apple_signin(request):
 def logout():
     current_user = get_jwt_identity()
     if current_user:
-        jti = get_jwt()["jti"]
-        now = int(datetime.now(timezone.utc).timestamp())
-        token_block = TokenBlock(jti=jti, created_date_timestamp=now)
-        db.session.add(token_block)
-        db.session.commit()
+        __block_jwt()
         return __get_logout_success_response()
     else:
         return __get_logout_fail_response()
@@ -45,9 +41,17 @@ def refresh():
     indentity = get_jwt_identity()
     usli = USLI.query.filter(USLI.uid==indentity).first()
     if usli:
+        __block_jwt()
         return __get_register_apple_signin_success(usli)
     else:
         return __get_refresh_fail_response()
+
+def __block_jwt():
+    jti = get_jwt()["jti"]
+    now = int(datetime.now(timezone.utc).timestamp())
+    token_block = TokenBlock(jti=jti, created_date_timestamp=now)
+    db.session.add(token_block)
+    db.session.commit()
 
 def __delete_user_request_deactivate(uid: str):
     user_delete = UserDeleteRequest.query.filter_by(user_uid=uid).first()
